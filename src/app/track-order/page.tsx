@@ -54,6 +54,27 @@ export default function TrackOrder() {
 
     if (initialOrderId) {
       setInputOrderId(initialOrderId)
+      // Trigger search after setting the input
+      setLoading(true)
+      fetch(`/api/orders/${encodeURIComponent(initialOrderId)}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Order not found. Please check your Order ID.')
+          }
+          return response.json()
+        })
+        .then(data => {
+          setOrder(data.order)
+          setSearched(true)
+        })
+        .catch(err => {
+          setError(err.message)
+          setOrder(null)
+          setSearched(true)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     }
   }, [])
 
@@ -73,8 +94,8 @@ export default function TrackOrder() {
     completed_ready_to_download: <Download className="w-5 h-5" />,
   }
 
-  const searchOrder = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const searchOrder = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
     if (!inputOrderId.trim()) {
       setError('Please enter an Order ID')
       return
