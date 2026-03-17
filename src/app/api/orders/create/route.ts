@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-// Mock database - in production, this would be a real database
-const ordersDatabase = new Map<string, any>()
+import { createOrder } from '@/lib/orderStore'
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,6 +18,8 @@ export async function POST(request: NextRequest) {
       estimatedPrice,
     } = body
 
+    const numericEstimatedPrice = Number(estimatedPrice)
+
     // Validate required fields
     if (!customerName || !customerEmail || !customerPhone || !topic || !deadline) {
       return NextResponse.json(
@@ -28,41 +28,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate unique Order ID
-    const timestamp = Date.now().toString().slice(-6)
-    const random = Math.random().toString(36).substring(2, 8).toUpperCase()
-    const orderId = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${random}`
+    if (!Number.isFinite(numericEstimatedPrice) || numericEstimatedPrice <= 0) {
+      return NextResponse.json(
+        { error: 'Please provide a valid proposed price.' },
+        { status: 400 }
+      )
+    }
 
-    // Create order object
-    const order = {
-      id: orderId,
+    const order = createOrder({
       customerName,
       customerEmail,
       customerPhone,
       serviceType,
       topic,
       description,
-      pageCount,
+      pageCount: Number(pageCount) || 1,
       deadline,
       formatStyle,
-      estimatedPrice,
-      finalPrice: estimatedPrice * 1.1, // Add 10% tax
-      status: 'pending_review',
-      paymentStatus: 'pending',
-      totalPaid: 0,
-      payments: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    }
-
-    // Store in mock database
-    ordersDatabase.set(orderId, order)
+      estimatedPrice: numericEstimatedPrice,
+    })
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Order created successfully',
-        orderId,
+        message: 'Order created successfully. Final price will be confirmed after review.',
+        orderId: order.id,
         order,
       },
       { status: 201 }

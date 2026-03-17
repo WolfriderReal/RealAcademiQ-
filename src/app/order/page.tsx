@@ -32,6 +32,8 @@ const OrderForm = () => {
     project: 30,
     proposal: 100,
   }
+  const suggestedPrice = formData.pageCount * (servicePricing[formData.serviceType] || 0)
+  const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20order.'
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -41,22 +43,6 @@ const OrderForm = () => {
     } else {
       setFormData(prev => ({ ...prev, [name]: value }))
     }
-
-    // Auto-calculate price
-    if (name === 'pageCount') {
-      const pricePerPage = servicePricing[formData.serviceType] || 15
-      setFormData(prev => ({ ...prev, estimatedPrice: Number(value) * pricePerPage }))
-    }
-  }
-
-  const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const serviceType = e.target.value
-    const pricePerPage = servicePricing[serviceType] || 15
-    setFormData(prev => ({
-      ...prev,
-      serviceType,
-      estimatedPrice: prev.pageCount * pricePerPage,
-    }))
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,8 +179,9 @@ const OrderForm = () => {
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-slate-900 mb-4">Select Service</h3>
               <select
+                name="serviceType"
                 value={formData.serviceType}
-                onChange={handleServiceChange}
+                onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
               >
                 <option value="assignment">Assignment Help - $15/page</option>
@@ -255,6 +242,26 @@ const OrderForm = () => {
                     <option>Chicago</option>
                     <option>Harvard</option>
                   </select>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Your Proposed Price (USD) *</label>
+                  <input
+                    type="number"
+                    name="estimatedPrice"
+                    value={formData.estimatedPrice}
+                    onChange={handleInputChange}
+                    required
+                    min="1"
+                    step="0.01"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
+                    placeholder="Enter your proposed budget"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">
+                    You can enter your preferred amount now. Final price will be confirmed by our team after review.
+                  </p>
+                  <p className="text-xs text-amber-700 mt-1">
+                    Suggested from selected service and pages: ${suggestedPrice.toFixed(2)}
+                  </p>
                 </div>
               </div>
 
@@ -344,23 +351,23 @@ const OrderForm = () => {
               {/* Pricing Breakdown */}
               <div className="bg-slate-50 rounded-lg p-5 mb-6">
                 <div className="flex justify-between mb-3">
-                  <span className="text-slate-700">Subtotal:</span>
+                  <span className="text-slate-700">Your Proposed Price:</span>
                   <span className="text-slate-900">${formData.estimatedPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pb-3 border-b border-slate-200">
-                  <span className="text-slate-700">Tax (10%):</span>
-                  <span className="text-slate-900">${(formData.estimatedPrice * 0.1).toFixed(2)}</span>
+                  <span className="text-slate-700">Final Price Confirmation:</span>
+                  <span className="text-slate-900">Pending Team Review</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold">
-                  <span className="text-slate-900">Total:</span>
-                  <span className="text-amber-600">${(formData.estimatedPrice * 1.1).toFixed(2)}</span>
+                  <span className="text-slate-900">Amount shown for payment prompt:</span>
+                  <span className="text-amber-600">${formData.estimatedPrice.toFixed(2)}</span>
                 </div>
               </div>
 
               {/* Info Box */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <p className="text-sm text-blue-900">
-                  📝 These are estimated prices. Final pricing will be confirmed after our team reviews your requirements.
+                  📝 Final pricing is confirmed after review. The amount above is your proposed price for faster order processing.
                 </p>
               </div>
 
@@ -377,7 +384,7 @@ const OrderForm = () => {
                   onClick={() => setStep(3)}
                   className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3"
                 >
-                  Proceed to Payment <ArrowRight className="ml-2 w-4 h-4" />
+                  Continue to Payment Options <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </div>
             </div>
@@ -388,13 +395,16 @@ const OrderForm = () => {
         {step === 3 && !submitted && (
           <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Choose Payment Method</h2>
+            <p className="text-sm text-slate-600 mb-6">
+              Payment prompt uses your proposed price and will be finalized after our confirmation.
+            </p>
 
             {/* Price Summary */}
             <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-5 mb-8 border border-amber-200">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-sm text-slate-700 mb-1">Total Amount Due</p>
-                  <p className="text-3xl font-bold text-amber-600">${(formData.estimatedPrice * 1.1).toFixed(2)}</p>
+                  <p className="text-sm text-slate-700 mb-1">Proposed Amount</p>
+                  <p className="text-3xl font-bold text-amber-600">${formData.estimatedPrice.toFixed(2)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-slate-600">USD</p>
@@ -405,8 +415,7 @@ const OrderForm = () => {
             {/* Payment Methods Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {/* PayPal Option */}
-              <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-blue-400 hover:bg-blue-50 transition cursor-pointer"
-                onClick={() => setStep(4)}>
+              <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-blue-400 hover:bg-blue-50 transition">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <span className="text-xl font-bold text-blue-600">P</span>
@@ -424,8 +433,7 @@ const OrderForm = () => {
               </div>
 
               {/* M-Pesa STK Push */}
-              <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-orange-400 hover:bg-orange-50 transition cursor-pointer"
-                onClick={() => setStep(4)}>
+              <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-orange-400 hover:bg-orange-50 transition">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                     <span className="text-xl font-bold text-orange-600">M</span>
@@ -457,7 +465,7 @@ const OrderForm = () => {
                 </div>
                 <div className="bg-white rounded-lg p-4">
                   <p className="text-xs text-slate-600 mb-2">Amount</p>
-                  <p className="text-lg font-bold text-slate-900">${(formData.estimatedPrice * 1.1).toFixed(2)}</p>
+                  <p className="text-lg font-bold text-slate-900">${formData.estimatedPrice.toFixed(2)}</p>
                 </div>
                 <div className="bg-white rounded-lg p-4">
                   <p className="text-xs text-slate-600 mb-2">Reference</p>
@@ -493,6 +501,14 @@ const OrderForm = () => {
               >
                 Back
               </Button>
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full py-3 rounded-lg border border-green-300 text-green-700 text-center font-medium hover:bg-green-50 transition"
+              >
+                Chat on WhatsApp
+              </a>
             </div>
 
             <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -543,6 +559,11 @@ const OrderForm = () => {
                   Return Home
                 </Button>
               </Link>
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="px-8 py-3">
+                  WhatsApp Support
+                </Button>
+              </a>
             </div>
           </div>
         )}

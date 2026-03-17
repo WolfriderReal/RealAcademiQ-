@@ -46,6 +46,7 @@ export default function TrackOrder() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [searched, setSearched] = useState(false)
+  const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20order%20tracking.'
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -297,10 +298,12 @@ export default function TrackOrder() {
                   <p className="text-sm text-orange-900 mb-3">
                     💡 You still have a balance due. Complete payment to unlock your final deliverable.
                   </p>
-                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white">
-                    Complete Payment
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block">
+                    <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white">
+                      Complete Payment via WhatsApp
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </a>
                 </div>
               )}
             </div>
@@ -366,10 +369,12 @@ export default function TrackOrder() {
                   <p className="text-slate-300 mb-4">
                     Have questions about your order? Our support team is available 24/7.
                   </p>
-                  <Button className="bg-amber-600 hover:bg-amber-700 text-white">
-                    Contact Support
-                    <ArrowRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-block">
+                    <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+                      Contact Support on WhatsApp
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
