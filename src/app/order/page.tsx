@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, FileUp, CheckCircle, AlertCircle, Loader } from 'lucide-react'
+import { ArrowRight, FileUp, CheckCircle, AlertCircle, Loader, CreditCard, Smartphone } from 'lucide-react'
 
 const OrderForm = () => {
   const [step, setStep] = useState(1)
@@ -19,12 +19,19 @@ const OrderForm = () => {
     formatStyle: 'APA',
     estimatedPrice: 50,
   })
-  
+
   const [files, setFiles] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
+
+  // Payment state
+  const [selectedPayment, setSelectedPayment] = useState<'paypal' | 'mpesa' | 'manual' | null>(null)
+  const [mpesaPhone, setMpesaPhone] = useState('')
+  const [paymentLoading, setPaymentLoading] = useState(false)
+  const [paymentError, setPaymentError] = useState<string | null>(null)
+  const [stkSent, setStkSent] = useState(false)
 
   const servicePricing: Record<string, number> = {
     assignment: 15,
@@ -67,13 +74,77 @@ const OrderForm = () => {
 
       const data = await response.json()
       setOrderId(data.orderId)
-      setSubmitted(true)
+      setMpesaPhone(formData.customerPhone)
       setStep(3)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
+  }
+
+  const handlePaypalPay = async () => {
+    if (!orderId) return
+    setPaymentLoading(true)
+    setPaymentError(null)
+    try {
+      const response = await fetch('/api/payments/paypal/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceId: orderId,
+          amount: formData.estimatedPrice,
+          currency: 'USD',
+          returnUrl: `${window.location.origin}/track-order?orderId=${orderId}`,
+          cancelUrl: `${window.location.origin}/order`,
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to create PayPal order')
+      // Redirect to PayPal approval URL
+      const approvalUrl = data.approveUrl || data.approvalUrl || data.links?.find((l: any) => l.rel === 'approve')?.href
+      if (approvalUrl) {
+        window.location.href = approvalUrl
+      } else {
+        throw new Error('No PayPal approval URL received.')
+      }
+    } catch (err: any) {
+      setPaymentError(err.message)
+    } finally {
+      setPaymentLoading(false)
+    }
+  }
+
+  const handleMpesaSTK = async () => {
+    if (!orderId) return
+    if (!mpesaPhone.trim()) {
+      setPaymentError('Please enter your M-Pesa phone number.')
+      return
+    }
+    setPaymentLoading(true)
+    setPaymentError(null)
+    try {
+      const response = await fetch('/api/payments/mpesa/stk-push', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          invoiceId: orderId,
+          amount: formData.estimatedPrice,
+          phoneNumber: mpesaPhone.trim(),
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'STK push failed')
+      setStkSent(true)
+    } catch (err: any) {
+      setPaymentError(err.message)
+    } finally {
+      setPaymentLoading(false)
+    }
+  }
+
+  const handleManualConfirm = () => {
+    setSubmitted(true)
   }
 
   return (
@@ -381,145 +452,215 @@ const OrderForm = () => {
                   Back
                 </Button>
                 <Button
-                  onClick={() => setStep(3)}
+                  onClick={handleSubmit as any}
+                  disabled={loading}
                   className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3"
                 >
-                  Continue to Payment Options <ArrowRight className="ml-2 w-4 h-4" />
+                  {loading ? (
+                    <><Loader className="w-4 h-4 mr-2 animate-spin" />Creating Order...</>
+                  ) : (
+                    <>Continue to Payment <ArrowRight className="ml-2 w-4 h-4" /></>
+                  )}
                 </Button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Step 3: Payment Options */}
-        {step === 3 && !submitted && (
+        {/* Step 3: Payment */}
+        {step === 3 && !submitted && orderId && (
           <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Choose Payment Method</h2>
-            <p className="text-sm text-slate-600 mb-6">
-              Payment prompt uses your proposed price and will be finalized after our confirmation.
-            </p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Complete Payment</h2>
 
-            {/* Price Summary */}
+            {/* Order ID Banner */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg px-5 py-3 mb-6 flex items-center justify-between">
+              <span className="text-sm text-slate-700">Your Order ID:</span>
+              <span className="font-mono font-bold text-amber-700 text-lg">{orderId}</span>
+            </div>
+
+            {/* Amount */}
             <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-5 mb-8 border border-amber-200">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-sm text-slate-700 mb-1">Proposed Amount</p>
-                  <p className="text-3xl font-bold text-amber-600">${formData.estimatedPrice.toFixed(2)}</p>
+                  <p className="text-sm text-slate-700 mb-1">Amount Due</p>
+                  <p className="text-3xl font-bold text-amber-600">${formData.estimatedPrice.toFixed(2)} USD</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs text-slate-600">USD</p>
-                </div>
+                <p className="text-xs text-slate-500">Final price confirmed after team review</p>
               </div>
             </div>
 
-            {/* Payment Methods Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* PayPal Option */}
-              <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-blue-400 hover:bg-blue-50 transition">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <span className="text-xl font-bold text-blue-600">P</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900">PayPal</h3>
-                    <p className="text-xs text-slate-600">Secure payment</p>
-                  </div>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-700 mb-4">
-                  <li>✓ Instant confirmation</li>
-                  <li>✓ International support</li>
-                  <li>✓ Buyer protection</li>
-                </ul>
+            {/* Payment Error */}
+            {paymentError && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                <span className="text-red-800">{paymentError}</span>
               </div>
+            )}
 
-              {/* M-Pesa STK Push */}
-              <div className="border-2 border-slate-200 rounded-xl p-6 hover:border-orange-400 hover:bg-orange-50 transition">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <span className="text-xl font-bold text-orange-600">M</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900">M-Pesa STK</h3>
-                    <p className="text-xs text-slate-600">Quick & Simple</p>
-                  </div>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-700 mb-4">
-                  <li>✓ Instant phone prompt</li>
-                  <li>✓ Kenya-based</li>
-                  <li>✓ Fast payment</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* M-Pesa Paybill Manual Option */}
-            <div className="bg-slate-50 rounded-xl p-6 mb-8">
-              <h3 className="font-bold text-slate-900 mb-4">M-Pesa Manual Paybill (Alternative)</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div className="bg-white rounded-lg p-4">
-                  <p className="text-xs text-slate-600 mb-2">Business Number</p>
-                  <p className="text-lg font-bold text-slate-900">714777</p>
-                </div>
-                <div className="bg-white rounded-lg p-4">
-                  <p className="text-xs text-slate-600 mb-2">Account Number</p>
-                  <p className="text-lg font-bold text-slate-900">440005939461</p>
-                </div>
-                <div className="bg-white rounded-lg p-4">
-                  <p className="text-xs text-slate-600 mb-2">Amount</p>
-                  <p className="text-lg font-bold text-slate-900">${formData.estimatedPrice.toFixed(2)}</p>
-                </div>
-                <div className="bg-white rounded-lg p-4">
-                  <p className="text-xs text-slate-600 mb-2">Reference</p>
-                  <p className="text-lg font-bold text-amber-600">Your Email</p>
-                </div>
-              </div>
-              <p className="text-xs text-slate-600 mt-4">Send payment, then confirm your order below</p>
-            </div>
-
-            {/* Submit Order */}
-            <div className="space-y-4">
-              <Button
-                onClick={handleSubmit}
-                disabled={loading}
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center"
+            {/* Payment Method Selection */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              {/* PayPal */}
+              <button
+                onClick={() => { setSelectedPayment('paypal'); setPaymentError(null); setStkSent(false) }}
+                className={`text-left border-2 rounded-xl p-5 transition ${
+                  selectedPayment === 'paypal'
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-slate-200 hover:border-blue-300'
+                }`}
               >
-                {loading ? (
-                  <>
-                    <Loader className="w-4 h-4 mr-2 animate-spin" />
-                    Creating Order...
-                  </>
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                  <CreditCard className="w-5 h-5 text-blue-600" />
+                </div>
+                <h3 className="font-bold text-slate-900">PayPal</h3>
+                <p className="text-xs text-slate-500 mt-1">Pay online, international cards</p>
+              </button>
+
+              {/* M-Pesa STK */}
+              <button
+                onClick={() => { setSelectedPayment('mpesa'); setPaymentError(null); setStkSent(false) }}
+                className={`text-left border-2 rounded-xl p-5 transition ${
+                  selectedPayment === 'mpesa'
+                    ? 'border-orange-500 bg-orange-50'
+                    : 'border-slate-200 hover:border-orange-300'
+                }`}
+              >
+                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
+                  <Smartphone className="w-5 h-5 text-orange-600" />
+                </div>
+                <h3 className="font-bold text-slate-900">M-Pesa STK Push</h3>
+                <p className="text-xs text-slate-500 mt-1">Get a prompt on your phone</p>
+              </button>
+
+              {/* Manual Paybill */}
+              <button
+                onClick={() => { setSelectedPayment('manual'); setPaymentError(null); setStkSent(false) }}
+                className={`text-left border-2 rounded-xl p-5 transition ${
+                  selectedPayment === 'manual'
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-slate-200 hover:border-green-300'
+                }`}
+              >
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-green-700 font-bold text-sm">M</span>
+                </div>
+                <h3 className="font-bold text-slate-900">M-Pesa Manual</h3>
+                <p className="text-xs text-slate-500 mt-1">Pay via Paybill & confirm</p>
+              </button>
+            </div>
+
+            {/* PayPal Panel */}
+            {selectedPayment === 'paypal' && (
+              <div className="border-2 border-blue-200 rounded-xl p-6 mb-6 bg-blue-50">
+                <h3 className="font-bold text-blue-900 mb-2">Pay with PayPal</h3>
+                <p className="text-sm text-blue-800 mb-4">
+                  You'll be redirected to PayPal to complete your payment of <strong>${formData.estimatedPrice.toFixed(2)}</strong>.
+                  After payment you'll be returned to your order tracking page.
+                </p>
+                <Button
+                  onClick={handlePaypalPay}
+                  disabled={paymentLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-semibold"
+                >
+                  {paymentLoading ? (
+                    <><Loader className="w-4 h-4 mr-2 animate-spin" />Connecting to PayPal...</>
+                  ) : (
+                    <>Pay ${formData.estimatedPrice.toFixed(2)} with PayPal <ArrowRight className="ml-2 w-4 h-4" /></>
+                  )}
+                </Button>
+              </div>
+            )}
+
+            {/* M-Pesa STK Panel */}
+            {selectedPayment === 'mpesa' && (
+              <div className="border-2 border-orange-200 rounded-xl p-6 mb-6 bg-orange-50">
+                <h3 className="font-bold text-orange-900 mb-2">M-Pesa STK Push</h3>
+                {stkSent ? (
+                  <div className="text-center py-4">
+                    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                    <p className="font-bold text-green-800 text-lg">STK Push Sent!</p>
+                    <p className="text-sm text-slate-700 mt-1">
+                      Check your phone <strong>{mpesaPhone}</strong> for the M-Pesa payment prompt.
+                      Enter your M-Pesa PIN to complete payment.
+                    </p>
+                    <p className="text-xs text-slate-500 mt-3">After paying, use your Order ID to track your order.</p>
+                    <Button
+                      onClick={() => setSubmitted(true)}
+                      className="mt-4 bg-amber-600 hover:bg-amber-700 text-white px-8"
+                    >
+                      I've Completed Payment → Track Order
+                    </Button>
+                  </div>
                 ) : (
                   <>
-                    Complete Order & Get Order ID
-                    <CheckCircle className="ml-2 w-4 h-4" />
+                    <p className="text-sm text-orange-800 mb-4">
+                      We'll send an M-Pesa prompt to your phone. Confirm with your PIN to pay <strong>KES equivalent of ${formData.estimatedPrice.toFixed(2)}</strong>.
+                    </p>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
+                    <input
+                      type="tel"
+                      value={mpesaPhone}
+                      onChange={(e) => setMpesaPhone(e.target.value)}
+                      placeholder="07XXXXXXXX or 2547XXXXXXXX"
+                      className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none mb-4 bg-white"
+                    />
+                    <Button
+                      onClick={handleMpesaSTK}
+                      disabled={paymentLoading}
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 font-semibold"
+                    >
+                      {paymentLoading ? (
+                        <><Loader className="w-4 h-4 mr-2 animate-spin" />Sending STK Push...</>
+                      ) : (
+                        <><Smartphone className="w-4 h-4 mr-2" />Send M-Pesa Prompt to Phone</>
+                      )}
+                    </Button>
                   </>
                 )}
-              </Button>
-              <Button
-                onClick={() => setStep(2)}
-                variant="outline"
-                className="w-full py-3"
-              >
-                Back
-              </Button>
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-3 rounded-lg border border-green-300 text-green-700 text-center font-medium hover:bg-green-50 transition"
-              >
-                Chat on WhatsApp
-              </a>
-            </div>
+              </div>
+            )}
 
-            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+            {/* Manual Paybill Panel */}
+            {selectedPayment === 'manual' && (
+              <div className="border-2 border-green-200 rounded-xl p-6 mb-6 bg-green-50">
+                <h3 className="font-bold text-green-900 mb-4">Pay via M-Pesa Paybill</h3>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-xs text-slate-600 mb-1">Business Number</p>
+                    <p className="text-xl font-bold text-slate-900">714777</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-xs text-slate-600 mb-1">Account Number</p>
+                    <p className="text-xl font-bold text-slate-900">440005939461</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-xs text-slate-600 mb-1">Amount</p>
+                    <p className="text-xl font-bold text-amber-700">${formData.estimatedPrice.toFixed(2)}</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 text-center">
+                    <p className="text-xs text-slate-600 mb-1">Your Order ID</p>
+                    <p className="text-sm font-bold text-amber-700 font-mono">{orderId}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-600 mb-4">Go to M-Pesa → Lipa na M-Pesa → Pay Bill → enter details above</p>
+                <Button
+                  onClick={handleManualConfirm}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 font-semibold"
+                >
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  I've Sent the Payment → Track My Order
+                </Button>
+              </div>
+            )}
+
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-sm text-green-900">
-                🔒 <strong>Safe & Secure:</strong> Your information is encrypted and secure. We never share your data.
+                🔒 <strong>Safe & Secure:</strong> Your information is encrypted and secure.
               </p>
             </div>
           </div>
         )}
 
-        {/* Step 4: Order Confirmation */}
+        {/* Order Confirmation (after manual/STK confirm) */}
         {submitted && orderId && (
           <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
