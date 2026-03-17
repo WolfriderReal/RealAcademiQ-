@@ -75,9 +75,9 @@ export default function Services() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-amber-600 font-semibold">{service.price}</span>
-                  <Link href="/contact">
-                    <Button className="bg-slate-900 hover:bg-slate-800 text-white">
-                      Get Started <ArrowRight className="ml-2 w-4 h-4" />
+                  <Link href="/order">
+                    <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+                      Order Now <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </Link>
                 </div>
@@ -116,6 +116,32 @@ export default function Services() {
                 <p className="text-slate-600">{item.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-amber-600 to-orange-600 text-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Ready to Get Academic Help?
+            </h2>
+            <p className="text-xl text-orange-100 mb-8">
+              Choose your service above and submit your order. Our expert writers will deliver quality work on time.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/order">
+                <Button size="lg" className="bg-white hover:bg-slate-100 text-amber-700 px-8 py-4 text-lg rounded-xl font-semibold">
+                  Start Your Order <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/track-order">
+                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-white px-8 py-4 text-lg rounded-xl">
+                  Track Existing Order
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

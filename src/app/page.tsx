@@ -80,9 +80,14 @@ export default function Home() {
               Get expert help from qualified academics and elevate your academic performance.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/services">
-                <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 text-lg rounded-xl">
-                  Get Started <ArrowRight className="ml-2 w-5 h-5" />
+              <Link href="/order">
+                <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 text-lg rounded-xl">
+                  Submit Your Order <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/track-order">
+                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl">
+                  Track Order
                 </Button>
               </Link>
               <Link href="/services">
@@ -90,6 +95,41 @@ export default function Home() {
                   View Services
                 </Button>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits Banner */}
+      <section className="py-12 bg-gradient-to-r from-amber-50 to-orange-50 border-y border-amber-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Real-Time Tracking</h3>
+                <p className="text-sm text-slate-700">Monitor your order progress at every phase with instant updates</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Multiple Payment Options</h3>
+                <p className="text-sm text-slate-700">Pay securely via PayPal or M-Pesa with flexible payment terms</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Secure & Confidential</h3>
+                <p className="text-sm text-slate-700">Your information is encrypted and never shared with third parties</p>
+              </div>
             </div>
           </div>
         </div>
@@ -201,35 +241,97 @@ export default function Home() {
               </div>
             </div>
             <div className="bg-white p-8 rounded-xl shadow-lg">
-              <h3 className="text-2xl font-semibold text-slate-900 mb-4">Get Started Today</h3>
+              <h3 className="text-2xl font-semibold text-slate-900 mb-4">Ready to Get Started?</h3>
               <p className="text-slate-600 mb-6">
-                Ready to excel in your academics? Contact us now for a free consultation.
+                Submit your order now and let our experts help you succeed. Or track your existing project progress.
               </p>
-              <Link href="/contact">
-                <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white">
-                  Contact Us <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
+              <div className="space-y-3">
+                <Link href="/order">
+                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white">
+                    Submit New Order <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href="/track-order">
+                  <Button variant="outline" className="w-full">
+                    Track Existing Order
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-slate-900 text-white">
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              How It Works
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Everything you need to know about submitting and tracking your orders
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: 'How do I submit an order?',
+                a: 'Simply click "Submit Your Order" and fill out the form with your requirements, topic, deadline, and upload any supporting documents. We\'ll review your order and confirm pricing.'
+              },
+              {
+                q: 'What payment methods do you accept?',
+                a: 'We accept PayPal for international customers and M-Pesa (STK Push or Manual Paybill) for customers in Kenya. All payments are secure and encrypted.'
+              },
+              {
+                q: 'Can I track my order progress?',
+                a: 'Yes! Every order gets a unique Order ID. Use it to track your progress in real-time. You\'ll see which phase your order is in, payment status, and when your work will be ready.'
+              },
+              {
+                q: 'What if I need to make changes?',
+                a: 'You can request revisions after viewing the initial draft. Our writers will work with you to ensure the final document meets your expectations.'
+              },
+              {
+                q: 'How long does delivery take?',
+                a: 'Delivery time depends on your deadline. Standard orders are completed within the specified timeframe. Rush orders are available for urgent requirements.'
+              },
+              {
+                q: 'Is my information secure?',
+                a: 'Absolutely. We use industry-standard encryption and never share your personal information. Your privacy is our priority.'
+              }
+            ].map((faq, i) => (
+              <details key={i} className="bg-slate-50 rounded-lg p-6 border border-slate-200 hover:border-amber-200 transition">
+                <summary className="font-semibold text-slate-900 cursor-pointer flex items-center gap-2">
+                  <span className="text-amber-600 text-xl">+</span> {faq.q}
+                </summary>
+                <p className="text-slate-700 mt-4 ml-8">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="py-20 bg-gradient-to-r from-amber-600 to-orange-600 text-white">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Ready to Achieve Your Academic Goals?
             </h2>
-            <p className="text-xl text-slate-300 mb-8">
-              Join thousands of successful students who trust RealAcademiQ for their academic needs.
+            <p className="text-xl text-orange-100 mb-8">
+              Join thousands of successful students who trust RealAcademiQ. Submit your order today and get expert help.
             </p>
-            <Link href="/contact">
-              <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 text-lg rounded-xl">
-                Start Your Journey <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/order">
+                <Button size="lg" className="bg-white hover:bg-slate-100 text-amber-700 px-8 py-4 text-lg rounded-xl font-semibold">
+                  Start Your Order Now <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/track-order">
+                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-white px-8 py-4 text-lg rounded-xl">
+                  Track Your Order
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
