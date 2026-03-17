@@ -11,12 +11,29 @@ export default function Header() {
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center">
-              <GraduationCap className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-slate-900">RealAcademiQ</span>
-          </Link>
+          <div className="flex items-center gap-12">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center">
+                <GraduationCap className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-slate-900">RealAcademiQ</span>
+            </Link>
+
+            <nav className="hidden md:flex items-center gap-8">
+              <Link href="/" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+                Home
+              </Link>
+              <Link href="/services" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+                Services
+              </Link>
+              <Link href="/about" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+                About
+              </Link>
+              <Link href="/contact" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+                Contact
+              </Link>
+            </nav>
+          </div>
 
           <div className="flex items-center gap-3">
             <a
@@ -38,21 +55,6 @@ export default function Header() {
             </Link>
           </div>
         </div>
-
-        <nav className="mt-4 pt-4 border-t border-slate-200 flex flex-col items-start gap-2">
-          <Link href="/" className="text-sm font-medium text-slate-700 hover:text-slate-900">
-            Home
-          </Link>
-          <Link href="/services" className="text-sm font-medium text-slate-700 hover:text-slate-900">
-            Services
-          </Link>
-          <Link href="/about" className="text-sm font-medium text-slate-700 hover:text-slate-900">
-            About
-          </Link>
-          <Link href="/contact" className="text-sm font-medium text-slate-700 hover:text-slate-900">
-            Contact
-          </Link>
-        </nav>
       </div>
     </header>
   )
