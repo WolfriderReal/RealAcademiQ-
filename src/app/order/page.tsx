@@ -83,36 +83,21 @@ const OrderForm = () => {
     }
   }
 
-  const handlePaypalPay = async () => {
+  const handlePaypalPay = () => {
     if (!orderId) return
-    setPaymentLoading(true)
-    setPaymentError(null)
-    try {
-      const response = await fetch('/api/payments/paypal/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          invoiceId: orderId,
-          amount: formData.estimatedPrice,
-          currency: 'USD',
-          returnUrl: `${window.location.origin}/track-order?orderId=${orderId}`,
-          cancelUrl: `${window.location.origin}/order`,
-        }),
-      })
-      const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Failed to create PayPal order')
-      // Redirect to PayPal approval URL
-      const approvalUrl = data.approveUrl || data.approvalUrl || data.links?.find((l: any) => l.rel === 'approve')?.href
-      if (approvalUrl) {
-        window.location.href = approvalUrl
-      } else {
-        throw new Error('No PayPal approval URL received.')
-      }
-    } catch (err: any) {
-      setPaymentError(err.message)
-    } finally {
-      setPaymentLoading(false)
-    }
+    // Direct PayPal hosted checkout – no API credentials needed
+    const params = new URLSearchParams({
+      cmd: '_xclick',
+      business: 'kstrategic_inc@outlook.com',
+      item_name: `RealAcademiQ Order ${orderId}`,
+      item_number: orderId,
+      amount: formData.estimatedPrice.toFixed(2),
+      currency_code: 'USD',
+      return: `${window.location.origin}/track-order?orderId=${orderId}`,
+      cancel_return: `${window.location.origin}/order`,
+      no_shipping: '1',
+    })
+    window.location.href = `https://www.paypal.com/cgi-bin/webscr?${params.toString()}`
   }
 
   const handleMpesaSTK = async () => {
@@ -553,19 +538,14 @@ const OrderForm = () => {
               <div className="border-2 border-blue-200 rounded-xl p-6 mb-6 bg-blue-50">
                 <h3 className="font-bold text-blue-900 mb-2">Pay with PayPal</h3>
                 <p className="text-sm text-blue-800 mb-4">
-                  You&apos;ll be redirected to PayPal to complete your payment of <strong>${formData.estimatedPrice.toFixed(2)}</strong>.
+                  You&apos;ll be redirected to PayPal to securely pay <strong>${formData.estimatedPrice.toFixed(2)} USD</strong>.
                   After payment you&apos;ll be returned to your order tracking page.
                 </p>
                 <Button
                   onClick={handlePaypalPay}
-                  disabled={paymentLoading}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-semibold"
                 >
-                  {paymentLoading ? (
-                    <><Loader className="w-4 h-4 mr-2 animate-spin" />Connecting to PayPal...</>
-                  ) : (
-                    <>Pay ${formData.estimatedPrice.toFixed(2)} with PayPal <ArrowRight className="ml-2 w-4 h-4" /></>
-                  )}
+                  Pay ${formData.estimatedPrice.toFixed(2)} with PayPal <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </div>
             )}
@@ -577,23 +557,23 @@ const OrderForm = () => {
                 {stkSent ? (
                   <div className="text-center py-4">
                     <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                    <p className="font-bold text-green-800 text-lg">STK Push Sent!</p>
+                    <p className="font-bold text-green-800 text-lg">STK Prompt Sent!</p>
                     <p className="text-sm text-slate-700 mt-1">
                       Check your phone <strong>{mpesaPhone}</strong> for the M-Pesa payment prompt.
                       Enter your M-Pesa PIN to complete payment. (Don&apos;t close this page)
                     </p>
-                    <p className="text-xs text-slate-500 mt-3">After paying, use your Order ID to track your order.</p>
+                    <p className="text-xs text-slate-500 mt-3">After paying, click below to track your order.</p>
                     <Button
                       onClick={() => setSubmitted(true)}
                       className="mt-4 bg-amber-600 hover:bg-amber-700 text-white px-8"
                     >
-                      I&apos;ve Completed Payment → Track Order
+                      I&apos;ve Completed Payment &rarr; Track Order
                     </Button>
                   </div>
                 ) : (
                   <>
                     <p className="text-sm text-orange-800 mb-4">
-                      We&apos;ll send an M-Pesa prompt to your phone. Confirm with your PIN to pay <strong>KES equivalent of ${formData.estimatedPrice.toFixed(2)}</strong>.
+                      A payment prompt will be sent to your Safaricom number. Enter your PIN when prompted.
                     </p>
                     <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
                     <input
@@ -609,11 +589,32 @@ const OrderForm = () => {
                       className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 font-semibold"
                     >
                       {paymentLoading ? (
-                        <><Loader className="w-4 h-4 mr-2 animate-spin" />Sending STK Push...</>
+                        <><Loader className="w-4 h-4 mr-2 animate-spin" />Sending STK Prompt...</>
                       ) : (
-                        <><Smartphone className="w-4 h-4 mr-2" />Send M-Pesa Prompt to Phone</>
+                        <><Smartphone className="w-4 h-4 mr-2" />Send M-Pesa Prompt to My Phone</>
                       )}
                     </Button>
+                    {/* Always show manual paybill as backup */}
+                    <div className="mt-5 pt-5 border-t border-orange-200">
+                      <p className="text-xs font-semibold text-orange-900 mb-3">Or pay manually via Paybill:</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-white rounded-lg p-3 text-center">
+                          <p className="text-xs text-slate-500">Business No.</p>
+                          <p className="font-bold text-slate-900">714777</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-3 text-center">
+                          <p className="text-xs text-slate-500">Account No.</p>
+                          <p className="font-bold text-slate-900">440005939461</p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={handleManualConfirm}
+                        variant="outline"
+                        className="w-full mt-3 border-orange-400 text-orange-700"
+                      >
+                        I&apos;ve Paid via Paybill &rarr; Track Order
+                      </Button>
+                    </div>
                   </>
                 )}
               </div>

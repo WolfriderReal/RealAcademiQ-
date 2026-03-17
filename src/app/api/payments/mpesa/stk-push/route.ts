@@ -126,6 +126,15 @@ export async function POST(req: Request) {
   }
 
   const data = await response.json()
+
+  // Safaricom returns ResponseCode '0' for success; anything else is a failure
+  if (data.ResponseCode !== '0' && data.ResponseCode !== 0) {
+    return NextResponse.json(
+      { error: data.ResponseDescription || data.errorMessage || 'STK push was rejected by Safaricom.' },
+      { status: 400 }
+    )
+  }
+
   return NextResponse.json({
     provider: 'mpesa',
     invoiceId,
