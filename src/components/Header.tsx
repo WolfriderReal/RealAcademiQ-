@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { GraduationCap, MessageCircle, Heart } from 'lucide-react'
 
 const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20project.'
-const paypalDonateLink = 'https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID'
+const paypalDonateLink = 'https://www.paypal.com/donate/?business=kstrategic_inc@outlook.com&no_recurring=0&item_name=Support+RealAcademiQ'
 
 export default function Header() {
   return (
