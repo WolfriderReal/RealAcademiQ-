@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { GraduationCap, MessageCircle } from 'lucide-react'
+import { GraduationCap, MessageCircle, Heart } from 'lucide-react'
 
 const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20project.'
+const paypalDonateLink = 'https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID'
 
 export default function Header() {
   return (
@@ -36,6 +37,16 @@ export default function Header() {
           </div>
 
           <div className="flex items-center gap-3">
+            <a
+              href={paypalDonateLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
+              title="Support us with a donation"
+            >
+              <Heart className="w-4 h-4" />
+              Donate
+            </a>
             <a
               href={whatsappLink}
               target="_blank"

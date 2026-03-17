@@ -95,6 +95,9 @@ export async function POST(req: Request) {
     ? `${callbackUrl}&invoiceId=${encodeURIComponent(invoiceId)}`
     : `${callbackUrl}?invoiceId=${encodeURIComponent(invoiceId)}`
 
+  // The account number where the paybill payment should be routed
+  const accountNumber = process.env.MPESA_ACCOUNT_NUMBER || '440005939461'
+
   const response = await fetch(`${mpesaBaseUrl()}/mpesa/stkpush/v1/processrequest`, {
     method: 'POST',
     headers: {
@@ -111,8 +114,8 @@ export async function POST(req: Request) {
       PartyB: shortcode,
       PhoneNumber: phoneNumber,
       CallBackURL: callbackUrlWithInvoice,
-      AccountReference: invoiceId,
-      TransactionDesc: `Invoice ${invoiceId}`,
+      AccountReference: accountNumber,
+      TransactionDesc: `Order ${invoiceId}`,
     }),
     cache: 'no-store',
   })
