@@ -553,8 +553,8 @@ const OrderForm = () => {
               <div className="border-2 border-blue-200 rounded-xl p-6 mb-6 bg-blue-50">
                 <h3 className="font-bold text-blue-900 mb-2">Pay with PayPal</h3>
                 <p className="text-sm text-blue-800 mb-4">
-                  You'll be redirected to PayPal to complete your payment of <strong>${formData.estimatedPrice.toFixed(2)}</strong>.
-                  After payment you'll be returned to your order tracking page.
+                  You&apos;ll be redirected to PayPal to complete your payment of <strong>${formData.estimatedPrice.toFixed(2)}</strong>.
+                  After payment you&apos;ll be returned to your order tracking page.
                 </p>
                 <Button
                   onClick={handlePaypalPay}
@@ -580,20 +580,20 @@ const OrderForm = () => {
                     <p className="font-bold text-green-800 text-lg">STK Push Sent!</p>
                     <p className="text-sm text-slate-700 mt-1">
                       Check your phone <strong>{mpesaPhone}</strong> for the M-Pesa payment prompt.
-                      Enter your M-Pesa PIN to complete payment.
+                      Enter your M-Pesa PIN to complete payment. (Don&apos;t close this page)
                     </p>
                     <p className="text-xs text-slate-500 mt-3">After paying, use your Order ID to track your order.</p>
                     <Button
                       onClick={() => setSubmitted(true)}
                       className="mt-4 bg-amber-600 hover:bg-amber-700 text-white px-8"
                     >
-                      I've Completed Payment → Track Order
+                      I&apos;ve Completed Payment → Track Order
                     </Button>
                   </div>
                 ) : (
                   <>
                     <p className="text-sm text-orange-800 mb-4">
-                      We'll send an M-Pesa prompt to your phone. Confirm with your PIN to pay <strong>KES equivalent of ${formData.estimatedPrice.toFixed(2)}</strong>.
+                      We&apos;ll send an M-Pesa prompt to your phone. Confirm with your PIN to pay <strong>KES equivalent of ${formData.estimatedPrice.toFixed(2)}</strong>.
                     </p>
                     <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
                     <input
@@ -641,13 +641,13 @@ const OrderForm = () => {
                     <p className="text-sm font-bold text-amber-700 font-mono">{orderId}</p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-600 mb-4">Go to M-Pesa → Lipa na M-Pesa → Pay Bill → enter details above</p>
+                <p className="text-xs text-slate-600 mb-4">Go to M-Pesa &rarr; Lipa na M-Pesa &rarr; Pay Bill &rarr; enter details above</p>
                 <Button
                   onClick={handleManualConfirm}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-3 font-semibold"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  I've Sent the Payment → Track My Order
+                  I&apos;ve Sent the Payment → Track My Order
                 </Button>
               </div>
             )}
