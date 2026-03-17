@@ -1,0 +1,14 @@
+{
+  "name": "RealAcademiQ - Academic Excellence Assistance",
+  "short_name": "RealAcademiQ",
+  "description": "Professional assistance with assignments, thesis, projects, and proposals",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "productivity"]
+}

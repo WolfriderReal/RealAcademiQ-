@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+.vercel
+
+# Local environment files (never commit secrets)
+.env.local
+.env.*.local
+
+# Keep template env files in git
+!.env.local.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
