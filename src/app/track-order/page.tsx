@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import {
@@ -42,13 +41,20 @@ interface OrderProgress {
 }
 
 export default function TrackOrder() {
-  const searchParams = useSearchParams()
-  const orderId = searchParams.get('orderId') || ''
-  const [inputOrderId, setInputOrderId] = useState(orderId)
+  const [inputOrderId, setInputOrderId] = useState('')
   const [order, setOrder] = useState<OrderProgress | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [searched, setSearched] = useState(false)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const initialOrderId = params.get('orderId')?.trim()
+
+    if (initialOrderId) {
+      setInputOrderId(initialOrderId)
+    }
+  }, [])
 
   const statusColors: Record<string, string> = {
     pending_review: 'bg-yellow-50 border-yellow-200',
@@ -344,7 +350,7 @@ export default function TrackOrder() {
             {/* Notes Section */}
             {order.notes && (
               <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-                <h3 className="text-xl font-bold text-slate-900 mb-4">Writer's Notes</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">Writer&apos;s Notes</h3>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-slate-700">{order.notes}</p>
                 </div>
