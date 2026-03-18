@@ -19,8 +19,8 @@ export default function Home() {
       status: 'Pending Review',
       points: [
         'Client logs in and opens the order form.',
-        'Client submits assignment details: topic, page count, and formatting style.',
-        'Client uploads supporting documents and instructions.'
+        'Client submits assignment details: topic, page count, formatting style, and proposed budget.',
+        'Client continues to Review & Confirm.'
       ]
     },
     {
@@ -28,8 +28,8 @@ export default function Home() {
       phase: 'Phase 2: Assessment',
       status: 'Reviewed - Awaiting Payment',
       points: [
-        'Administrator or writer reviews submitted requirements for completeness.',
-        'Final pricing is confirmed based on scope and deadline.'
+        'Client shares supporting documents and reconfirms assignment description via WhatsApp.',
+        'Administrator or writer reviews submitted requirements and confirms the next actions.'
       ]
     },
     {
@@ -39,8 +39,9 @@ export default function Home() {
       points: [
         'System generates an invoice and shows payment options to start work.',
         'Option 1: PayPal redirect for secure authorization.',
-        'Option 2: M-Pesa STK Push via Safaricom phone number entered on the website.',
-        'Option 3: M-Pesa Manual Paybill (Business Number: 714777, Account Number: 440005939461).'
+        'Option 2: M-Pesa Manual Paybill (Business Number: 714777, Account Number: 440005939461).',
+        'Option 3: M-Pesa STK Push via Safaricom phone number entered on the website.',
+        'Client sends payment confirmation via WhatsApp for faster verification.'
       ]
     },
     {
@@ -172,7 +173,7 @@ export default function Home() {
               How Your Order Progresses
             </h2>
             <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              A transparent 5-phase workflow from submission and payment to final delivery.
+              A transparent 5-phase workflow from submission and WhatsApp confirmation to final delivery.
             </p>
           </div>
 
@@ -278,7 +279,7 @@ export default function Home() {
             {[
               {
                 q: 'How do I submit an order?',
-                a: 'Simply click "Submit Your Order" and fill out the form with your requirements, topic, deadline, and upload any supporting documents. We\'ll review your order and confirm pricing.'
+                a: 'Click "Submit Your Order", fill in your requirements, and continue to review. You can then share supporting files and reconfirm instructions via WhatsApp before payment.'
               },
               {
                 q: 'What payment methods do you accept?',
@@ -286,7 +287,7 @@ export default function Home() {
               },
               {
                 q: 'Can I track my order progress?',
-                a: 'Yes! Every order gets a unique Order ID. Use it to track your progress in real-time. You\'ll see which phase your order is in, payment status, and when your work will be ready.'
+                a: 'Yes. Use the Track Order page to open WhatsApp tracking with our support team. Share your order details there and we will provide your current status and next steps.'
               },
               {
                 q: 'What if I need to make changes?',
