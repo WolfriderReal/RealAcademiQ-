@@ -79,21 +79,7 @@ export default function TestimonialsAndSupport() {
   return (
     <section className="py-12 bg-gray-50">
       <div className="max-w-3xl mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-          <h2 className="text-3xl font-bold text-center md:text-left">Testimonials</h2>
-          <div className="text-center md:text-right">
-            <h3 className="text-2xl font-semibold mb-2 md:mb-1">Support My Work</h3>
-            <p className="mb-2 md:mb-1 text-sm">If you are a well-wisher or donor and would like to support RealAcademiQ, click below:</p>
-            <a
-              href="https://www.paypal.com/donate?business=kstrategic_inc@outlook.com&currency_code=USD"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition"
-            >
-              Donate with PayPal
-            </a>
-          </div>
-        </div>
+        <h2 className="text-3xl font-bold text-center mb-8">Testimonials</h2>
         <div className="space-y-8">
           {testimonials.map((t, idx) => (
             <div key={idx} className="bg-white p-6 rounded shadow text-center">
