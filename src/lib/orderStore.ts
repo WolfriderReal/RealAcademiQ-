@@ -1,5 +1,7 @@
 import { adminDb } from './firebaseAdmin'
 
+const fallbackOrders = new Map<string, StoredOrder>()
+
 type OrderPhase = {
   phase: number
   name: string
@@ -116,12 +118,22 @@ export async function createOrder(input: {
     previewLink: '',
   }
 
-  await adminDb.collection('orders').doc(orderId).set(order)
+  try {
+    await adminDb.collection('orders').doc(orderId).set(order)
+  } catch (error) {
+    // Keep order flow operational even if Firebase is temporarily unavailable.
+    console.error('Firebase write failed, using in-memory fallback store:', error)
+    fallbackOrders.set(orderId, order)
+  }
+
   return order
 }
 
 export async function getOrderById(orderId: string): Promise<StoredOrder | null> {
   try {
+    const fallbackOrder = fallbackOrders.get(orderId)
+    if (fallbackOrder) return fallbackOrder
+
     const doc = await adminDb.collection('orders').doc(orderId).get()
     if (!doc.exists) return null
     return doc.data() as StoredOrder

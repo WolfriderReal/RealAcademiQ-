@@ -36,7 +36,11 @@ function initializeAdmin() {
   if (adminDbInstance) return
   
   // Check if required env vars are set
-  if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+  if (
+    !process.env.FIREBASE_PROJECT_ID ||
+    !process.env.FIREBASE_CLIENT_EMAIL ||
+    (!process.env.FIREBASE_PRIVATE_KEY && !process.env.FIREBASE_PRIVATE_KEY_BASE64)
+  ) {
     console.warn('Firebase admin credentials not configured. Order persistence will not work.')
     return
   }
