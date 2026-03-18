@@ -20,7 +20,7 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching orders:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch orders', details: String(error) },
+      { error: 'Failed to fetch orders' },
       { status: 500 }
     )
   }

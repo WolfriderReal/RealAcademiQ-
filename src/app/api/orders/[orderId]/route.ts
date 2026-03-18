@@ -1,6 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getOrderById } from '@/lib/orderStore'
 
+function toPublicOrderView(order: any) {
+  return {
+    id: order.id,
+    serviceType: order.serviceType,
+    deadline: order.deadline,
+    status: order.status,
+    paymentStatus: order.paymentStatus,
+    currentPhase: order.currentPhase,
+    phases: order.phases,
+    createdAt: order.createdAt,
+    updatedAt: order.updatedAt,
+  }
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { orderId: string } }
@@ -20,7 +34,7 @@ export async function GET(
     return NextResponse.json(
       {
         success: true,
-        order,
+        order: toPublicOrderView(order),
       },
       { status: 200 }
     )

@@ -183,7 +183,7 @@ export async function POST(req: Request) {
     if (error && error.stack) {
       console.error('SMTP Stack:', error.stack)
     }
-    return new Response(JSON.stringify({ error: 'Failed to send message. Please try again later.', details: error.message || String(error) }), {
+    return new Response(JSON.stringify({ error: 'Failed to send message. Please try again later.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
