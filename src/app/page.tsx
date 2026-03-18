@@ -18,18 +18,17 @@ export default function Home() {
       phase: 'Phase 1: Order Initiation',
       status: 'Pending Review',
       points: [
-        'Client logs in and opens the order form.',
-        'Client submits assignment details: topic, page count, formatting style, and proposed budget.',
-        'Client continues to Review & Confirm.'
+        'Submit your assignment details and proposed budget.',
+        'Review and confirm your order.'
       ]
     },
     {
       icon: SearchCheck,
       phase: 'Phase 2: Assessment',
-      status: 'Reviewed - Awaiting Payment',
+      status: 'Under Review',
       points: [
-        'Client shares supporting documents and reconfirms assignment description via WhatsApp.',
-        'Administrator or writer reviews submitted requirements and confirms the next actions.'
+        'Share supporting files via WhatsApp.',
+        'Team reviews your requirements and confirms next steps.'
       ]
     },
     {
@@ -37,11 +36,8 @@ export default function Home() {
       phase: 'Phase 3: Payment Processing',
       status: 'Awaiting Payment Confirmation',
       points: [
-        'System generates an invoice and shows payment options to start work.',
-        'Option 1: PayPal redirect for secure authorization.',
-        'Option 2: M-Pesa Manual Paybill (Business Number: 714777, Account Number: 440005939461).',
-        'Option 3: M-Pesa STK Push via Safaricom phone number entered on the website.',
-        'Client sends payment confirmation via WhatsApp for faster verification.'
+        'Choose your payment method: PayPal, M-Pesa STK Push, or M-Pesa Paybill.',
+        'Send payment confirmation via WhatsApp.'
       ]
     },
     {
@@ -49,8 +45,8 @@ export default function Home() {
       phase: 'Phase 4: Execution',
       status: 'Work in Progress',
       points: [
-        'After payment receipt is verified, the order is unlocked for the writer.',
-        'Writer begins and progresses the assignment based on approved requirements.'
+        'Work starts after payment is confirmed.',
+        'Writer progresses your assignment based on approved instructions.'
       ]
     },
     {
@@ -58,10 +54,8 @@ export default function Home() {
       phase: 'Phase 5: Delivery and Access',
       status: 'Completed - Ready to Download',
       points: [
-        'Writer uploads the final document when complete.',
-        'Client can view a locked or watermarked preview.',
-        'If payment was partial, client is prompted to clear the balance to unlock the full file.',
-        'If payment is complete, file unlocks immediately for download.'
+        'Final document is delivered when complete.',
+        'Download access is provided after payment completion.'
       ]
     }
   ]
@@ -173,7 +167,7 @@ export default function Home() {
               How Your Order Progresses
             </h2>
             <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              A transparent 5-phase workflow from submission and WhatsApp confirmation to final delivery.
+              A simple 5-step flow from order submission to final delivery.
             </p>
           </div>
 
