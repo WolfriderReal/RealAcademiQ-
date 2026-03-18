@@ -8,7 +8,7 @@ export async function GET(
   try {
     const orderId = decodeURIComponent(params.orderId)
 
-    const order = getOrderById(orderId)
+    const order = await getOrderById(orderId)
 
     if (!order) {
       return NextResponse.json(

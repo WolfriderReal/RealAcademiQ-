@@ -1,3 +1,5 @@
+import { adminDb } from './firebaseAdmin'
+
 type OrderPhase = {
   phase: number
   name: string
@@ -30,8 +32,6 @@ export type StoredOrder = {
   downloadLink?: string
   previewLink?: string
 }
-
-const orders = new Map<string, StoredOrder>()
 
 function generateOrderId(date = new Date()): string {
   const stamp = date.toISOString().slice(0, 10).replace(/-/g, '')
@@ -75,71 +75,7 @@ function buildInitialPhases(createdAt: string): OrderPhase[] {
   ]
 }
 
-function seedSampleOrder() {
-  const sampleId = 'ORD-20250317-ABC123'
-  if (orders.has(sampleId)) return
-
-  orders.set(sampleId, {
-    id: sampleId,
-    customerName: 'John Doe',
-    customerEmail: 'john@example.com',
-    customerPhone: '254700000000',
-    serviceType: 'assignment',
-    topic: 'The Impact of Artificial Intelligence on Modern Education',
-    description: 'Research assignment with references and in-text citations.',
-    pageCount: 10,
-    deadline: '2025-03-25',
-    formatStyle: 'APA',
-    estimatedPrice: 150,
-    totalPrice: 165,
-    totalPaid: 100,
-    paymentStatus: 'partial',
-    status: 'work_in_progress',
-    currentPhase: 4,
-    phases: [
-      {
-        phase: 1,
-        name: 'Order Initiation',
-        completed: true,
-        completedAt: '2025-03-10T10:30:00Z',
-        description: 'Your order has been submitted and received.',
-      },
-      {
-        phase: 2,
-        name: 'Assessment & Pricing Confirmation',
-        completed: true,
-        completedAt: '2025-03-10T14:00:00Z',
-        description: 'Our team reviewed your requirements and confirmed pricing.',
-      },
-      {
-        phase: 3,
-        name: 'Payment Processing',
-        completed: true,
-        completedAt: '2025-03-11T09:10:00Z',
-        description: 'Partial payment received. Waiting for final payment confirmation.',
-      },
-      {
-        phase: 4,
-        name: 'Work in Progress',
-        completed: false,
-        description: 'Your assigned writer is currently working on your assignment.',
-      },
-      {
-        phase: 5,
-        name: 'Delivery & Download',
-        completed: false,
-        description: 'Your completed work will be ready for download.',
-      },
-    ],
-    createdAt: '2025-03-10T10:00:00Z',
-    updatedAt: '2025-03-12T11:00:00Z',
-    notes: 'Your assignment is progressing well. We expect to have the first draft ready within 2 days for your review.',
-  })
-}
-
-seedSampleOrder()
-
-export function createOrder(input: {
+export async function createOrder(input: {
   customerName: string
   customerEmail: string
   customerPhone: string
@@ -150,12 +86,13 @@ export function createOrder(input: {
   deadline: string
   formatStyle: string
   estimatedPrice: number
-}): StoredOrder {
+}): Promise<StoredOrder> {
   const now = new Date().toISOString()
   const normalizedPrice = Math.round(input.estimatedPrice * 100) / 100
+  const orderId = generateOrderId()
 
   const order: StoredOrder = {
-    id: generateOrderId(),
+    id: orderId,
     customerName: input.customerName,
     customerEmail: input.customerEmail,
     customerPhone: input.customerPhone,
@@ -175,12 +112,21 @@ export function createOrder(input: {
     createdAt: now,
     updatedAt: now,
     notes: 'Order received. Our team will confirm your final quote and send payment instructions shortly.',
+    downloadLink: '',
+    previewLink: '',
   }
 
-  orders.set(order.id, order)
+  await adminDb.collection('orders').doc(orderId).set(order)
   return order
 }
 
-export function getOrderById(orderId: string): StoredOrder | undefined {
-  return orders.get(orderId)
+export async function getOrderById(orderId: string): Promise<StoredOrder | null> {
+  try {
+    const doc = await adminDb.collection('orders').doc(orderId).get()
+    if (!doc.exists) return null
+    return doc.data() as StoredOrder
+  } catch (error) {
+    console.error('Error fetching order:', error)
+    return null
+  }
 }

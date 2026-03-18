@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const order = createOrder({
+    const order = await createOrder({
       customerName,
       customerEmail,
       customerPhone,
