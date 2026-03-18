@@ -21,6 +21,11 @@ export async function GET(
 ) {
   try {
     const orderId = decodeURIComponent(params.orderId)
+    const token = request.nextUrl.searchParams.get('token')?.trim()
+
+    if (!token) {
+      return NextResponse.json({ error: 'Tracking token is required' }, { status: 401 })
+    }
 
     const order = await getOrderById(orderId)
 
@@ -29,6 +34,10 @@ export async function GET(
         { error: 'Order not found' },
         { status: 404 }
       )
+    }
+
+    if (order.trackingToken !== token) {
+      return NextResponse.json({ error: 'Invalid tracking token' }, { status: 401 })
     }
 
     return NextResponse.json(

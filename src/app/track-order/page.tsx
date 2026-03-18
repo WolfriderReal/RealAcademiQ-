@@ -1,12 +1,23 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, MessageSquare, CheckCircle, Clock, CreditCard, FileCheck2, Download } from 'lucide-react'
 
 export default function TrackOrder() {
-  const whatsappTrackLink =
-    'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20want%20to%20track%20my%20order.%20I%20am%20sharing%20my%20order%20details%20here.'
+  const [orderId, setOrderId] = useState('-')
+  const [token, setToken] = useState('-')
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setOrderId(params.get('orderId')?.trim() || '-')
+    setToken(params.get('token')?.trim() || '-')
+  }, [])
+
+  const whatsappTrackLink = `https://wa.me/254101582198?text=${encodeURIComponent(
+    `Hello RealAcademiQ, I want to track my order.\n\nOrder ID: ${orderId}\nTracking Token: ${token}\n\nPlease share my latest status and next step.`
+  )}`
 
   const phases = [
     {

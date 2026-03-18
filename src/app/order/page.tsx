@@ -24,6 +24,7 @@ const OrderForm = () => {
 
   const [loading, setLoading] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
+  const [trackingToken, setTrackingToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
 
@@ -57,7 +58,7 @@ const OrderForm = () => {
     `Hello RealAcademiQ, I need help with my order.\nName: ${customerName}\nEmail: ${customerEmail}`
   )}`
   const whatsappFilesLink = `https://wa.me/254101582198?text=${encodeURIComponent(
-    `Hello RealAcademiQ, I am sharing my order details:\n\nName: ${customerName}\nEmail: ${customerEmail}\nTopic: ${formData.topic || '-'}\nDeadline: ${formData.deadline || '-'}\nPages/Length: ${formData.pageCount || '-'}\nFormat Style: ${formData.formatStyle || '-'}\nDetailed Description: ${formData.description || '-'}\n\nI am also ready to share supporting files via WhatsApp.`
+    `Hello RealAcademiQ, I am sharing my order details:\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nTracking Token: ${trackingToken || '-'}\nTopic: ${formData.topic || '-'}\nDeadline: ${formData.deadline || '-'}\nPages/Length: ${formData.pageCount || '-'}\nFormat Style: ${formData.formatStyle || '-'}\nDetailed Description: ${formData.description || '-'}\n\nI am also ready to share supporting files via WhatsApp.`
   )}`
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -88,6 +89,7 @@ const OrderForm = () => {
       }
 
       setOrderId(data.orderId)
+      setTrackingToken(data.trackingToken ?? null)
       setMpesaPhone(formData.customerPhone)
       setStep(3)
     } catch (err) {
@@ -114,7 +116,7 @@ const OrderForm = () => {
       item_number: orderId,
       amount: normalizedAmount.toFixed(2),
       currency_code: 'USD',
-      return: `${window.location.origin}/track-order?orderId=${orderId}`,
+      return: `${window.location.origin}/track-order?orderId=${orderId}&token=${encodeURIComponent(trackingToken || '')}`,
       cancel_return: `${window.location.origin}/order`,
       no_shipping: '1',
     })
@@ -170,7 +172,7 @@ const OrderForm = () => {
     const approxUsd = normalizedAmount / USD_TO_KES
 
     const whatsappPaymentNotifyLink = `https://wa.me/254101582198?text=${encodeURIComponent(
-      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nAmount: KES ${Math.round(normalizedAmount).toLocaleString()} (Approx USD ${approxUsd.toFixed(2)})\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
+      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nTracking Token: ${trackingToken || '-'}\nAmount: KES ${Math.round(normalizedAmount).toLocaleString()} (Approx USD ${approxUsd.toFixed(2)})\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
     )}`
 
     window.open(whatsappPaymentNotifyLink, '_blank', 'noopener,noreferrer')
@@ -784,6 +786,12 @@ const OrderForm = () => {
             <div className="bg-slate-50 rounded-lg p-6 mb-6">
               <p className="text-sm text-slate-700 mb-2">Your Order ID</p>
               <p className="text-2xl font-bold text-amber-600 font-mono">{orderId}</p>
+              {trackingToken && (
+                <>
+                  <p className="text-sm text-slate-700 mt-3 mb-1">Tracking Token</p>
+                  <p className="text-sm font-semibold text-slate-900 font-mono break-all">{trackingToken}</p>
+                </>
+              )}
               <p className="text-xs text-slate-600 mt-2">Save this ID to track your order</p>
             </div>
 
@@ -800,7 +808,7 @@ const OrderForm = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={`/track-order?orderId=${orderId}`}>
+              <Link href={`/track-order?orderId=${orderId}&token=${encodeURIComponent(trackingToken || '')}`}>
                 <Button className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3">
                   Track Your Order
                   <ArrowRight className="ml-2 w-4 h-4" />

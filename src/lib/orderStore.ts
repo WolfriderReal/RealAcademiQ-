@@ -1,4 +1,5 @@
 import { adminDb } from './firebaseAdmin'
+import { randomBytes } from 'crypto'
 
 const fallbackOrders = new Map<string, StoredOrder>()
 
@@ -12,6 +13,7 @@ type OrderPhase = {
 
 export type StoredOrder = {
   id: string
+  trackingToken: string
   customerName: string
   customerEmail: string
   customerPhone: string
@@ -39,6 +41,10 @@ function generateOrderId(date = new Date()): string {
   const stamp = date.toISOString().slice(0, 10).replace(/-/g, '')
   const random = Math.random().toString(36).slice(2, 8).toUpperCase()
   return `ORD-${stamp}-${random}`
+}
+
+function generateTrackingToken(): string {
+  return randomBytes(24).toString('hex')
 }
 
 function buildInitialPhases(createdAt: string): OrderPhase[] {
@@ -95,6 +101,7 @@ export async function createOrder(input: {
 
   const order: StoredOrder = {
     id: orderId,
+    trackingToken: generateTrackingToken(),
     customerName: input.customerName,
     customerEmail: input.customerEmail,
     customerPhone: input.customerPhone,

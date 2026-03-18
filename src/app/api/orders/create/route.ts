@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         success: true,
         message: 'Order created successfully. Final price will be confirmed after review.',
         orderId: order.id,
-        order,
+        trackingToken: order.trackingToken,
       },
       { status: 201 }
     )
