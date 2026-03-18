@@ -32,6 +32,7 @@ const OrderForm = () => {
   const [paymentError, setPaymentError] = useState<string | null>(null)
   const [stkSent, setStkSent] = useState(false)
   const [paypalAmount, setPaypalAmount] = useState('')
+  const [mpesaAmount, setMpesaAmount] = useState('')
 
   const servicePricing: Record<string, number> = {
     assignment: 15,
@@ -116,6 +117,13 @@ const OrderForm = () => {
       setPaymentError('Please enter your M-Pesa phone number.')
       return
     }
+
+    const normalizedAmount = Number(mpesaAmount || formData.estimatedPrice)
+    if (!Number.isFinite(normalizedAmount) || normalizedAmount <= 0) {
+      setPaymentError('Please enter a valid M-Pesa amount confirmed on WhatsApp.')
+      return
+    }
+
     setPaymentLoading(true)
     setPaymentError(null)
     try {
@@ -124,7 +132,7 @@ const OrderForm = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           invoiceId: orderId,
-          amount: formData.estimatedPrice,
+          amount: normalizedAmount,
           phoneNumber: mpesaPhone.trim(),
         }),
       })
@@ -143,8 +151,14 @@ const OrderForm = () => {
   }
 
   const handleManualConfirmWithWhatsapp = () => {
+    const normalizedAmount = Number(mpesaAmount || formData.estimatedPrice)
+    if (!Number.isFinite(normalizedAmount) || normalizedAmount <= 0) {
+      setPaymentError('Please enter a valid M-Pesa amount confirmed on WhatsApp.')
+      return
+    }
+
     const whatsappPaymentNotifyLink = `https://wa.me/254101582198?text=${encodeURIComponent(
-      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nAmount: $${formData.estimatedPrice.toFixed(2)}\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
+      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nAmount: $${normalizedAmount.toFixed(2)}\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
     )}`
 
     window.open(whatsappPaymentNotifyLink, '_blank', 'noopener,noreferrer')
@@ -575,6 +589,16 @@ const OrderForm = () => {
                     <p className="text-sm text-orange-800 mb-4">
                       A payment prompt will be sent to your Safaricom number. Enter your PIN when prompted.
                     </p>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount</label>
+                    <input
+                      type="number"
+                      min="1"
+                      step="0.01"
+                      value={mpesaAmount}
+                      onChange={(e) => setMpesaAmount(e.target.value)}
+                      placeholder={formData.estimatedPrice.toFixed(2)}
+                      className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none mb-4 bg-white"
+                    />
                     <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
                     <input
                       type="tel"
@@ -624,6 +648,16 @@ const OrderForm = () => {
             {selectedPayment === 'manual' && (
               <div className="border-2 border-green-200 rounded-xl p-6 mb-6 bg-green-50">
                 <h3 className="font-bold text-green-900 mb-4">Pay via M-Pesa Paybill</h3>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount</label>
+                <input
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  value={mpesaAmount}
+                  onChange={(e) => setMpesaAmount(e.target.value)}
+                  placeholder={formData.estimatedPrice.toFixed(2)}
+                  className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none mb-4 bg-white"
+                />
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Business Number</p>
@@ -635,7 +669,7 @@ const OrderForm = () => {
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Amount</p>
-                    <p className="text-xl font-bold text-amber-700">${formData.estimatedPrice.toFixed(2)}</p>
+                    <p className="text-xl font-bold text-amber-700">${Number(mpesaAmount || formData.estimatedPrice).toFixed(2)}</p>
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Your Order ID</p>
