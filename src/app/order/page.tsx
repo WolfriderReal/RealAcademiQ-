@@ -13,7 +13,7 @@ const OrderForm = () => {
     customerName: '',
     customerEmail: '',
     customerPhone: '',
-    serviceType: 'assignment',
+    serviceType: 'small_assignment',
     topic: '',
     description: '',
     pageCount: 5,
@@ -37,10 +37,14 @@ const OrderForm = () => {
   const [mpesaAmount, setMpesaAmount] = useState('')
 
   const servicePricing: Record<string, number> = {
-    assignment: 15,
-    thesis: 50,
-    project: 30,
-    proposal: 100,
+    small_assignment: 15,
+    diploma_project: 150,
+    undergraduate_project: 250,
+    masters_thesis: 600,
+    phd_dissertation: 1000,
+    proposal_concept_note: 100,
+    data_analysis: 300,
+    editing_proofreading: 78,
   }
 
   const toKes = (usd: number) => Math.round(usd * USD_TO_KES)
@@ -268,10 +272,14 @@ const OrderForm = () => {
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
               >
-                <option value="assignment">Assignment Help - $15/page (KES 1,950/page)</option>
-                <option value="thesis">Thesis Writing - $50/page (KES 6,500/page)</option>
-                <option value="project">Project Development - $30/hour (KES 3,900/hour, estimate)</option>
-                <option value="proposal">Research Proposal - $100 (KES 13,000)</option>
+                <option value="small_assignment">Small Assignments - USD $15 - $80 | Ksh 2,000 - 10,000</option>
+                <option value="diploma_project">Diploma Projects - USD $150 - $600 | Ksh 20,000 - 80,000</option>
+                <option value="undergraduate_project">Undergraduate Projects - USD $250 - $1,200 | Ksh 30,000 - 150,000</option>
+                <option value="masters_thesis">Master&apos;s Thesis - USD $600 - $2,000 | Ksh 50,000 - 150,000</option>
+                <option value="phd_dissertation">PhD Dissertation - USD $1,000 - $10,000 | Ksh 100,000 - 350,000</option>
+                <option value="proposal_concept_note">Proposal / Concept Note - USD $100 - $500 | Ksh 10,000 - 50,000</option>
+                <option value="data_analysis">Data Analysis (SPSS, Stata, etc.) - USD $300 - $500 | Ksh 40,000 - 50,000</option>
+                <option value="editing_proofreading">Editing &amp; Proofreading - USD $78 - $217 | Ksh 10,000 - 28,000</option>
               </select>
             </div>
 
