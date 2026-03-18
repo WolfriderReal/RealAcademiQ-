@@ -2,6 +2,36 @@ import * as admin from 'firebase-admin'
 
 let adminDbInstance: admin.firestore.Firestore | null = null
 
+function normalizePrivateKey(rawKey: string): string {
+  let key = rawKey.trim()
+
+  // Strip a single pair of wrapping quotes if present.
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1)
+  }
+
+  // Support env values copied with escaped newlines.
+  key = key.replace(/\\n/g, '\n')
+
+  return key
+}
+
+function resolvePrivateKey(): string {
+  const base64Key = process.env.FIREBASE_PRIVATE_KEY_BASE64
+  if (base64Key && base64Key.trim()) {
+    return Buffer.from(base64Key.trim(), 'base64').toString('utf8').trim()
+  }
+
+  if (!process.env.FIREBASE_PRIVATE_KEY) {
+    throw new Error('FIREBASE_PRIVATE_KEY is not set')
+  }
+
+  return normalizePrivateKey(process.env.FIREBASE_PRIVATE_KEY)
+}
+
 function initializeAdmin() {
   if (adminDbInstance) return
   
@@ -12,10 +42,12 @@ function initializeAdmin() {
   }
 
   if (!admin.apps.length) {
+    const privateKey = resolvePrivateKey()
+
     const serviceAccount = {
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      privateKey,
     }
 
     admin.initializeApp({
