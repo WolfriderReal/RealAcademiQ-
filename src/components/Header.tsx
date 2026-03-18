@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { GraduationCap, MessageCircle, Heart } from 'lucide-react'
 
 const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20project.'
-const paypalDonateLink = 'https://www.paypal.com/donate/?business=kstrategic_inc@outlook.com&no_recurring=0&item_name=Support+RealAcademiQ'
+const buyMeCoffeeLink = 'https://buymeacoffee.com/realacademiq'
 
 export default function Header() {
   return (
@@ -38,14 +38,14 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <a
-              href={paypalDonateLink}
+              href={buyMeCoffeeLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700"
-              title="Support us with a donation"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-yellow-700 hover:text-yellow-800"
+              title="Support us with a coffee"
             >
               <Heart className="w-4 h-4" />
-              Donate
+              Buy Me Coffee
             </a>
             <a
               href={whatsappLink}
