@@ -378,12 +378,12 @@ const OrderForm = () => {
               {/* Pricing Breakdown */}
               <div className="bg-slate-50 rounded-lg p-5 mb-6">
                 <div className="flex justify-between mb-3">
-                  <span className="text-slate-700">Your Proposed Price:</span>
+                  <span className="text-slate-700">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
                   <span className="text-slate-900">${formData.estimatedPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pb-3 border-b border-slate-200">
                   <span className="text-slate-700">Final Price Confirmation:</span>
-                  <span className="text-slate-900">Pending Team Review</span>
+                  <span className="text-slate-900">Pending Team Review (To be confirmed on WhatsApp)</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold">
                   <span className="text-slate-900">Amount shown for payment prompt:</span>
@@ -394,7 +394,7 @@ const OrderForm = () => {
               {/* Info Box */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <p className="text-sm text-blue-900">
-                  📝 Final pricing is confirmed after review. The amount above is your proposed price for faster order processing.
+                  📝 Final pricing is confirmed after you share requirements via WhatsApp and our team reviews them.
                 </p>
               </div>
 
@@ -453,7 +453,7 @@ const OrderForm = () => {
                   <p className="text-sm text-slate-700 mb-1">Amount Due</p>
                   <p className="text-3xl font-bold text-amber-600">${formData.estimatedPrice.toFixed(2)} USD</p>
                 </div>
-                <p className="text-xs text-slate-500">Final price confirmed after team review</p>
+                <p className="text-xs text-slate-500">Final price confirmed on WhatsApp after team review</p>
               </div>
             </div>
 
