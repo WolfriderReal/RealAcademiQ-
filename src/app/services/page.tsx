@@ -1,36 +1,74 @@
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { CheckCircle, BookOpen, Award, Users, Star, ArrowRight } from 'lucide-react'
+import { CheckCircle, Award, Users, Star, ArrowRight, FileText, BarChart3 } from 'lucide-react'
 
 const services = [
   {
-    icon: BookOpen,
-    title: 'Assignment Help',
-    description: 'Comprehensive assistance with essays, reports, case studies, and homework across all subjects and academic levels.',
-    features: ['Custom research', 'Plagiarism-free content', 'On-time delivery', 'Expert writers'],
-    price: 'From $15/page'
-  },
-  {
     icon: Award,
-    title: 'Thesis Writing',
-    description: 'Complete thesis development including research, writing, editing, and defense preparation.',
-    features: ['Topic selection', 'Literature review', 'Data analysis', 'Final editing'],
-    price: 'From $50/page'
+    title: 'Master\'s Thesis',
+    description: 'Full thesis support from proposal alignment to final defense-ready manuscript.',
+    features: ['Research framework', 'Chapter development', 'Academic formatting', 'Supervisor-ready delivery'],
+    price: 'USD $600 - $2,000 | Ksh 50,000 - 150,000'
   },
   {
-    icon: Users,
-    title: 'Project Development',
-    description: 'End-to-end project assistance from planning to implementation and documentation.',
-    features: ['Project planning', 'Code development', 'Testing & debugging', 'Documentation'],
-    price: 'From $30/hour'
+    icon: FileText,
+    title: 'PhD Dissertation',
+    description: 'Advanced dissertation support for doctoral-level research projects and publication-grade work.',
+    features: ['Literature synthesis', 'Methodology design', 'Data interpretation', 'Publication-level editing'],
+    price: 'USD $1,000 - $10,000 | Ksh 100,000 - 350,000'
   },
   {
     icon: Star,
-    title: 'Research Proposals',
-    description: 'Professional proposal writing for grants, dissertations, and academic research projects.',
-    features: ['Research design', 'Methodology', 'Budget planning', 'Timeline creation'],
-    price: 'From $100'
+    title: 'Proposal / Concept Note',
+    description: 'Professional proposals for grants, research programs, and academic concept notes.',
+    features: ['Problem framing', 'Methodology and budget', 'Timeline and outputs', 'Donor-aligned structure'],
+    price: 'USD $100 - $500 | Ksh 10,000 - 50,000'
+  },
+  {
+    icon: BarChart3,
+    title: 'Data Analysis (SPSS, Stata, etc.)',
+    description: 'Reliable quantitative and qualitative analysis with clear interpretation and presentation.',
+    features: ['Data cleaning', 'Model selection', 'Output interpretation', 'Results reporting'],
+    price: 'USD $300 - $500 | Ksh 40,000 - 50,000'
+  },
+  {
+    icon: Users,
+    title: 'Editing & Proofreading',
+    description: 'Language polishing, structure improvement, and academic compliance checks.',
+    features: ['Grammar and style polish', 'Citation checks', 'Flow and clarity edits', 'Final QA pass'],
+    price: '~USD $0.02 - $0.04/word | 3,000 words: $78 - $217 (Ksh 10,000 - 28,000)'
   }
+]
+
+const costingBreakdowns = [
+  {
+    title: 'Hourly Rates',
+    points: [
+      'International experienced writers: USD $40 - $90 per hour.',
+      'Global academic ranges: USD $25 - $50 per hour.',
+      'Kenya market average: KES 400 - 2,250 per hour.',
+      'Kenya specialist tutors/consultants: KES 1,000 - 10,000 per hour.',
+    ],
+  },
+  {
+    title: 'Project Flat Fees (Proposals)',
+    points: [
+      'Simple community grants: USD $700 - $1,000.',
+      'Complex/private foundation proposals: USD $2,000 - $4,000.',
+      'Federal/government RFPs: USD $3,500 - $10,000+.',
+      'Prospect research (funder list): around USD $750.',
+      'High-ticket consulting proposals: USD $2,000 - $5,000.',
+    ],
+  },
+  {
+    title: 'Academic Stage Benchmarks',
+    points: [
+      'Concept note: Masters ~USD $100 (KES 10,000), PhD ~USD $150 (KES 15,000).',
+      'Full proposal (Chapters 1-3): Masters ~USD $500 (KES 50,000), PhD ~USD $700 (KES 70,000).',
+      'Full thesis/dissertation baseline: USD $700 - $1,000+.',
+      'Editing-only benchmark for 80,000 words starts around USD $1,680 (2-week turnaround).',
+    ],
+  },
 ]
 
 export default function Services() {
@@ -45,7 +83,7 @@ export default function Services() {
               Academic Excellence Services
             </h1>
             <p className="mt-5 text-lg text-slate-500 max-w-2xl mx-auto">
-              Professional assistance tailored to your academic needs. From assignments to thesis completion.
+              Professional support with transparent pricing in USD (International) and Ksh (Local Payments).
             </p>
           </div>
         </div>
@@ -55,7 +93,7 @@ export default function Services() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, i) => (
+            {services.map((service) => (
               <div
                 key={service.title}
                 className="bg-slate-50 p-8 rounded-xl hover:shadow-lg transition-shadow"
@@ -84,6 +122,29 @@ export default function Services() {
               </div>
             ))}
           </div>
+
+          <div className="mt-12 bg-amber-50 border border-amber-200 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">Costing Breakdown</h3>
+            <p className="text-sm text-slate-700">
+              These are market-based benchmark ranges. Final quotes are confirmed on WhatsApp after reviewing scope, deadline, and complexity.
+            </p>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {costingBreakdowns.map((item) => (
+              <div key={item.title} className="bg-white border border-slate-200 rounded-xl p-6">
+                <h4 className="text-lg font-semibold text-slate-900 mb-4">{item.title}</h4>
+                <ul className="space-y-2 text-slate-700">
+                  {item.points.map((point) => (
+                    <li key={point} className="flex gap-2">
+                      <span className="text-amber-600 mt-[2px]">•</span>
+                      <span className="text-sm">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -104,7 +165,7 @@ export default function Services() {
               { step: '02', title: 'Expert Assignment', desc: 'We assign the best writer for your task' },
               { step: '03', title: 'Quality Work', desc: 'Receive high-quality, original content' },
               { step: '04', title: 'On-Time Delivery', desc: 'Get your work delivered before deadline' },
-            ].map((item, i) => (
+            ].map((item) => (
               <div
                 key={item.step}
                 className="text-center"
