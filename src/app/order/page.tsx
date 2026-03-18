@@ -31,6 +31,7 @@ const OrderForm = () => {
   const [paymentLoading, setPaymentLoading] = useState(false)
   const [paymentError, setPaymentError] = useState<string | null>(null)
   const [stkSent, setStkSent] = useState(false)
+  const [paypalAmount, setPaypalAmount] = useState('')
 
   const servicePricing: Record<string, number> = {
     assignment: 15,
@@ -87,13 +88,20 @@ const OrderForm = () => {
 
   const handlePaypalPay = () => {
     if (!orderId) return
+    const normalizedAmount = Number(paypalAmount || formData.estimatedPrice)
+
+    if (!Number.isFinite(normalizedAmount) || normalizedAmount <= 0) {
+      setPaymentError('Please enter a valid PayPal amount confirmed on WhatsApp.')
+      return
+    }
+
     // Direct PayPal hosted checkout – no API credentials needed
     const params = new URLSearchParams({
       cmd: '_xclick',
       business: 'kstrategic_inc@outlook.com',
       item_name: `RealAcademiQ Order ${orderId}`,
       item_number: orderId,
-      amount: formData.estimatedPrice.toFixed(2),
+      amount: normalizedAmount.toFixed(2),
       currency_code: 'USD',
       return: `${window.location.origin}/track-order?orderId=${orderId}`,
       cancel_return: `${window.location.origin}/order`,
@@ -521,14 +529,23 @@ const OrderForm = () => {
               <div className="border-2 border-blue-200 rounded-xl p-6 mb-6 bg-blue-50">
                 <h3 className="font-bold text-blue-900 mb-2">Pay with PayPal</h3>
                 <p className="text-sm text-blue-800 mb-4">
-                  You&apos;ll be redirected to PayPal to securely pay <strong>${formData.estimatedPrice.toFixed(2)} USD</strong>.
-                  After payment you&apos;ll be returned to your order tracking page.
+                  Enter the final amount confirmed on WhatsApp, then continue to secure PayPal checkout.
                 </p>
+                <label className="block text-sm font-medium text-blue-900 mb-2">Final Amount (USD)</label>
+                <input
+                  type="number"
+                  min="1"
+                  step="0.01"
+                  value={paypalAmount}
+                  onChange={(e) => setPaypalAmount(e.target.value)}
+                  placeholder={formData.estimatedPrice.toFixed(2)}
+                  className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-4 bg-white"
+                />
                 <Button
                   onClick={handlePaypalPay}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-semibold"
                 >
-                  Pay ${formData.estimatedPrice.toFixed(2)} with PayPal <ArrowRight className="ml-2 w-4 h-4" />
+                  Continue to PayPal <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </div>
             )}
