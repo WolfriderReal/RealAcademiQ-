@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight, CheckCircle, AlertCircle, Loader, CreditCard, Smartphone } from 'lucide-react'
 
 const OrderForm = () => {
+  const USD_TO_KES = 130
+
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     customerName: '',
@@ -40,6 +42,10 @@ const OrderForm = () => {
     project: 30,
     proposal: 100,
   }
+
+  const toKes = (usd: number) => Math.round(usd * USD_TO_KES)
+  const formatDualAmount = (usd: number) => `$${usd.toFixed(2)} / KES ${toKes(usd).toLocaleString()}`
+
   const suggestedPrice = formData.pageCount * (servicePricing[formData.serviceType] || 0)
   const customerName = formData.customerName?.trim() || '-'
   const customerEmail = formData.customerEmail?.trim() || '-'
@@ -118,7 +124,7 @@ const OrderForm = () => {
       return
     }
 
-    const normalizedAmount = Number(mpesaAmount || formData.estimatedPrice)
+    const normalizedAmount = Number(mpesaAmount || toKes(formData.estimatedPrice))
     if (!Number.isFinite(normalizedAmount) || normalizedAmount <= 0) {
       setPaymentError('Please enter a valid M-Pesa amount confirmed on WhatsApp.')
       return
@@ -151,14 +157,16 @@ const OrderForm = () => {
   }
 
   const handleManualConfirmWithWhatsapp = () => {
-    const normalizedAmount = Number(mpesaAmount || formData.estimatedPrice)
+    const normalizedAmount = Number(mpesaAmount || toKes(formData.estimatedPrice))
     if (!Number.isFinite(normalizedAmount) || normalizedAmount <= 0) {
       setPaymentError('Please enter a valid M-Pesa amount confirmed on WhatsApp.')
       return
     }
 
+    const approxUsd = normalizedAmount / USD_TO_KES
+
     const whatsappPaymentNotifyLink = `https://wa.me/254101582198?text=${encodeURIComponent(
-      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nAmount: $${normalizedAmount.toFixed(2)}\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
+      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nAmount: KES ${Math.round(normalizedAmount).toLocaleString()} (Approx USD ${approxUsd.toFixed(2)})\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
     )}`
 
     window.open(whatsappPaymentNotifyLink, '_blank', 'noopener,noreferrer')
@@ -260,10 +268,10 @@ const OrderForm = () => {
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
               >
-                <option value="assignment">Assignment Help - $15/page</option>
-                <option value="thesis">Thesis Writing - $50/page</option>
-                <option value="project">Project Development - $30/hour (estimate)</option>
-                <option value="proposal">Research Proposal - $100</option>
+                <option value="assignment">Assignment Help - $15/page (KES 1,950/page)</option>
+                <option value="thesis">Thesis Writing - $50/page (KES 6,500/page)</option>
+                <option value="project">Project Development - $30/hour (KES 3,900/hour, estimate)</option>
+                <option value="proposal">Research Proposal - $100 (KES 13,000)</option>
               </select>
             </div>
 
@@ -320,7 +328,7 @@ const OrderForm = () => {
                   </select>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Your Proposed Price (USD) *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Your Proposed Price (USD - International) *</label>
                   <input
                     type="number"
                     name="estimatedPrice"
@@ -333,10 +341,13 @@ const OrderForm = () => {
                     placeholder="Enter your proposed budget"
                   />
                   <p className="text-xs text-slate-500 mt-1">
-                    You can enter your preferred amount now. Final price will be confirmed by our team after review.
+                    You can enter your preferred international amount now. Final price will be confirmed by our team after review.
                   </p>
                   <p className="text-xs text-amber-700 mt-1">
-                    Suggested from selected service and pages: ${suggestedPrice.toFixed(2)}
+                    Suggested from selected service and pages: {formatDualAmount(suggestedPrice)}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Local payments (M-Pesa) use KES equivalent: KES {toKes(formData.estimatedPrice).toLocaleString()} (Approx).
                   </p>
                 </div>
               </div>
@@ -401,7 +412,7 @@ const OrderForm = () => {
               <div className="bg-slate-50 rounded-lg p-5 mb-6">
                 <div className="flex justify-between mb-3">
                   <span className="text-slate-700">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
-                  <span className="text-slate-900">${formData.estimatedPrice.toFixed(2)}</span>
+                  <span className="text-slate-900">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pb-3 border-b border-slate-200">
                   <span className="text-slate-700">Final Price Confirmation:</span>
@@ -409,7 +420,7 @@ const OrderForm = () => {
                 </div>
                 <div className="flex justify-between text-lg font-bold">
                   <span className="text-slate-900">Amount shown for payment prompt:</span>
-                  <span className="text-amber-600">${formData.estimatedPrice.toFixed(2)}</span>
+                  <span className="text-amber-600">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
               </div>
 
@@ -474,6 +485,7 @@ const OrderForm = () => {
                 <div>
                   <p className="text-sm text-slate-700 mb-1">Amount Due</p>
                   <p className="text-3xl font-bold text-amber-600">${formData.estimatedPrice.toFixed(2)} USD</p>
+                  <p className="text-sm font-semibold text-slate-700 mt-1">KES {toKes(formData.estimatedPrice).toLocaleString()} (Local equivalent)</p>
                 </div>
                 <p className="text-xs text-slate-500">Final price confirmed on WhatsApp after team review</p>
               </div>
@@ -545,7 +557,7 @@ const OrderForm = () => {
                 <p className="text-sm text-blue-800 mb-4">
                   Enter the final amount confirmed on WhatsApp, then continue to secure PayPal checkout.
                 </p>
-                <label className="block text-sm font-medium text-blue-900 mb-2">Final Amount (USD)</label>
+                <label className="block text-sm font-medium text-blue-900 mb-2">Final Amount (USD - International)</label>
                 <input
                   type="number"
                   min="1"
@@ -555,6 +567,9 @@ const OrderForm = () => {
                   placeholder={formData.estimatedPrice.toFixed(2)}
                   className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-4 bg-white"
                 />
+                <p className="text-xs text-blue-800 mb-4">
+                  Equivalent local amount: KES {toKes(Number(paypalAmount || formData.estimatedPrice)).toLocaleString()} (Approx)
+                </p>
                 <Button
                   onClick={handlePaypalPay}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-semibold"
@@ -589,16 +604,19 @@ const OrderForm = () => {
                     <p className="text-sm text-orange-800 mb-4">
                       A payment prompt will be sent to your Safaricom number. Enter your PIN when prompted.
                     </p>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount (KES - Local)</label>
                     <input
                       type="number"
                       min="1"
                       step="0.01"
                       value={mpesaAmount}
                       onChange={(e) => setMpesaAmount(e.target.value)}
-                      placeholder={formData.estimatedPrice.toFixed(2)}
+                      placeholder={String(toKes(formData.estimatedPrice))}
                       className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none mb-4 bg-white"
                     />
+                    <p className="text-xs text-orange-800 mb-3">
+                      Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / USD_TO_KES).toFixed(2)}
+                    </p>
                     <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
                     <input
                       type="tel"
@@ -648,16 +666,19 @@ const OrderForm = () => {
             {selectedPayment === 'manual' && (
               <div className="border-2 border-green-200 rounded-xl p-6 mb-6 bg-green-50">
                 <h3 className="font-bold text-green-900 mb-4">Pay via M-Pesa Paybill</h3>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount (KES - Local)</label>
                 <input
                   type="number"
                   min="1"
                   step="0.01"
                   value={mpesaAmount}
                   onChange={(e) => setMpesaAmount(e.target.value)}
-                  placeholder={formData.estimatedPrice.toFixed(2)}
+                  placeholder={String(toKes(formData.estimatedPrice))}
                   className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none mb-4 bg-white"
                 />
+                <p className="text-xs text-green-900 mb-4">
+                  Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / USD_TO_KES).toFixed(2)}
+                </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Business Number</p>
@@ -669,7 +690,12 @@ const OrderForm = () => {
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Amount</p>
-                    <p className="text-xl font-bold text-amber-700">${Number(mpesaAmount || formData.estimatedPrice).toFixed(2)}</p>
+                    <p className="text-xl font-bold text-amber-700">
+                      KES {Math.round(Number(mpesaAmount || toKes(formData.estimatedPrice))).toLocaleString()}
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      ~ USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / USD_TO_KES).toFixed(2)}
+                    </p>
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Your Order ID</p>
