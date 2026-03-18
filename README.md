@@ -12,19 +12,20 @@ npm install
 
 ```env
 # Required: destination email where contact form messages should be delivered
-CONTACT_EMAIL=kstrategic_inc@outlook.com
+CONTACT_EMAIL=your_contact_email@example.com
 
-# Optional fallback for non-secret environments
-NEXT_PUBLIC_CONTACT_EMAIL=kstrategic_inc@outlook.com
+# Recommended: Resend API (avoids SMTP auth issues)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
+RESEND_FROM=RealAcademiQ <onboarding@resend.dev>
 
-# SMTP settings (recommended to use a dedicated SMTP account/service)
-SMTP_HOST=smtp.outlook.com
+# Alternative: SMTP settings
+SMTP_HOST=smtp.your-provider.com
 SMTP_PORT=587
-SMTP_USER=kstrategic_inc@outlook.com
-SMTP_PASS=your_outlook_app_password
+SMTP_USER=your_smtp_username@example.com
+SMTP_PASS=your_smtp_password
 
 # Optional: override the "from" address for outgoing mail
-# EMAIL_FROM=RealAcademiQ <kstrategic_inc@outlook.com>
+# EMAIL_FROM=RealAcademiQ <no-reply@example.com>
 ```
 
 3. Run the development server:

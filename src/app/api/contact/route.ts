@@ -3,7 +3,6 @@ import { Resend } from 'resend'
 
 const MAX_REQUESTS_PER_HOUR = 20
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000 // 1 hour
-const DEFAULT_CONTACT_EMAIL = 'kstrategic_inc@outlook.com'
 
 const rateLimitStore = new Map<string, { count: number; firstRequestAt: number }>()
 
@@ -47,7 +46,7 @@ export async function POST(req: Request) {
   let payload: any
   try {
     payload = await req.json()
-  } catch {
+  } catch (error) {
     return new Response(JSON.stringify({ error: 'Invalid JSON payload.' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
@@ -80,16 +79,19 @@ export async function POST(req: Request) {
     })
   }
 
-  const recipient =
-    process.env.CONTACT_EMAIL ?? process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? DEFAULT_CONTACT_EMAIL
+  // CONTACT_EMAIL must be set as a server-side environment variable (never use NEXT_PUBLIC_ for secrets).
+  const recipient = process.env.CONTACT_EMAIL
   const resendApiKey = process.env.RESEND_API_KEY
   const smtpHost = process.env.SMTP_HOST
   const smtpPort = Number(process.env.SMTP_PORT || 587)
   const smtpUser = process.env.SMTP_USER
   const smtpPass = process.env.SMTP_PASS
 
-  if (!isValidEmail(recipient)) {
-    return new Response(JSON.stringify({ error: 'Recipient email is invalid.' }), {
+  if (!recipient) {
+    console.warn(
+      'CONTACT_EMAIL is not configured. Set CONTACT_EMAIL in .env.local or in your deployment environment secrets.'
+    )
+    return new Response(JSON.stringify({ error: 'Recipient email is not configured.' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
@@ -169,7 +171,19 @@ export async function POST(req: Request) {
     })
   } catch (error: any) {
     console.error('Contact form email send failed:', error)
-    return new Response(JSON.stringify({ error: 'Failed to send message. Please try again later.' }), {
+    if (error && error.response) {
+      console.error('SMTP Response:', error.response)
+    }
+    if (error && error.code) {
+      console.error('SMTP Error Code:', error.code)
+    }
+    if (error && error.command) {
+      console.error('SMTP Command:', error.command)
+    }
+    if (error && error.stack) {
+      console.error('SMTP Stack:', error.stack)
+    }
+    return new Response(JSON.stringify({ error: 'Failed to send message. Please try again later.', details: error.message || String(error) }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     })
