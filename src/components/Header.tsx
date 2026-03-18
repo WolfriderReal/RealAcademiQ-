@@ -9,6 +9,17 @@ const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20
 
 export default function Header() {
   const [showDonationModal, setShowDonationModal] = useState(false)
+  const [copiedField, setCopiedField] = useState<string | null>(null)
+
+  const copyToClipboard = async (value: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopiedField(field)
+      setTimeout(() => setCopiedField(null), 1600)
+    } catch {
+      setCopiedField(null)
+    }
+  }
 
   return (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 z-50">
@@ -82,12 +93,32 @@ export default function Header() {
                     <p className="text-sm text-slate-700 mb-2">
                       <strong>M-Pesa:</strong>
                     </p>
-                    <p className="text-sm text-slate-900 mb-1">
-                      Paybill Business Number: <span className="font-bold">714777</span>
-                    </p>
-                    <p className="text-sm text-slate-900">
-                      Account Number: <span className="font-bold">440005939461</span>
-                    </p>
+                    <div className="mb-2">
+                      <p className="text-sm text-slate-900">
+                        Paybill Business Number: <span className="font-bold">714777</span>
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mt-1 h-8 text-xs border-green-300 text-green-700"
+                        onClick={() => copyToClipboard('714777', 'paybill')}
+                      >
+                        {copiedField === 'paybill' ? 'Copied' : 'Copy'}
+                      </Button>
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-900">
+                        Account Number: <span className="font-bold">440005939461</span>
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mt-1 h-8 text-xs border-green-300 text-green-700"
+                        onClick={() => copyToClipboard('440005939461', 'account')}
+                      >
+                        {copiedField === 'account' ? 'Copied' : 'Copy'}
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
