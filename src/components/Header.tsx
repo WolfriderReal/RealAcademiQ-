@@ -83,7 +83,7 @@ export default function Header() {
                       <strong>M-Pesa:</strong>
                     </p>
                     <p className="text-sm text-slate-900 mb-1">
-                      Business Number: <span className="font-bold">714777</span>
+                      Paybill Business Number: <span className="font-bold">714777</span>
                     </p>
                     <p className="text-sm text-slate-900">
                       Account Number: <span className="font-bold">440005939461</span>
