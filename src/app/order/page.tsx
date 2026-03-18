@@ -39,9 +39,13 @@ const OrderForm = () => {
     proposal: 100,
   }
   const suggestedPrice = formData.pageCount * (servicePricing[formData.serviceType] || 0)
-  const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20order.'
+  const customerName = formData.customerName?.trim() || '-'
+  const customerEmail = formData.customerEmail?.trim() || '-'
+  const whatsappLink = `https://wa.me/254101582198?text=${encodeURIComponent(
+    `Hello RealAcademiQ, I need help with my order.\nName: ${customerName}\nEmail: ${customerEmail}`
+  )}`
   const whatsappFilesLink = `https://wa.me/254101582198?text=${encodeURIComponent(
-    `Hello RealAcademiQ, I am sharing my order details:\n\nTopic: ${formData.topic || '-'}\nDeadline: ${formData.deadline || '-'}\nPages/Length: ${formData.pageCount || '-'}\nFormat Style: ${formData.formatStyle || '-'}\nDetailed Description: ${formData.description || '-'}\n\nI am also ready to share supporting files via WhatsApp.`
+    `Hello RealAcademiQ, I am sharing my order details:\n\nName: ${customerName}\nEmail: ${customerEmail}\nTopic: ${formData.topic || '-'}\nDeadline: ${formData.deadline || '-'}\nPages/Length: ${formData.pageCount || '-'}\nFormat Style: ${formData.formatStyle || '-'}\nDetailed Description: ${formData.description || '-'}\n\nI am also ready to share supporting files via WhatsApp.`
   )}`
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -128,6 +132,15 @@ const OrderForm = () => {
 
   const handleManualConfirm = () => {
     setSubmitted(true)
+  }
+
+  const handleManualConfirmWithWhatsapp = () => {
+    const whatsappPaymentNotifyLink = `https://wa.me/254101582198?text=${encodeURIComponent(
+      `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nAmount: $${formData.estimatedPrice.toFixed(2)}\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
+    )}`
+
+    window.open(whatsappPaymentNotifyLink, '_blank', 'noopener,noreferrer')
+    handleManualConfirm()
   }
 
   return (
@@ -614,7 +627,7 @@ const OrderForm = () => {
                 </div>
                 <p className="text-xs text-slate-600 mb-4">Go to M-Pesa &rarr; Lipa na M-Pesa &rarr; Pay Bill &rarr; enter details above</p>
                 <Button
-                  onClick={handleManualConfirm}
+                  onClick={handleManualConfirmWithWhatsapp}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-3 font-semibold"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
