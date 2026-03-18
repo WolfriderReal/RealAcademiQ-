@@ -10,6 +10,14 @@ function unauthorizedResponse(): NextResponse {
   })
 }
 
+function decodeBasicAuth(encoded: string): string {
+  try {
+    return atob(encoded)
+  } catch {
+    return ''
+  }
+}
+
 export function middleware(req: NextRequest) {
   const username = process.env.ADMIN_USERNAME
   const password = process.env.ADMIN_PASSWORD
@@ -24,7 +32,7 @@ export function middleware(req: NextRequest) {
     return unauthorizedResponse()
   }
 
-  const decoded = Buffer.from(authHeader.slice(6), 'base64').toString('utf8')
+  const decoded = decodeBasicAuth(authHeader.slice(6))
   const separator = decoded.indexOf(':')
   const incomingUser = separator >= 0 ? decoded.slice(0, separator) : ''
   const incomingPass = separator >= 0 ? decoded.slice(separator + 1) : ''
