@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, FileUp, CheckCircle, AlertCircle, Loader, CreditCard, Smartphone } from 'lucide-react'
+import { ArrowRight, CheckCircle, AlertCircle, Loader, CreditCard, Smartphone } from 'lucide-react'
 
 const OrderForm = () => {
   const [step, setStep] = useState(1)
@@ -20,7 +20,6 @@ const OrderForm = () => {
     estimatedPrice: 50,
   })
 
-  const [files, setFiles] = useState<File[]>([])
   const [loading, setLoading] = useState(false)
   const [orderId, setOrderId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -40,13 +39,9 @@ const OrderForm = () => {
     proposal: 100,
   }
   const suggestedPrice = formData.pageCount * (servicePricing[formData.serviceType] || 0)
-  const whatsappBase = 'https://wa.me/254101582198'
-  const whatsappLink = `${whatsappBase}?text=${encodeURIComponent('Hello RealAcademiQ, I need help with my order.')}`
-  const whatsappFilesLink = `${whatsappBase}?text=${encodeURIComponent(
-    `Hello RealAcademiQ, I am at Review & Confirm for ${formData.serviceType} (${formData.topic || 'order topic'}). I am sharing supporting documents and reconfirming my assignment description.`
-  )}`
-  const whatsappPaymentLink = `${whatsappBase}?text=${encodeURIComponent(
-    `Hello RealAcademiQ, I have completed payment for Order ${orderId ?? '[pending-order-id]'} via ${selectedPayment ?? 'selected method'}. Please confirm receipt. I can share proof of payment here.`
+  const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20order.'
+  const whatsappFilesLink = `https://wa.me/254101582198?text=${encodeURIComponent(
+    `Hello RealAcademiQ, I am ready to share my supporting files and reconfirm assignment description for ${formData.topic || 'my order'}.`
   )}`
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -56,12 +51,6 @@ const OrderForm = () => {
       setFormData(prev => ({ ...prev, [name]: Number(value) }))
     } else {
       setFormData(prev => ({ ...prev, [name]: value }))
-    }
-  }
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(Array.from(e.target.files))
     }
   }
 
@@ -77,9 +66,11 @@ const OrderForm = () => {
         body: JSON.stringify(formData),
       })
 
-      if (!response.ok) throw new Error('Failed to create order')
-
       const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create order. Please verify your details and try again.')
+      }
+
       setOrderId(data.orderId)
       setMpesaPhone(formData.customerPhone)
       setStep(3)
@@ -407,6 +398,18 @@ const OrderForm = () => {
                 </p>
               </div>
 
+              {/* Share files/instructions via WhatsApp before payment */}
+              <div className="border border-slate-200 rounded-lg p-5 mb-6">
+                <a href={whatsappFilesLink} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-50">
+                    Share Supporting Files via WhatsApp
+                  </Button>
+                </a>
+                <p className="text-xs text-slate-500 mt-2">
+                  Send supporting files and reconfirm your assignment description through WhatsApp.
+                </p>
+              </div>
+
               {/* Buttons */}
               <div className="flex gap-4">
                 <Button
@@ -429,52 +432,6 @@ const OrderForm = () => {
                 </Button>
               </div>
             </div>
-
-              {/* Upload + Reconfirm */}
-              <div className="border border-slate-200 rounded-lg p-5 mb-6">
-                <h3 className="text-lg font-semibold text-slate-900 mb-3">Upload Supporting Documents and Reconfirm Assignment Description</h3>
-                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-amber-600 transition mb-4">
-                  <FileUp className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-                  <input
-                    type="file"
-                    onChange={handleFileChange}
-                    multiple
-                    className="hidden"
-                    id="review-file-upload"
-                  />
-                  <label htmlFor="review-file-upload" className="cursor-pointer">
-                    <p className="font-medium text-slate-900">Upload supporting documents</p>
-                    <p className="text-sm text-slate-500">PDF, DOCX, or images (max 10MB each)</p>
-                  </label>
-                  {files.length > 0 && (
-                    <div className="mt-4 text-left">
-                      <p className="text-sm font-medium text-slate-700 mb-2">Selected files:</p>
-                      {files.map((file, idx) => (
-                        <p key={idx} className="text-sm text-slate-600">✓ {file.name}</p>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <label className="block text-sm font-medium text-slate-700 mb-2">Reconfirm Assignment Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  rows={4}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition resize-none mb-4"
-                  placeholder="Reconfirm and update your assignment instructions if needed..."
-                />
-
-                <a href={whatsappFilesLink} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-50">
-                    Share Supporting Files via WhatsApp
-                  </Button>
-                </a>
-                <p className="text-xs text-slate-500 mt-2">
-                  Use WhatsApp to share file attachments and any extra instructions before payment.
-                </p>
-              </div>
           </div>
         )}
 
@@ -526,22 +483,6 @@ const OrderForm = () => {
                 <p className="text-xs text-slate-500 mt-1">Pay online, international cards</p>
               </button>
 
-              {/* Manual Paybill */}
-              <button
-                onClick={() => { setSelectedPayment('manual'); setPaymentError(null); setStkSent(false) }}
-                className={`text-left border-2 rounded-xl p-5 transition ${
-                  selectedPayment === 'manual'
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-slate-200 hover:border-green-300'
-                }`}
-              >
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
-                  <span className="text-green-700 font-bold text-sm">M</span>
-                </div>
-                <h3 className="font-bold text-slate-900">M-Pesa Manual</h3>
-                <p className="text-xs text-slate-500 mt-1">Pay via Paybill & confirm</p>
-              </button>
-
               {/* M-Pesa STK */}
               <button
                 onClick={() => { setSelectedPayment('mpesa'); setPaymentError(null); setStkSent(false) }}
@@ -557,17 +498,22 @@ const OrderForm = () => {
                 <h3 className="font-bold text-slate-900">M-Pesa STK Push</h3>
                 <p className="text-xs text-slate-500 mt-1">Get a prompt on your phone</p>
               </button>
-            </div>
 
-            <div className="mb-6">
-              <a href={whatsappPaymentLink} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-50">
-                  Send Payment Confirmation via WhatsApp
-                </Button>
-              </a>
-              <p className="text-xs text-slate-500 mt-2">
-                After paying, send your confirmation and screenshot on WhatsApp for faster verification.
-              </p>
+              {/* Manual Paybill */}
+              <button
+                onClick={() => { setSelectedPayment('manual'); setPaymentError(null); setStkSent(false) }}
+                className={`text-left border-2 rounded-xl p-5 transition ${
+                  selectedPayment === 'manual'
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-slate-200 hover:border-green-300'
+                }`}
+              >
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                  <span className="text-green-700 font-bold text-sm">M</span>
+                </div>
+                <h3 className="font-bold text-slate-900">M-Pesa Manual</h3>
+                <p className="text-xs text-slate-500 mt-1">Pay via Paybill & confirm</p>
+              </button>
             </div>
 
             {/* PayPal Panel */}
