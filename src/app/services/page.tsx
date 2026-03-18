@@ -1,8 +1,15 @@
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Award, Users, Star, ArrowRight, FileText, BarChart3 } from 'lucide-react'
+import { CheckCircle, Award, Users, Star, ArrowRight, FileText, BarChart3, BookOpen, FolderKanban } from 'lucide-react'
 
 const services = [
+  {
+    icon: BookOpen,
+    title: 'Small Assignments',
+    description: 'Fast support for short assignments, essays, quizzes, and weekly coursework tasks.',
+    features: ['Short-turnaround handling', 'Clear instructions follow-up', 'Plagiarism-safe drafting', 'Formatting + references'],
+    price: 'USD $15 - $80 per task | Ksh 2,000 - 10,000'
+  },
   {
     icon: Award,
     title: 'Master\'s Thesis',
@@ -25,6 +32,20 @@ const services = [
     price: 'USD $100 - $500 | Ksh 10,000 - 50,000'
   },
   {
+    icon: FolderKanban,
+    title: 'Diploma Projects',
+    description: 'Structured project support for diploma-level practical and report-based assessments.',
+    features: ['Topic scoping', 'Project write-up', 'Implementation guidance', 'Presentation readiness'],
+    price: 'USD $150 - $600 | Ksh 20,000 - 80,000'
+  },
+  {
+    icon: Users,
+    title: 'Undergraduate Projects',
+    description: 'Comprehensive undergraduate project support from proposal to final documentation.',
+    features: ['Proposal + methodology', 'Build/analysis support', 'Testing and revision', 'Final documentation'],
+    price: 'USD $250 - $1,200 | Ksh 30,000 - 150,000'
+  },
+  {
     icon: BarChart3,
     title: 'Data Analysis (SPSS, Stata, etc.)',
     description: 'Reliable quantitative and qualitative analysis with clear interpretation and presentation.',
@@ -32,7 +53,7 @@ const services = [
     price: 'USD $300 - $500 | Ksh 40,000 - 50,000'
   },
   {
-    icon: Users,
+    icon: Star,
     title: 'Editing & Proofreading',
     description: 'Language polishing, structure improvement, and academic compliance checks.',
     features: ['Grammar and style polish', 'Citation checks', 'Flow and clarity edits', 'Final QA pass'],
@@ -41,6 +62,15 @@ const services = [
 ]
 
 const costingBreakdowns = [
+  {
+    title: 'Small Assignments & Projects',
+    points: [
+      'Small assignments: USD $15 - $80 per task (Ksh 2,000 - 10,000).',
+      'Diploma projects: USD $150 - $600 (Ksh 20,000 - 80,000).',
+      'Undergraduate projects: USD $250 - $1,200 (Ksh 30,000 - 150,000).',
+      'Final quote depends on topic depth, deadline, and required revisions.',
+    ],
+  },
   {
     title: 'Hourly Rates',
     points: [
