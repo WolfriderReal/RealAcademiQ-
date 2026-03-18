@@ -130,8 +130,8 @@ export async function POST(req: Request) {
   })
 
   if (!response.ok) {
-    const body = await response.text()
-    return NextResponse.json({ error: 'STK push request failed.', details: body }, { status: 502 })
+    await response.text()
+    return NextResponse.json({ error: 'STK push request failed.' }, { status: 502 })
   }
 
   const data = await response.json()

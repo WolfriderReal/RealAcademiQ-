@@ -19,7 +19,7 @@ const OrderForm = () => {
     pageCount: 5,
     deadline: '',
     formatStyle: 'APA',
-    estimatedPrice: 50,
+    estimatedPrice: 0,
   })
 
   const [loading, setLoading] = useState(false)
@@ -36,21 +36,20 @@ const OrderForm = () => {
   const [paypalAmount, setPaypalAmount] = useState('')
   const [mpesaAmount, setMpesaAmount] = useState('')
 
-  const servicePricing: Record<string, number> = {
-    small_assignment: 15,
-    diploma_project: 150,
-    undergraduate_project: 250,
-    masters_thesis: 600,
-    phd_dissertation: 1000,
-    proposal_concept_note: 100,
-    data_analysis: 300,
-    editing_proofreading: 78,
+  const serviceLabels: Record<string, string> = {
+    small_assignment: 'Small Assignments',
+    diploma_project: 'Diploma Projects',
+    undergraduate_project: 'Undergraduate Projects',
+    masters_thesis: "Master's Thesis",
+    phd_dissertation: 'PhD Dissertation',
+    proposal_concept_note: 'Proposal / Concept Note',
+    data_analysis: 'Data Analysis (SPSS, Stata, etc.)',
+    editing_proofreading: 'Editing & Proofreading',
   }
 
   const toKes = (usd: number) => Math.round(usd * USD_TO_KES)
   const formatDualAmount = (usd: number) => `$${usd.toFixed(2)} / KES ${toKes(usd).toLocaleString()}`
 
-  const suggestedPrice = formData.pageCount * (servicePricing[formData.serviceType] || 0)
   const customerName = formData.customerName?.trim() || '-'
   const customerEmail = formData.customerEmail?.trim() || '-'
   const whatsappLink = `https://wa.me/254101582198?text=${encodeURIComponent(
@@ -272,15 +271,18 @@ const OrderForm = () => {
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
               >
-                <option value="small_assignment">Small Assignments - USD $15 - $80 | Ksh 2,000 - 10,000</option>
-                <option value="diploma_project">Diploma Projects - USD $150 - $600 | Ksh 20,000 - 80,000</option>
-                <option value="undergraduate_project">Undergraduate Projects - USD $250 - $1,200 | Ksh 30,000 - 150,000</option>
-                <option value="masters_thesis">Master&apos;s Thesis - USD $600 - $2,000 | Ksh 50,000 - 150,000</option>
-                <option value="phd_dissertation">PhD Dissertation - USD $1,000 - $10,000 | Ksh 100,000 - 350,000</option>
-                <option value="proposal_concept_note">Proposal / Concept Note - USD $100 - $500 | Ksh 10,000 - 50,000</option>
-                <option value="data_analysis">Data Analysis (SPSS, Stata, etc.) - USD $300 - $500 | Ksh 40,000 - 50,000</option>
-                <option value="editing_proofreading">Editing &amp; Proofreading - USD $78 - $217 | Ksh 10,000 - 28,000</option>
+                <option value="small_assignment">Small Assignments</option>
+                <option value="diploma_project">Diploma Projects</option>
+                <option value="undergraduate_project">Undergraduate Projects</option>
+                <option value="masters_thesis">Master&apos;s Thesis</option>
+                <option value="phd_dissertation">PhD Dissertation</option>
+                <option value="proposal_concept_note">Proposal / Concept Note</option>
+                <option value="data_analysis">Data Analysis (SPSS, Stata, etc.)</option>
+                <option value="editing_proofreading">Editing &amp; Proofreading</option>
               </select>
+              <p className="text-xs text-slate-500 mt-2">
+                Pricing is confirmed on WhatsApp after requirement review.
+              </p>
             </div>
 
             {/* Order Details */}
@@ -351,9 +353,6 @@ const OrderForm = () => {
                   <p className="text-xs text-slate-500 mt-1">
                     You can enter your preferred international amount now. Final price will be confirmed by our team after review.
                   </p>
-                  <p className="text-xs text-amber-700 mt-1">
-                    Suggested from selected service and pages: {formatDualAmount(suggestedPrice)}
-                  </p>
                   <p className="text-xs text-slate-500 mt-1">
                     Local payments (M-Pesa) use KES equivalent: KES {toKes(formData.estimatedPrice).toLocaleString()} (Approx).
                   </p>
@@ -396,7 +395,7 @@ const OrderForm = () => {
               <div className="space-y-4 mb-6 pb-6 border-b border-slate-200">
                 <div className="flex justify-between">
                   <span className="text-slate-700">Service Type:</span>
-                  <span className="font-semibold text-slate-900 capitalize">{formData.serviceType}</span>
+                  <span className="font-semibold text-slate-900">{serviceLabels[formData.serviceType] ?? formData.serviceType}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-700">Topic:</span>

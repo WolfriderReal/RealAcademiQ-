@@ -82,9 +82,9 @@ export async function POST(req: Request) {
   })
 
   if (!verifyResponse.ok) {
-    const body = await verifyResponse.text()
+    await verifyResponse.text()
     return NextResponse.json(
-      { error: 'Failed to verify PayPal webhook signature.', details: body },
+      { error: 'Failed to verify PayPal webhook signature.' },
       { status: 502 }
     )
   }

@@ -96,9 +96,9 @@ export async function POST(req: Request) {
   })
 
   if (!paypalResponse.ok) {
-    const body = await paypalResponse.text()
+    await paypalResponse.text()
     return NextResponse.json(
-      { error: 'Failed to create PayPal order.', details: body },
+      { error: 'Failed to create PayPal order.' },
       { status: 502 }
     )
   }
