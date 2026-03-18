@@ -21,6 +21,15 @@ function timestamp() {
   )}${pad(d.getSeconds())}`
 }
 
+function resolveMpesaCallbackUrl(req: Request): string {
+  const configured = process.env.MPESA_CALLBACK_URL?.trim()
+  if (configured) return configured
+
+  // Fallback keeps STK push usable if callback URL is not explicitly configured.
+  const origin = new URL(req.url).origin
+  return `${origin}/api/payments/mpesa/callback`
+}
+
 async function getMpesaAccessToken() {
   const key = process.env.MPESA_CONSUMER_KEY
   const secret = process.env.MPESA_CONSUMER_SECRET
@@ -79,11 +88,11 @@ export async function POST(req: Request) {
 
   const shortcode = process.env.MPESA_SHORTCODE
   const passkey = process.env.MPESA_PASSKEY
-  const callbackUrl = process.env.MPESA_CALLBACK_URL
+  const callbackUrl = resolveMpesaCallbackUrl(req)
 
-  if (!shortcode || !passkey || !callbackUrl) {
+  if (!shortcode || !passkey) {
     return NextResponse.json(
-      { error: 'MPESA_SHORTCODE, MPESA_PASSKEY, and MPESA_CALLBACK_URL are required.' },
+      { error: 'MPESA_SHORTCODE and MPESA_PASSKEY are required.' },
       { status: 500 }
     )
   }
