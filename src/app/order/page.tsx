@@ -41,7 +41,7 @@ const OrderForm = () => {
   const suggestedPrice = formData.pageCount * (servicePricing[formData.serviceType] || 0)
   const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20need%20help%20with%20my%20order.'
   const whatsappFilesLink = `https://wa.me/254101582198?text=${encodeURIComponent(
-    `Hello RealAcademiQ, I am ready to share my supporting files and reconfirm assignment description for ${formData.topic || 'my order'}.`
+    `Hello RealAcademiQ, I am sharing my order details:\n\nTopic: ${formData.topic || '-'}\nDeadline: ${formData.deadline || '-'}\nPages/Length: ${formData.pageCount || '-'}\nFormat Style: ${formData.formatStyle || '-'}\nDetailed Description: ${formData.description || '-'}\n\nI am also ready to share supporting files via WhatsApp.`
   )}`
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -212,19 +212,6 @@ const OrderForm = () => {
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
                     placeholder="john@example.com"
                   />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number (M-Pesa) *</label>
-                  <input
-                    type="tel"
-                    name="customerPhone"
-                    value={formData.customerPhone}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent outline-none transition"
-                    placeholder="0712345678"
-                  />
-                  <p className="text-xs text-slate-500 mt-1">For M-Pesa payments, use format: 07XXXXXXXX</p>
                 </div>
               </div>
             </div>

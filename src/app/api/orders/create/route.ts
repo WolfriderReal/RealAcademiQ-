@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const numericEstimatedPrice = Number(estimatedPrice)
 
     // Validate required fields
-    if (!customerName || !customerEmail || !customerPhone || !topic || !deadline) {
+    if (!customerName || !customerEmail || !topic || !deadline) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     const order = await createOrder({
       customerName,
       customerEmail,
-      customerPhone,
+      customerPhone: String(customerPhone ?? '').trim(),
       serviceType,
       topic,
       description,
