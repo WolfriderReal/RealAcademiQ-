@@ -35,6 +35,7 @@ const OrderForm = () => {
   const [stkSent, setStkSent] = useState(false)
   const [paypalAmount, setPaypalAmount] = useState('')
   const [mpesaAmount, setMpesaAmount] = useState('')
+  const [copiedField, setCopiedField] = useState<string | null>(null)
 
   const serviceLabels: Record<string, string> = {
     small_assignment: 'Small Assignments',
@@ -174,6 +175,16 @@ const OrderForm = () => {
 
     window.open(whatsappPaymentNotifyLink, '_blank', 'noopener,noreferrer')
     handleManualConfirm()
+  }
+
+  const copyToClipboard = async (value: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(value)
+      setCopiedField(field)
+      setTimeout(() => setCopiedField(null), 1600)
+    } catch {
+      setPaymentError('Unable to copy value. Please copy manually.')
+    }
   }
 
   return (
@@ -650,10 +661,26 @@ const OrderForm = () => {
                         <div className="bg-white rounded-lg p-3 text-center">
                           <p className="text-xs text-slate-500">Business No.</p>
                           <p className="font-bold text-slate-900">714777</p>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="mt-2 h-8 text-xs border-orange-300 text-orange-700"
+                            onClick={() => copyToClipboard('714777', 'paybill')}
+                          >
+                            {copiedField === 'paybill' ? 'Copied' : 'Copy'}
+                          </Button>
                         </div>
                         <div className="bg-white rounded-lg p-3 text-center">
                           <p className="text-xs text-slate-500">Account No.</p>
                           <p className="font-bold text-slate-900">440005939461</p>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="mt-2 h-8 text-xs border-orange-300 text-orange-700"
+                            onClick={() => copyToClipboard('440005939461', 'account')}
+                          >
+                            {copiedField === 'account' ? 'Copied' : 'Copy'}
+                          </Button>
                         </div>
                       </div>
                       <Button
@@ -690,10 +717,26 @@ const OrderForm = () => {
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Business Number</p>
                     <p className="text-xl font-bold text-slate-900">714777</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-2 h-8 text-xs border-green-300 text-green-700"
+                      onClick={() => copyToClipboard('714777', 'paybill')}
+                    >
+                      {copiedField === 'paybill' ? 'Copied' : 'Copy'}
+                    </Button>
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Account Number</p>
                     <p className="text-xl font-bold text-slate-900">440005939461</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-2 h-8 text-xs border-green-300 text-green-700"
+                      onClick={() => copyToClipboard('440005939461', 'account')}
+                    >
+                      {copiedField === 'account' ? 'Copied' : 'Copy'}
+                    </Button>
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Amount</p>
