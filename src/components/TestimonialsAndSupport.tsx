@@ -85,7 +85,7 @@ export default function TestimonialsAndSupport() {
             <h3 className="text-2xl font-semibold mb-2 md:mb-1">Support My Work</h3>
             <p className="mb-2 md:mb-1 text-sm">If you are a well-wisher or donor and would like to support RealAcademiQ, click below:</p>
             <a
-              href="https://www.paypal.com/donate?business=kstrategic_inc@outlook.com&currency_code=USD"
+              href="https://www.paypal.com/donate?business=kstrategic_Inc@outlook.com&currency_code=USD"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition"

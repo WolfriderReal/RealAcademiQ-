@@ -5,17 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, Loader2, CheckCircle2, Mail, Phone, Clock, MapPin, MessageCircle } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, Mail, Phone, Clock, MapPin } from 'lucide-react';
 import { toast } from "sonner";
 
 const contactInfo = [
-  { icon: Mail, title: 'Email Us', detail: 'kstrategic_inc@outlook.com', sub: 'We respond within 2 hours', href: 'mailto:kstrategic_inc@outlook.com' },
-  { icon: Phone, title: 'Call Us', detail: '+254101582198', sub: 'Mon-Sat, 9am-9pm', href: 'tel:+254101582198' },
+  { icon: Mail, title: 'Email Us', detail: 'kstrategic_inc@outlook.com', sub: 'We respond within 2 hours' },
+  { icon: Phone, title: 'Call Us', detail: '+254101582198', sub: 'Mon-Sat, 9am-9pm' },
   { icon: Clock, title: 'Working Hours', detail: '24/7 Availability', sub: 'We\'re always here for you' },
   { icon: MapPin, title: 'Location', detail: 'Available Worldwide', sub: 'Serving students globally' },
 ];
-
-const whatsappLink = 'https://wa.me/254101582198?text=Hello%20RealAcademiQ%2C%20I%20would%20like%20help%20with%20my%20project.'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
@@ -75,7 +73,7 @@ export default function Contact() {
             <div className="lg:col-span-2">
               <h3 className="text-xl font-semibold text-slate-900 mb-8">Contact Information</h3>
               <div className="space-y-6">
-                {contactInfo.map((item) => (
+                {contactInfo.map((item, i) => (
                   <div
                     key={item.title}
                     className="flex items-start gap-4"
@@ -85,28 +83,12 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="font-semibold text-slate-900 text-sm">{item.title}</div>
-                      {item.href ? (
-                        <a href={item.href} className="text-slate-700 text-sm mt-0.5 hover:text-amber-700 transition-colors">
-                          {item.detail}
-                        </a>
-                      ) : (
-                        <div className="text-slate-700 text-sm mt-0.5">{item.detail}</div>
-                      )}
+                      <div className="text-slate-700 text-sm mt-0.5">{item.detail}</div>
                       <div className="text-xs text-slate-400 mt-1">{item.sub}</div>
                     </div>
                   </div>
                 ))}
               </div>
-
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-green-300 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 hover:bg-green-100 transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Click to Chat on WhatsApp
-              </a>
             </div>
 
             {/* Form */}
