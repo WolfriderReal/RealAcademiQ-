@@ -48,8 +48,8 @@ export default function TrackOrder() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-12">
+    <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-black">
+      <div className="bg-gradient-to-r from-black to-neutral-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
           <Link href="/" className="inline-flex items-center gap-2 text-slate-300 hover:text-white mb-6">
             <ArrowRight className="w-4 h-4 rotate-180" />
@@ -61,9 +61,9 @@ export default function TrackOrder() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-12 space-y-8">
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-          <h2 className="text-2xl font-bold text-slate-900 mb-3">Track Your Order via WhatsApp</h2>
-          <p className="text-slate-600 mb-6">
+        <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
+          <h2 className="text-2xl font-bold text-white mb-3">Track Your Order via WhatsApp</h2>
+          <p className="text-white/70 mb-6">
             Click the button below and share your name, assignment topic, payment screenshot, or any order details.
             Our team will verify and send your current order status.
           </p>
@@ -75,29 +75,29 @@ export default function TrackOrder() {
             </Button>
           </a>
 
-          <p className="text-xs text-slate-500 mt-4">
+          <p className="text-xs text-white/60 mt-4">
             Support is available 24/7. You can also share files and payment confirmation in the same chat.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-          <h3 className="text-xl font-bold text-slate-900 mb-6">How Your Order Progresses</h3>
+        <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
+          <h3 className="text-xl font-bold text-white mb-6">How Your Order Progresses</h3>
           <div className="space-y-4">
             {phases.map((phase) => (
-              <div key={phase.title} className="flex items-start gap-4 rounded-lg border border-slate-100 p-4">
-                <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
-                  <phase.icon className="w-5 h-5 text-amber-700" />
+              <div key={phase.title} className="flex items-start gap-4 rounded-lg border border-white/10 bg-white/[0.02] p-4">
+                <div className="w-10 h-10 rounded-lg bg-orange-500/15 border border-orange-400/30 flex items-center justify-center shrink-0">
+                  <phase.icon className="w-5 h-5 text-orange-300" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900">{phase.title}</h4>
-                  <p className="text-sm text-slate-600">{phase.description}</p>
+                  <h4 className="font-semibold text-white">{phase.title}</h4>
+                  <p className="text-sm text-white/70">{phase.description}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-2xl p-8">
+        <div className="bg-gradient-to-r from-black to-neutral-900 text-white rounded-2xl p-8">
           <div className="flex items-start gap-4">
             <CheckCircle className="w-6 h-6 flex-shrink-0 mt-1" />
             <div>
@@ -106,7 +106,7 @@ export default function TrackOrder() {
                 Use WhatsApp for order updates, payment confirmation, and file sharing in one place.
               </p>
               <a href={whatsappTrackLink} target="_blank" rel="noopener noreferrer" className="inline-block">
-                <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+                <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                   Open WhatsApp Support
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>

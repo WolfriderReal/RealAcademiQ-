@@ -36,14 +36,14 @@ export default function About() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-white to-amber-50/30 py-20 md:py-24">
+      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <p className="text-amber-600 font-semibold text-sm tracking-wide uppercase mb-3">About Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">About Us</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
               Empowering Academic Success
             </h1>
-            <p className="mt-5 text-lg text-slate-500 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
               We&apos;re dedicated to helping students achieve their academic goals through professional,
               ethical assistance and guidance.
             </p>
@@ -52,14 +52,14 @@ export default function About() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-neutral-950">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Our Story
               </h2>
-              <div className="space-y-4 text-slate-600">
+              <div className="space-y-4 text-white/70">
                 <p>
                   Founded by a team of experienced academics and educators, RealAcademiQ was born
                   from the desire to make quality education accessible to all students worldwide.
@@ -75,8 +75,8 @@ export default function About() {
                 </p>
               </div>
             </div>
-            <div className="bg-slate-100 p-8 rounded-xl">
-              <h3 className="text-2xl font-semibold text-slate-900 mb-6">Why Students Choose Us</h3>
+            <div className="bg-white/[0.04] border border-white/10 p-8 rounded-xl">
+              <h3 className="text-2xl font-semibold text-white mb-6">Why Students Choose Us</h3>
               <div className="space-y-4">
                 {[
                   'Expert writers with advanced degrees',
@@ -87,8 +87,8 @@ export default function About() {
                   'Confidential and secure service'
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-amber-600 rounded-full"></div>
-                    <span className="text-slate-700">{item}</span>
+                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                    <span className="text-white/75">{item}</span>
                   </div>
                 ))}
               </div>
@@ -98,7 +98,7 @@ export default function About() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-slate-900 text-white">
+      <section className="py-20 bg-neutral-900 text-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
@@ -106,7 +106,7 @@ export default function About() {
                 key={stat.label}
                 className="text-center"
               >
-                <div className="text-3xl md:text-4xl font-bold text-amber-400 mb-2">
+                <div className="text-3xl md:text-4xl font-bold text-orange-400 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-slate-300">{stat.label}</div>
@@ -117,13 +117,13 @@ export default function About() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-black/70">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Our Values
             </h2>
-            <p className="text-lg text-slate-600">
+            <p className="text-lg text-white/70">
               The principles that guide everything we do
             </p>
           </div>
@@ -133,11 +133,11 @@ export default function About() {
                 key={value.title}
                 className="text-center"
               >
-                <div className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <value.icon className="w-8 h-8 text-amber-600" />
+                <div className="w-16 h-16 bg-orange-500/15 border border-orange-400/30 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <value.icon className="w-8 h-8 text-orange-300" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-3">{value.title}</h3>
-                <p className="text-slate-600">{value.description}</p>
+                <h3 className="text-xl font-semibold text-white mb-3">{value.title}</h3>
+                <p className="text-white/70">{value.description}</p>
               </div>
             ))}
           </div>
@@ -145,17 +145,17 @@ export default function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-amber-50">
+      <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-500">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Ready to Start Your Academic Journey?
             </h2>
-            <p className="text-xl text-slate-600 mb-8">
+            <p className="text-xl text-orange-50/90 mb-8">
               Join thousands of successful students who trust RealAcademiQ for their academic needs.
             </p>
             <Link href="/contact">
-              <Button size="lg" className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 text-lg">
+              <Button size="lg" className="bg-white hover:bg-slate-100 text-orange-700 px-8 py-4 text-lg">
                 Get Started Today
               </Button>
             </Link>

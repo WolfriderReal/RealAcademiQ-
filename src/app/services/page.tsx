@@ -66,14 +66,14 @@ export default function Services() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-white to-amber-50/30 pt-20 md:pt-24 pb-8">
+      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black pt-20 md:pt-24 pb-8">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <p className="text-amber-600 font-semibold text-sm tracking-wide uppercase mb-3">Our Services</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">Our Services</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
               Academic Excellence Services
             </h1>
-            <p className="mt-5 text-lg text-slate-500 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
               Professional support with transparent pricing for International and Ksh Local Payments.
             </p>
           </div>
@@ -81,10 +81,10 @@ export default function Services() {
       </section>
 
       {/* Services Grid */}
-      <section className="pt-8 pb-20 bg-white">
+      <section className="pt-8 pb-20 bg-neutral-950">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="mb-8 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-            <p className="text-sm md:text-base text-emerald-800 font-medium">
+          <div className="mb-8 bg-emerald-500/10 border border-emerald-400/30 rounded-xl p-4">
+            <p className="text-sm md:text-base text-emerald-200 font-medium">
               All our works are checked for plagiarism and AI to ensure compliance with your needs.
             </p>
           </div>
@@ -93,25 +93,25 @@ export default function Services() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="bg-slate-50 p-8 rounded-xl hover:shadow-lg transition-shadow"
+                className="bg-white/[0.04] border border-white/10 p-8 rounded-xl hover:border-orange-400/40 transition-colors"
               >
-                <div className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center mb-6">
-                  <service.icon className="w-8 h-8 text-amber-600" />
+                <div className="w-16 h-16 bg-orange-500/15 border border-orange-400/30 rounded-xl flex items-center justify-center mb-6">
+                  <service.icon className="w-8 h-8 text-orange-300" />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">{service.title}</h3>
-                <p className="text-slate-600 mb-6">{service.description}</p>
+                <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
+                <p className="text-white/70 mb-6">{service.description}</p>
                 <div className="space-y-2 mb-6">
                   {service.features.map((feature, j) => (
                     <div key={j} className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span className="text-sm text-slate-700">{feature}</span>
+                      <span className="text-sm text-white/75">{feature}</span>
                     </div>
                   ))}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-amber-600 font-semibold">{service.price}</span>
+                  <span className="text-orange-400 font-semibold">{service.price}</span>
                   <Link href="/order">
-                    <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                       Order Now <ArrowRight className="ml-2 w-4 h-4" />
                     </Button>
                   </Link>
@@ -125,13 +125,13 @@ export default function Services() {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-black/70">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               How It Works
             </h2>
-            <p className="text-lg text-slate-600">
+            <p className="text-lg text-white/70">
               Simple process to get your academic work done professionally
             </p>
           </div>
@@ -146,11 +146,11 @@ export default function Services() {
                 key={item.step}
                 className="text-center"
               >
-                <div className="w-16 h-16 bg-amber-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                <div className="w-16 h-16 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
-                <p className="text-slate-600">{item.desc}</p>
+                <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
+                <p className="text-white/70">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -164,12 +164,12 @@ export default function Services() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Ready to Get Academic Help?
             </h2>
-            <p className="text-xl text-orange-100 mb-8">
+            <p className="text-xl text-orange-50/90 mb-8">
               Choose your service above and submit your order. Our expert writers will deliver quality work on time.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/order">
-                <Button size="lg" className="bg-white hover:bg-slate-100 text-amber-700 px-8 py-4 text-lg rounded-xl font-semibold">
+                <Button size="lg" className="bg-white hover:bg-slate-100 text-orange-700 px-8 py-4 text-lg rounded-xl font-semibold">
                   Start Your Order <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>

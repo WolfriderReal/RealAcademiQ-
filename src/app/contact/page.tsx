@@ -54,45 +54,45 @@ export default function Contact() {
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-slate-50 via-white to-amber-50/30 py-20 md:py-24">
+      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <p className="text-amber-600 font-semibold text-sm tracking-wide uppercase mb-3">Contact Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">Contact Us</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
               Get in Touch
             </h1>
-            <p className="mt-5 text-lg text-slate-500 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
               Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll get back to you promptly.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-neutral-950">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
             {/* Contact Info */}
             <div className="lg:col-span-2">
-              <h3 className="text-xl font-semibold text-slate-900 mb-8">Contact Information</h3>
+              <h3 className="text-xl font-semibold text-white mb-8">Contact Information</h3>
               <div className="space-y-6">
                 {contactInfo.map((item) => (
                   <div
                     key={item.title}
                     className="flex items-start gap-4"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-                      <item.icon className="w-5 h-5 text-amber-600" />
+                    <div className="w-12 h-12 rounded-xl bg-orange-500/15 border border-orange-400/30 flex items-center justify-center shrink-0">
+                      <item.icon className="w-5 h-5 text-orange-300" />
                     </div>
                     <div>
-                      <div className="font-semibold text-slate-900 text-sm">{item.title}</div>
+                      <div className="font-semibold text-white text-sm">{item.title}</div>
                       {item.href ? (
-                        <a href={item.href} className="text-slate-700 text-sm mt-0.5 hover:text-amber-700 transition-colors">
+                        <a href={item.href} className="text-white/75 text-sm mt-0.5 hover:text-orange-300 transition-colors">
                           {item.detail}
                         </a>
                       ) : (
-                        <div className="text-slate-700 text-sm mt-0.5">{item.detail}</div>
+                        <div className="text-white/75 text-sm mt-0.5">{item.detail}</div>
                       )}
-                      <div className="text-xs text-slate-400 mt-1">{item.sub}</div>
+                      <div className="text-xs text-white/50 mt-1">{item.sub}</div>
                     </div>
                   </div>
                 ))}
@@ -102,7 +102,7 @@ export default function Contact() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-green-300 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 hover:bg-green-100 transition-colors"
+                className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-green-400/30 bg-green-500/10 px-4 py-3 text-sm font-semibold text-green-300 hover:bg-green-500/20 transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 Click to Chat on WhatsApp
@@ -116,9 +116,9 @@ export default function Contact() {
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Message Sent!</h3>
-                  <p className="text-slate-500 text-center mb-6">We&apos;ll get back to you within 2 hours.</p>
-                  <Button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', subject: '', message: '' }); }} variant="outline" className="rounded-xl">
+                  <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
+                  <p className="text-white/65 text-center mb-6">We&apos;ll get back to you within 2 hours.</p>
+                  <Button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', subject: '', message: '' }); }} variant="outline" className="rounded-xl border-white/20 text-white hover:bg-white/10">
                     Send Another Message
                   </Button>
                 </div>
@@ -145,7 +145,7 @@ export default function Contact() {
                     <Label htmlFor="message">Message *</Label>
                     <Textarea id="message" required rows={5} placeholder="Tell us how we can help you..." value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} className="rounded-xl" />
                   </div>
-                  <Button type="submit" disabled={submitting} className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl h-13 text-base font-medium">
+                  <Button type="submit" disabled={submitting} className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-13 text-base font-medium">
                     {submitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Sending...</> : <><Send className="w-4 h-4 mr-2" />Send Message</>}
                   </Button>
                 </form>
