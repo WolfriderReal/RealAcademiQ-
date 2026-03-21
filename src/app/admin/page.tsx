@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { StoredOrder } from '@/lib/orderStore'
 
@@ -44,7 +45,15 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-slate-900 mb-8">Order Management Dashboard</h1>
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <h1 className="text-4xl font-bold text-slate-900">Order Management Dashboard</h1>
+          <Link
+            href="/admin/testimonials"
+            className="inline-flex items-center justify-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800"
+          >
+            Open Admin Testimonial Replies
+          </Link>
+        </div>
 
         {loading ? (
           <div className="text-center py-12">

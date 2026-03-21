@@ -112,7 +112,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials and Support Section */}
-      <TestimonialsAndSupport />
+      <TestimonialsAndSupport mode="public" />
 
       {/* Why Choose Us */}
       <section className="py-20 bg-slate-50">

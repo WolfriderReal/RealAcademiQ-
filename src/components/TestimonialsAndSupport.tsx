@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import React, { useEffect, useMemo, useState } from 'react';
 
 type Review = {
@@ -15,6 +16,10 @@ type Reply = {
   adminName: string;
   replyText: string;
   timestamp: number;
+};
+
+type TestimonialsAndSupportProps = {
+  mode?: 'public' | 'admin';
 };
 
 const defaultTestimonials: Review[] = [
@@ -121,7 +126,7 @@ function StarPicker({ rating, onChange }: { rating: number; onChange: (value: nu
   );
 }
 
-export default function TestimonialsAndSupport() {
+export default function TestimonialsAndSupport({ mode = 'public' }: TestimonialsAndSupportProps) {
   const [visitorReviews, setVisitorReviews] = useState<Review[]>([]);
   const [replies, setReplies] = useState<Reply[]>([]);
   const [name, setName] = useState('');
@@ -133,6 +138,7 @@ export default function TestimonialsAndSupport() {
   const [adminName, setAdminName] = useState('');
 
   const REPLIES_STORAGE_KEY = 'realacademiq_replies';
+  const isAdminMode = mode === 'admin';
 
   useEffect(() => {
     try {
@@ -245,46 +251,78 @@ export default function TestimonialsAndSupport() {
   return (
     <section className="py-12 bg-white">
       <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-slate-900 text-center mb-8">Testimonials</h2>
-        <form onSubmit={handleSubmit} className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
-          <h3 className="text-lg font-semibold text-slate-900 mb-4 text-left">Leave a Review</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <label htmlFor="review-name" className="block text-sm font-medium text-slate-700 mb-2">Name</label>
-              <input
-                id="review-name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                maxLength={60}
-                placeholder="Your name"
+        <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <h2 className="text-3xl font-bold text-slate-900 text-center">Testimonials</h2>
+          <p className="mt-3 text-center text-sm text-slate-600">
+            {isAdminMode
+              ? 'Admin moderation view. Reply controls are enabled only here.'
+              : 'Public review page. Customers can leave reviews and read admin responses.'}
+          </p>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-sm">
+            <Link
+              href="/testimonials"
+              className={`rounded-full px-4 py-2 font-medium transition-colors ${
+                isAdminMode
+                  ? 'border border-slate-300 text-slate-700 hover:bg-slate-100'
+                  : 'bg-emerald-600 text-white hover:bg-emerald-700'
+              }`}
+            >
+              Customer Testimonials Link
+            </Link>
+            <Link
+              href="/admin/testimonials"
+              className={`rounded-full px-4 py-2 font-medium transition-colors ${
+                isAdminMode
+                  ? 'bg-slate-900 text-white hover:bg-slate-800'
+                  : 'border border-slate-300 text-slate-700 hover:bg-slate-100'
+              }`}
+            >
+              Admin Reply Link
+            </Link>
+          </div>
+        </div>
+
+        {!isAdminMode && (
+          <form onSubmit={handleSubmit} className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4 text-left">Leave a Review</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label htmlFor="review-name" className="block text-sm font-medium text-slate-700 mb-2">Name</label>
+                <input
+                  id="review-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength={60}
+                  placeholder="Your name"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Rating</label>
+                <StarPicker rating={rating} onChange={setRating} />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="review-feedback" className="block text-sm font-medium text-slate-700 mb-2">Review</label>
+              <textarea
+                id="review-feedback"
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                maxLength={600}
+                rows={4}
+                placeholder="Share your experience"
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Rating</label>
-              <StarPicker rating={rating} onChange={setRating} />
+            <div className="flex items-center justify-between gap-4">
+              <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2 transition-colors">
+                Post Review
+              </button>
+              {submitMessage && <p className="text-sm text-slate-600">{submitMessage}</p>}
             </div>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="review-feedback" className="block text-sm font-medium text-slate-700 mb-2">Review</label>
-            <textarea
-              id="review-feedback"
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              maxLength={600}
-              rows={4}
-              placeholder="Share your experience"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            />
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2 transition-colors">
-              Post Review
-            </button>
-            {submitMessage && <p className="text-sm text-slate-600">{submitMessage}</p>}
-          </div>
-        </form>
+          </form>
+        )}
         <div className="space-y-8">
           {allTestimonials.map((t, idx) => {
             const reviewReplies = getRepliesForReview(idx);
@@ -312,7 +350,7 @@ export default function TestimonialsAndSupport() {
                 )}
 
                 {/* Reply form */}
-                {replyingToIdx === idx ? (
+                {isAdminMode && replyingToIdx === idx ? (
                   <div className="mt-4 border-t border-slate-200 pt-4">
                     <h4 className="text-sm font-semibold text-slate-900 mb-3">Admin Reply</h4>
                     <input
@@ -346,14 +384,14 @@ export default function TestimonialsAndSupport() {
                       </button>
                     </div>
                   </div>
-                ) : (
+                ) : isAdminMode ? (
                   <button
                     onClick={() => setReplyingToIdx(idx)}
                     className="mt-4 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
                   >
                     Reply (Admin)
                   </button>
-                )}
+                ) : null}
               </div>
             );
           })}
