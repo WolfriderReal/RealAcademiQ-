@@ -116,7 +116,7 @@ const STORAGE_KEY = 'realacademiq_visitor_reviews';
 const LEGACY_REVIEWS_MIGRATION_KEY = 'realacademiq_reviews_migrated_v1';
 const LEGACY_REPLIES_STORAGE_KEY = 'realacademiq_replies';
 const LEGACY_REPLIES_MIGRATION_KEY = 'realacademiq_replies_migrated_v1';
-const PUBLIC_REPLIES_REFRESH_MS = 3000;
+const PUBLIC_REPLIES_FALLBACK_REFRESH_MS = 15000;
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -258,6 +258,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
 
   useEffect(() => {
     let active = true;
+    let source: EventSource | null = null;
 
     const fetchReplies = async () => {
       try {
@@ -277,11 +278,30 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
 
     void fetchReplies();
 
+    if (!isAdminMode && typeof window !== 'undefined' && 'EventSource' in window) {
+      source = new EventSource('/api/testimonials/replies/stream');
+
+      source.onmessage = (event) => {
+        if (!active) return;
+
+        try {
+          const payload = JSON.parse(event.data);
+          setReplies(Array.isArray(payload.replies) ? payload.replies : []);
+        } catch {
+          // Ignore malformed stream payloads and continue with fallback polling.
+        }
+      };
+
+      source.onerror = () => {
+        // Keep fallback polling active if stream disconnects.
+      };
+    }
+
     const intervalId = window.setInterval(() => {
       if (!isAdminMode) {
         void fetchReplies();
       }
-    }, PUBLIC_REPLIES_REFRESH_MS);
+    }, PUBLIC_REPLIES_FALLBACK_REFRESH_MS);
 
     const onFocus = () => {
       if (!isAdminMode) {
@@ -307,6 +327,9 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
 
     return () => {
       active = false;
+      if (source) {
+        source.close();
+      }
       window.clearInterval(intervalId);
       window.removeEventListener('focus', onFocus);
       document.removeEventListener('visibilitychange', onVisibilityChange);
