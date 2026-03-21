@@ -412,7 +412,7 @@ const OrderForm = () => {
           <div className="space-y-6">
             {/* Order Summary */}
             <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-white mb-6">Review Your Order</h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6">Review Your Order</h2>
 
               <div className="space-y-4 mb-6 pb-6 border-b border-slate-200">
                 <div className="flex justify-between">
@@ -438,17 +438,17 @@ const OrderForm = () => {
               </div>
 
               {/* Pricing Breakdown */}
-              <div className="bg-white/[0.03] rounded-lg p-5 mb-6">
+              <div className="bg-slate-50 rounded-lg p-5 mb-6 border border-slate-200">
                 <div className="flex justify-between mb-3">
                   <span className="text-slate-700">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
-                  <span className="text-white">{formatDualAmount(formData.estimatedPrice)}</span>
+                  <span className="text-slate-700 font-semibold">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pb-3 border-b border-slate-200">
                   <span className="text-slate-700">Final Price Confirmation:</span>
-                  <span className="text-white">Pending Team Review (To be confirmed on WhatsApp)</span>
+                  <span className="text-slate-600 italic">Pending Team Review (To be confirmed on WhatsApp)</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold">
-                  <span className="text-white">Amount shown for payment prompt:</span>
+                  <span className="text-slate-700">Amount shown for payment prompt:</span>
                   <span className="text-orange-400">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
               </div>
@@ -500,7 +500,16 @@ const OrderForm = () => {
         {/* Step 3: Payment */}
         {step === 3 && !submitted && orderId && (
           <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
-            <h2 className="text-2xl font-bold text-white mb-2">Complete Payment</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-slate-900">Complete Payment</h2>
+              <button
+                onClick={() => setStep(2)}
+                className="inline-flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-900 border border-slate-300 hover:border-slate-400 rounded-lg px-3 py-2 transition"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180" />
+                Back to Review
+              </button>
+            </div>
 
             {/* Order ID Banner */}
             <div className="bg-orange-100 border border-orange-200 rounded-lg px-5 py-3 mb-6 flex items-center justify-between">
@@ -542,7 +551,7 @@ const OrderForm = () => {
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                   <CreditCard className="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 className="font-bold text-white">PayPal</h3>
+                <h3 className="font-bold text-slate-800">PayPal</h3>
                 <p className="text-xs text-slate-600 mt-1">Pay online, international cards</p>
               </button>
 
@@ -558,7 +567,7 @@ const OrderForm = () => {
                 <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
                   <Smartphone className="w-5 h-5 text-orange-600" />
                 </div>
-                <h3 className="font-bold text-white">M-Pesa STK Push</h3>
+                <h3 className="font-bold text-slate-800">M-Pesa STK Push</h3>
                 <p className="text-xs text-slate-600 mt-1">Get a prompt on your phone</p>
               </button>
 
@@ -574,7 +583,7 @@ const OrderForm = () => {
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
                   <span className="text-green-700 font-bold text-sm">M</span>
                 </div>
-                <h3 className="font-bold text-white">M-Pesa Manual</h3>
+                <h3 className="font-bold text-slate-800">M-Pesa Manual</h3>
                 <p className="text-xs text-slate-600 mt-1">Pay via Paybill & confirm</p>
               </button>
             </div>
@@ -669,9 +678,9 @@ const OrderForm = () => {
                     <div className="mt-5 pt-5 border-t border-orange-400/30">
                       <p className="text-xs font-semibold text-orange-900 mb-3">Or pay manually via Paybill:</p>
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-3 text-center">
+                        <div className="bg-slate-100 border border-slate-200 rounded-lg p-3 text-center">
                           <p className="text-xs text-slate-600">Business No.</p>
-                          <p className="font-bold text-white">714777</p>
+                          <p className="font-bold text-slate-900">714777</p>
                           <Button
                             type="button"
                             variant="outline"
@@ -681,9 +690,9 @@ const OrderForm = () => {
                             {copiedField === 'paybill' ? 'Copied' : 'Copy'}
                           </Button>
                         </div>
-                        <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-3 text-center">
+                        <div className="bg-slate-100 border border-slate-200 rounded-lg p-3 text-center">
                           <p className="text-xs text-slate-600">Account No.</p>
-                          <p className="font-bold text-white">440005939461</p>
+                          <p className="font-bold text-slate-900">440005939461</p>
                           <Button
                             type="button"
                             variant="outline"
@@ -725,9 +734,9 @@ const OrderForm = () => {
                   Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
+                  <div className="bg-slate-100 border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Business Number</p>
-                    <p className="text-xl font-bold text-white">714777</p>
+                    <p className="text-xl font-bold text-slate-900">714777</p>
                     <Button
                       type="button"
                       variant="outline"
@@ -737,9 +746,9 @@ const OrderForm = () => {
                       {copiedField === 'paybill' ? 'Copied' : 'Copy'}
                     </Button>
                   </div>
-                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
+                  <div className="bg-slate-100 border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Account Number</p>
-                    <p className="text-xl font-bold text-white">440005939461</p>
+                    <p className="text-xl font-bold text-slate-900">440005939461</p>
                     <Button
                       type="button"
                       variant="outline"
@@ -749,7 +758,7 @@ const OrderForm = () => {
                       {copiedField === 'account' ? 'Copied' : 'Copy'}
                     </Button>
                   </div>
-                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
+                  <div className="bg-slate-100 border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Amount</p>
                     <p className="text-xl font-bold text-orange-600">
                       KES {Math.round(Number(mpesaAmount || toKes(formData.estimatedPrice))).toLocaleString()}
@@ -758,7 +767,7 @@ const OrderForm = () => {
                       ~ USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                     </p>
                   </div>
-                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
+                  <div className="bg-slate-100 border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Your Order ID</p>
                     <p className="text-sm font-bold text-orange-600 font-mono">{orderId}</p>
                   </div>
@@ -788,11 +797,11 @@ const OrderForm = () => {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Order Submitted!</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-2">Order Submitted!</h2>
             <p className="text-slate-600 mb-6">Your order has been created successfully.</p>
 
             {/* Order ID */}
-            <div className="bg-white/[0.03] rounded-lg p-6 mb-6">
+            <div className="bg-slate-50 rounded-lg p-6 mb-6 border border-slate-100">
               <p className="text-sm text-slate-700 mb-2">Your Order ID</p>
               <p className="text-2xl font-bold text-orange-400 font-mono">{orderId}</p>
               {trackingToken && (
