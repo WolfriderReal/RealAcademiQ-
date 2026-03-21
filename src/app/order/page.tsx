@@ -199,11 +199,11 @@ const OrderForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-black">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-black to-neutral-900 text-white py-12">
+      <div className="bg-white border-b border-slate-200 text-slate-900 py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-white mb-6">
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-orange-600 mb-6">
             <ArrowRight className="w-4 h-4 rotate-180" />
             Back Home
           </Link>
@@ -221,8 +221,8 @@ const OrderForm = () => {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                     step >= s
-                      ? 'bg-orange-500 text-white'
-                      : 'bg-white/10 text-white/60'
+                      ? 'bg-orange-500 text-slate-900>'
+                      : 'bg-white/10 text-slate-600'
                   }`}
                 >
                   {s < step ? <CheckCircle className="w-5 h-5" /> : s}
@@ -250,12 +250,12 @@ const OrderForm = () => {
 
         {/* Step 1: Order Details */}
         {step === 1 && (
-          <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
-            <h2 className="text-2xl font-bold text-white mb-6">Tell us about your order</h2>
+          <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">Tell us about your order</h2>
 
             {/* Personal Information */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Your Information</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Your Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
@@ -265,7 +265,7 @@ const OrderForm = () => {
                     value={formData.customerName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="John Doe"
                   />
                 </div>
@@ -277,7 +277,7 @@ const OrderForm = () => {
                     value={formData.customerEmail}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -286,12 +286,12 @@ const OrderForm = () => {
 
             {/* Service Selection */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Select Service</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Select Service</h3>
               <select
                 name="serviceType"
                 value={formData.serviceType}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
               >
                 <option value="small_assignment">Small Assignments</option>
                 <option value="diploma_project">Diploma Projects</option>
@@ -302,14 +302,14 @@ const OrderForm = () => {
                 <option value="data_analysis">Data Analysis (SPSS, Stata, etc.)</option>
                 <option value="editing_proofreading">Editing &amp; Proofreading</option>
               </select>
-              <p className="text-xs text-white/60 mt-2">
+              <p className="text-xs text-slate-600 mt-2">
                 Pricing is confirmed on WhatsApp after requirement review.
               </p>
             </div>
 
             {/* Order Details */}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Order Details</h3>
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Order Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Topic *</label>
@@ -319,7 +319,7 @@ const OrderForm = () => {
                     value={formData.topic}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="Enter your topic"
                   />
                 </div>
@@ -331,7 +331,7 @@ const OrderForm = () => {
                     value={formData.deadline}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                   />
                 </div>
                 <div>
@@ -342,7 +342,7 @@ const OrderForm = () => {
                     value={formData.pageCount}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                   />
                 </div>
                 <div>
@@ -351,7 +351,7 @@ const OrderForm = () => {
                     name="formatStyle"
                     value={formData.formatStyle}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                   >
                     <option>APA</option>
                     <option>MLA</option>
@@ -369,13 +369,13 @@ const OrderForm = () => {
                     required
                     min="1"
                     step="0.01"
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="Enter your proposed budget"
                   />
-                  <p className="text-xs text-white/60 mt-1">
+                  <p className="text-xs text-slate-600 mt-1">
                     You can enter your preferred international amount now. Final price will be confirmed by our team after review.
                   </p>
-                  <p className="text-xs text-white/60 mt-1">
+                  <p className="text-xs text-slate-600 mt-1">
                     Local payments (M-Pesa) use KES equivalent: KES {toKes(formData.estimatedPrice).toLocaleString()} (Approx).
                   </p>
                 </div>
@@ -389,7 +389,7 @@ const OrderForm = () => {
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition resize-none"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition resize-none"
                   placeholder="Provide detailed instructions about your order..."
                 />
               </div>
@@ -399,7 +399,7 @@ const OrderForm = () => {
             <div className="flex gap-4">
               <Button
                 type="submit"
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold"
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-slate-900> py-3 rounded-lg font-semibold"
               >
                 Continue to Review <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -411,29 +411,29 @@ const OrderForm = () => {
         {step === 2 && (
           <div className="space-y-6">
             {/* Order Summary */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
-              <h2 className="text-2xl font-bold text-white mb-6">Review Your Order</h2>
+            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
+              <h2 className="text-2xl font-bold text-slate-900> mb-6">Review Your Order</h2>
 
-              <div className="space-y-4 mb-6 pb-6 border-b border-white/10">
+              <div className="space-y-4 mb-6 pb-6 border-b border-slate-200">
                 <div className="flex justify-between">
                   <span className="text-slate-700">Service Type:</span>
-                  <span className="font-semibold text-white">{serviceLabels[formData.serviceType] ?? formData.serviceType}</span>
+                  <span className="font-semibold text-slate-900">{serviceLabels[formData.serviceType] ?? formData.serviceType}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-700">Topic:</span>
-                  <span className="font-semibold text-white">{formData.topic}</span>
+                  <span className="font-semibold text-slate-900">{formData.topic}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-700">Pages/Length:</span>
-                  <span className="font-semibold text-white">{formData.pageCount}</span>
+                  <span className="font-semibold text-slate-900">{formData.pageCount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-700">Deadline:</span>
-                  <span className="font-semibold text-white">{new Date(formData.deadline).toLocaleDateString()}</span>
+                  <span className="font-semibold text-slate-900">{new Date(formData.deadline).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-700">Format:</span>
-                  <span className="font-semibold text-white">{formData.formatStyle}</span>
+                  <span className="font-semibold text-slate-900">{formData.formatStyle}</span>
                 </div>
               </div>
 
@@ -441,14 +441,14 @@ const OrderForm = () => {
               <div className="bg-white/[0.03] rounded-lg p-5 mb-6">
                 <div className="flex justify-between mb-3">
                   <span className="text-slate-700">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
-                  <span className="text-white">{formatDualAmount(formData.estimatedPrice)}</span>
+                  <span className="text-slate-900>">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
-                <div className="flex justify-between mb-3 pb-3 border-b border-white/10">
+                <div className="flex justify-between mb-3 pb-3 border-b border-slate-200">
                   <span className="text-slate-700">Final Price Confirmation:</span>
-                  <span className="text-white">Pending Team Review (To be confirmed on WhatsApp)</span>
+                  <span className="text-slate-900>">Pending Team Review (To be confirmed on WhatsApp)</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold">
-                  <span className="text-white">Amount shown for payment prompt:</span>
+                  <span className="text-slate-900>">Amount shown for payment prompt:</span>
                   <span className="text-orange-400">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
               </div>
@@ -461,13 +461,13 @@ const OrderForm = () => {
               </div>
 
               {/* Share files/instructions via WhatsApp before payment */}
-              <div className="border border-white/10 rounded-lg p-5 mb-6">
+              <div className="border border-slate-200 rounded-lg p-5 mb-6">
                 <a href={whatsappFilesLink} target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-500/10">
                     Share Supporting Files via WhatsApp
                   </Button>
                 </a>
-                <p className="text-xs text-white/60 mt-2">
+                <p className="text-xs text-slate-600 mt-2">
                   Send supporting files and reconfirm your assignment description through WhatsApp.
                 </p>
               </div>
@@ -484,7 +484,7 @@ const OrderForm = () => {
                 <Button
                   onClick={handleSubmit as any}
                   disabled={loading}
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3"
+                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-slate-900> py-3"
                 >
                   {loading ? (
                     <><Loader className="w-4 h-4 mr-2 animate-spin" />Creating Order...</>
@@ -499,8 +499,8 @@ const OrderForm = () => {
 
         {/* Step 3: Payment */}
         {step === 3 && !submitted && orderId && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
-            <h2 className="text-2xl font-bold text-white mb-2">Complete Payment</h2>
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
+            <h2 className="text-2xl font-bold text-slate-900> mb-2">Complete Payment</h2>
 
             {/* Order ID Banner */}
             <div className="bg-orange-100 border border-orange-200 rounded-lg px-5 py-3 mb-6 flex items-center justify-between">
@@ -516,7 +516,7 @@ const OrderForm = () => {
                   <p className="text-3xl font-bold text-orange-400">${formData.estimatedPrice.toFixed(2)} USD</p>
                   <p className="text-sm font-semibold text-slate-700 mt-1">KES {toKes(formData.estimatedPrice).toLocaleString()} (Local equivalent)</p>
                 </div>
-                <p className="text-xs text-white/60">Final price confirmed on WhatsApp after team review</p>
+                <p className="text-xs text-slate-600">Final price confirmed on WhatsApp after team review</p>
               </div>
             </div>
 
@@ -536,14 +536,14 @@ const OrderForm = () => {
                 className={`text-left border-2 rounded-xl p-5 transition ${
                   selectedPayment === 'paypal'
                     ? 'border-blue-300 bg-blue-100'
-                    : 'border-white/10 hover:border-blue-300'
+                    : 'border-slate-200 hover:border-blue-300'
                 }`}
               >
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                   <CreditCard className="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 className="font-bold text-white">PayPal</h3>
-                <p className="text-xs text-white/60 mt-1">Pay online, international cards</p>
+                <h3 className="font-bold text-slate-900>">PayPal</h3>
+                <p className="text-xs text-slate-600 mt-1">Pay online, international cards</p>
               </button>
 
               {/* M-Pesa STK */}
@@ -552,14 +552,14 @@ const OrderForm = () => {
                 className={`text-left border-2 rounded-xl p-5 transition ${
                   selectedPayment === 'mpesa'
                     ? 'border-orange-300 bg-orange-100'
-                    : 'border-white/10 hover:border-orange-300'
+                    : 'border-slate-200 hover:border-orange-300'
                 }`}
               >
                 <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
                   <Smartphone className="w-5 h-5 text-orange-600" />
                 </div>
-                <h3 className="font-bold text-white">M-Pesa STK Push</h3>
-                <p className="text-xs text-white/60 mt-1">Get a prompt on your phone</p>
+                <h3 className="font-bold text-slate-900>">M-Pesa STK Push</h3>
+                <p className="text-xs text-slate-600 mt-1">Get a prompt on your phone</p>
               </button>
 
               {/* Manual Paybill */}
@@ -568,14 +568,14 @@ const OrderForm = () => {
                 className={`text-left border-2 rounded-xl p-5 transition ${
                   selectedPayment === 'manual'
                     ? 'border-green-300 bg-green-100'
-                    : 'border-white/10 hover:border-green-300'
+                    : 'border-slate-200 hover:border-green-300'
                 }`}
               >
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
                   <span className="text-green-700 font-bold text-sm">M</span>
                 </div>
-                <h3 className="font-bold text-white">M-Pesa Manual</h3>
-                <p className="text-xs text-white/60 mt-1">Pay via Paybill & confirm</p>
+                <h3 className="font-bold text-slate-900>">M-Pesa Manual</h3>
+                <p className="text-xs text-slate-600 mt-1">Pay via Paybill & confirm</p>
               </button>
             </div>
 
@@ -601,7 +601,7 @@ const OrderForm = () => {
                 </p>
                 <Button
                   onClick={handlePaypalPay}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-semibold"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-slate-900> py-3 font-semibold"
                 >
                   Continue to PayPal <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
@@ -620,10 +620,10 @@ const OrderForm = () => {
                       Check your phone <strong>{mpesaPhone}</strong> for the M-Pesa payment prompt.
                       Enter your M-Pesa PIN to complete payment. (Don&apos;t close this page)
                     </p>
-                    <p className="text-xs text-white/60 mt-3">After paying, click below to track your order.</p>
+                    <p className="text-xs text-slate-600 mt-3">After paying, click below to track your order.</p>
                     <Button
                       onClick={() => setSubmitted(true)}
-                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-white px-8"
+                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-slate-900> px-8"
                     >
                       I&apos;ve Completed Payment &rarr; Track Order
                     </Button>
@@ -657,7 +657,7 @@ const OrderForm = () => {
                     <Button
                       onClick={handleMpesaSTK}
                       disabled={paymentLoading}
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 font-semibold"
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-slate-900> py-3 font-semibold"
                     >
                       {paymentLoading ? (
                         <><Loader className="w-4 h-4 mr-2 animate-spin" />Sending STK Prompt...</>
@@ -669,9 +669,9 @@ const OrderForm = () => {
                     <div className="mt-5 pt-5 border-t border-orange-400/30">
                       <p className="text-xs font-semibold text-orange-900 mb-3">Or pay manually via Paybill:</p>
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white/[0.06] border border-white/10 rounded-lg p-3 text-center">
-                          <p className="text-xs text-white/60">Business No.</p>
-                          <p className="font-bold text-white">714777</p>
+                        <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-3 text-center">
+                          <p className="text-xs text-slate-600">Business No.</p>
+                          <p className="font-bold text-slate-900>">714777</p>
                           <Button
                             type="button"
                             variant="outline"
@@ -681,9 +681,9 @@ const OrderForm = () => {
                             {copiedField === 'paybill' ? 'Copied' : 'Copy'}
                           </Button>
                         </div>
-                        <div className="bg-white/[0.06] border border-white/10 rounded-lg p-3 text-center">
-                          <p className="text-xs text-white/60">Account No.</p>
-                          <p className="font-bold text-white">440005939461</p>
+                        <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-3 text-center">
+                          <p className="text-xs text-slate-600">Account No.</p>
+                          <p className="font-bold text-slate-900>">440005939461</p>
                           <Button
                             type="button"
                             variant="outline"
@@ -725,9 +725,9 @@ const OrderForm = () => {
                   Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
+                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Business Number</p>
-                    <p className="text-xl font-bold text-white">714777</p>
+                    <p className="text-xl font-bold text-slate-900>">714777</p>
                     <Button
                       type="button"
                       variant="outline"
@@ -737,9 +737,9 @@ const OrderForm = () => {
                       {copiedField === 'paybill' ? 'Copied' : 'Copy'}
                     </Button>
                   </div>
-                  <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
+                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Account Number</p>
-                    <p className="text-xl font-bold text-white">440005939461</p>
+                    <p className="text-xl font-bold text-slate-900>">440005939461</p>
                     <Button
                       type="button"
                       variant="outline"
@@ -749,16 +749,16 @@ const OrderForm = () => {
                       {copiedField === 'account' ? 'Copied' : 'Copy'}
                     </Button>
                   </div>
-                  <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
+                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Amount</p>
                     <p className="text-xl font-bold text-orange-600">
                       KES {Math.round(Number(mpesaAmount || toKes(formData.estimatedPrice))).toLocaleString()}
                     </p>
-                    <p className="text-xs text-white/60 mt-1">
+                    <p className="text-xs text-slate-600 mt-1">
                       ~ USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                     </p>
                   </div>
-                  <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
+                  <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Your Order ID</p>
                     <p className="text-sm font-bold text-orange-600 font-mono">{orderId}</p>
                   </div>
@@ -766,7 +766,7 @@ const OrderForm = () => {
                 <p className="text-xs text-slate-600 mb-4">Go to M-Pesa &rarr; Lipa na M-Pesa &rarr; Pay Bill &rarr; enter details above</p>
                 <Button
                   onClick={handleManualConfirmWithWhatsapp}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 font-semibold"
+                  className="w-full bg-green-600 hover:bg-green-700 text-slate-900> py-3 font-semibold"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
                   I&apos;ve Sent the Payment → Track My Order
@@ -784,11 +784,11 @@ const OrderForm = () => {
 
         {/* Order Confirmation (after manual/STK confirm) */}
         {submitted && orderId && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30 text-center">
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Order Submitted!</h2>
+            <h2 className="text-3xl font-bold text-slate-900> mb-2">Order Submitted!</h2>
             <p className="text-slate-600 mb-6">Your order has been created successfully.</p>
 
             {/* Order ID */}
@@ -798,7 +798,7 @@ const OrderForm = () => {
               {trackingToken && (
                 <>
                   <p className="text-sm text-slate-700 mt-3 mb-1">Tracking Token</p>
-                  <p className="text-sm font-semibold text-white font-mono break-all">{trackingToken}</p>
+                  <p className="text-sm font-semibold text-slate-900 font-mono break-all">{trackingToken}</p>
                 </>
               )}
               <p className="text-xs text-slate-600 mt-2">Save this ID to track your order</p>
@@ -818,7 +818,7 @@ const OrderForm = () => {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={`/track-order?orderId=${orderId}&token=${encodeURIComponent(trackingToken || '')}`}>
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3">
+                <Button className="bg-orange-500 hover:bg-orange-600 text-slate-900> px-8 py-3">
                   Track Your Order
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
