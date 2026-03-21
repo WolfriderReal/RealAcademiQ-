@@ -47,8 +47,35 @@ export type StoredOrder = {
 
 function generateOrderId(date = new Date()): string {
   const stamp = date.toISOString().slice(0, 10).replace(/-/g, '')
-  const random = Math.random().toString(36).slice(2, 8).toUpperCase()
+  const random = randomBytes(4).toString('hex').toUpperCase()
   return `ORD-${stamp}-${random}`
+}
+
+async function orderIdExists(orderId: string): Promise<boolean> {
+  if (fallbackOrders.has(orderId)) {
+    return true
+  }
+
+  try {
+    const doc = await adminDb.collection('orders').doc(orderId).get()
+    return doc.exists
+  } catch (error) {
+    // If Firestore is unavailable, rely on in-memory checks and randomness.
+    console.error('Could not verify order ID uniqueness in Firebase:', error)
+    return false
+  }
+}
+
+async function generateUniqueOrderId(maxAttempts = 8): Promise<string> {
+  for (let i = 0; i < maxAttempts; i += 1) {
+    const candidate = generateOrderId()
+    const exists = await orderIdExists(candidate)
+    if (!exists) {
+      return candidate
+    }
+  }
+
+  throw new Error('Failed to allocate a unique order ID after multiple attempts')
 }
 
 function generateTrackingToken(): string {
@@ -105,7 +132,7 @@ export async function createOrder(input: {
 }): Promise<StoredOrder> {
   const now = new Date().toISOString()
   const normalizedPrice = Math.round(input.estimatedPrice * 100) / 100
-  const orderId = generateOrderId()
+  const orderId = await generateUniqueOrderId()
 
   const order: StoredOrder = {
     id: orderId,
