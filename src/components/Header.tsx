@@ -50,7 +50,7 @@ export default function Header() {
           </div>
 
           <div className="flex flex-col items-end gap-1">
-            <p className="hidden lg:block text-[11px] leading-none text-emerald-200/90">
+            <p className="hidden lg:block text-xs font-bold leading-none tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-lime-300 to-emerald-200 drop-shadow-[0_0_10px_rgba(163,230,53,0.8)] animate-[blink_1s_steps(2,start)_infinite]">
               Your generosity inspires us every day.
             </p>
             <div className="flex items-center gap-3 relative">
