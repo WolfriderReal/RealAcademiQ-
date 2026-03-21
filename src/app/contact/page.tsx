@@ -54,21 +54,21 @@ export default function Contact() {
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black py-20 md:py-24">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
             <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">Contact Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
               Get in Touch
             </h1>
-            <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
               Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll get back to you promptly.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-neutral-950">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
             {/* Contact Info */}
@@ -102,7 +102,7 @@ export default function Contact() {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-green-400/30 bg-green-500/10 px-4 py-3 text-sm font-semibold text-green-300 hover:bg-green-500/20 transition-colors"
+                className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-green-400/30 bg-green-500/10 px-4 py-3 text-sm font-semibold text-green-700 hover:bg-green-100 transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 Click to Chat on WhatsApp
@@ -116,9 +116,9 @@ export default function Contact() {
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
-                  <p className="text-white/65 text-center mb-6">We&apos;ll get back to you within 2 hours.</p>
-                  <Button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', subject: '', message: '' }); }} variant="outline" className="rounded-xl border-white/20 text-white hover:bg-white/10">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Message Sent!</h3>
+                  <p className="text-slate-600 text-center mb-6">We&apos;ll get back to you within 2 hours.</p>
+                  <Button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', subject: '', message: '' }); }} variant="outline" className="rounded-xl border-slate-300 text-slate-900 hover:bg-slate-100">
                     Send Another Message
                   </Button>
                 </div>

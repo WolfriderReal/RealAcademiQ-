@@ -66,14 +66,14 @@ export default function Services() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black pt-20 md:pt-24 pb-8">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 pt-20 md:pt-24 pb-8">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
             <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">Our Services</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
               Academic Excellence Services
             </h1>
-            <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
               Professional support with transparent pricing for International and Ksh Local Payments.
             </p>
           </div>
@@ -81,10 +81,10 @@ export default function Services() {
       </section>
 
       {/* Services Grid */}
-      <section className="pt-8 pb-20 bg-neutral-950">
+      <section className="pt-8 pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-8 bg-emerald-500/10 border border-emerald-400/30 rounded-xl p-4">
-            <p className="text-sm md:text-base text-emerald-200 font-medium">
+            <p className="text-sm md:text-base text-emerald-700 font-medium">
               All our works are checked for plagiarism and AI to ensure compliance with your needs.
             </p>
           </div>
@@ -125,13 +125,13 @@ export default function Services() {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 bg-black/70">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               How It Works
             </h2>
-            <p className="text-lg text-white/70">
+            <p className="text-lg text-slate-600">
               Simple process to get your academic work done professionally
             </p>
           </div>
@@ -149,8 +149,8 @@ export default function Services() {
                 <div className="w-16 h-16 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                <p className="text-white/70">{item.desc}</p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-slate-600">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -174,7 +174,7 @@ export default function Services() {
                 </Button>
               </Link>
               <Link href="/track-order">
-                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-white px-8 py-4 text-lg rounded-xl">
+                <Button size="lg" variant="outline" className="border-white hover:bg-slate-100 text-slate-900 px-8 py-4 text-lg rounded-xl">
                   Track Existing Order
                 </Button>
               </Link>

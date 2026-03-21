@@ -15,14 +15,14 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black py-20 md:py-32">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-6">
               Achieve Academic
-              <span className="text-orange-400"> Excellence</span>
+              <span className="text-orange-500"> Excellence</span>
             </h1>
-            <p className="text-xl text-white/75 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
               Professional assistance with assignments, thesis, projects, and proposals.
               Get expert help from qualified academics and elevate your academic performance.
             </p>
@@ -33,12 +33,12 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/track-order">
-                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-white/30 text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-slate-300 text-slate-900 hover:bg-slate-100">
                   Track Order
                 </Button>
               </Link>
               <Link href="/services">
-                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-white/30 text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-slate-300 text-slate-900 hover:bg-slate-100">
                   View Services
                 </Button>
               </Link>
@@ -48,7 +48,7 @@ export default function Home() {
       </section>
 
       {/* Benefits Banner */}
-      <section className="py-12 bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 border-y border-white/10">
+      <section className="py-12 bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="flex items-start gap-4">
@@ -56,8 +56,8 @@ export default function Home() {
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-white mb-1">Real-Time Tracking</h3>
-                <p className="text-sm text-white/70">Monitor your order progress at every phase with instant updates</p>
+                <h3 className="font-semibold text-slate-900 mb-1">Real-Time Tracking</h3>
+                <p className="text-sm text-slate-600">Monitor your order progress at every phase with instant updates</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -65,8 +65,8 @@ export default function Home() {
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-white mb-1">Multiple Payment Options</h3>
-                <p className="text-sm text-white/70">Pay securely via PayPal or M-Pesa with flexible payment terms</p>
+                <h3 className="font-semibold text-slate-900 mb-1">Multiple Payment Options</h3>
+                <p className="text-sm text-slate-600">Pay securely via PayPal or M-Pesa with flexible payment terms</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
@@ -74,8 +74,8 @@ export default function Home() {
                 <CheckCircle className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="font-semibold text-white mb-1">Secure & Confidential</h3>
-                <p className="text-sm text-white/70">Your information is encrypted and never shared with third parties</p>
+                <h3 className="font-semibold text-slate-900 mb-1">Secure & Confidential</h3>
+                <p className="text-sm text-slate-600">Your information is encrypted and never shared with third parties</p>
               </div>
             </div>
           </div>
@@ -84,13 +84,13 @@ export default function Home() {
 
 
       {/* Services Section */}
-      <section className="py-20 bg-neutral-950">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               Our Services
             </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Comprehensive academic support tailored to your needs
             </p>
           </div>
@@ -115,11 +115,11 @@ export default function Home() {
       <TestimonialsAndSupport />
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-neutral-900/70">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                 Why Choose RealAcademiQ?
               </h2>
               <div className="space-y-4">
@@ -133,7 +133,7 @@ export default function Home() {
                 ].map((feature, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-green-600 shrink-0" />
-                    <span className="text-white/75">{feature}</span>
+                    <span className="text-slate-700">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -150,7 +150,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/track-order">
-                  <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                  <Button variant="outline" className="w-full border-slate-300 text-slate-900 hover:bg-slate-100">
                     Track Existing Order
                   </Button>
                 </Link>
@@ -161,13 +161,13 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-black/70">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               How It Works
             </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Everything you need to know about submitting and tracking your orders
             </p>
           </div>
@@ -199,11 +199,11 @@ export default function Home() {
                 a: 'Absolutely. We use industry-standard encryption and never share your personal information. Your privacy is our priority.'
               }
             ].map((faq, i) => (
-              <details key={i} className="bg-white/[0.03] rounded-lg p-6 border border-white/10 hover:border-orange-400/30 transition">
-                <summary className="font-semibold text-white cursor-pointer flex items-center gap-2">
+              <details key={i} className="bg-white rounded-lg p-6 border border-slate-200 hover:border-orange-400/30 transition">
+                <summary className="font-semibold text-slate-900 cursor-pointer flex items-center gap-2">
                   <span className="text-orange-400 text-xl">+</span> {faq.q}
                 </summary>
-                <p className="text-white/70 mt-4 ml-8">{faq.a}</p>
+                <p className="text-slate-600 mt-4 ml-8">{faq.a}</p>
               </details>
             ))}
           </div>
@@ -215,7 +215,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Ready to Achieve Your Academic Goals?
             </h2>
-            <p className="text-xl text-orange-50/90 mb-8">
+            <p className="text-xl text-white/90 mb-8">
               Join thousands of successful students who trust RealAcademiQ. Submit your order today and get expert help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -225,7 +225,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/track-order">
-                <Button size="lg" variant="outline" className="border-white hover:bg-white/10 text-white px-8 py-4 text-lg rounded-xl">
+                <Button size="lg" variant="outline" className="border-white hover:bg-slate-100 text-slate-900 px-8 py-4 text-lg rounded-xl">
                   Track Your Order
                 </Button>
               </Link>

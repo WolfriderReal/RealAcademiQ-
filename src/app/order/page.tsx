@@ -221,7 +221,7 @@ const OrderForm = () => {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
                     step >= s
-                      ? 'bg-orange-500 text-slate-900>'
+                      ? 'bg-orange-500 text-white'
                       : 'bg-white/10 text-slate-600'
                   }`}
                 >
@@ -399,7 +399,7 @@ const OrderForm = () => {
             <div className="flex gap-4">
               <Button
                 type="submit"
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-slate-900> py-3 rounded-lg font-semibold"
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold"
               >
                 Continue to Review <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -412,7 +412,7 @@ const OrderForm = () => {
           <div className="space-y-6">
             {/* Order Summary */}
             <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-slate-900> mb-6">Review Your Order</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">Review Your Order</h2>
 
               <div className="space-y-4 mb-6 pb-6 border-b border-slate-200">
                 <div className="flex justify-between">
@@ -441,14 +441,14 @@ const OrderForm = () => {
               <div className="bg-white/[0.03] rounded-lg p-5 mb-6">
                 <div className="flex justify-between mb-3">
                   <span className="text-slate-700">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
-                  <span className="text-slate-900>">{formatDualAmount(formData.estimatedPrice)}</span>
+                  <span className="text-white">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pb-3 border-b border-slate-200">
                   <span className="text-slate-700">Final Price Confirmation:</span>
-                  <span className="text-slate-900>">Pending Team Review (To be confirmed on WhatsApp)</span>
+                  <span className="text-white">Pending Team Review (To be confirmed on WhatsApp)</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold">
-                  <span className="text-slate-900>">Amount shown for payment prompt:</span>
+                  <span className="text-white">Amount shown for payment prompt:</span>
                   <span className="text-orange-400">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
               </div>
@@ -484,7 +484,7 @@ const OrderForm = () => {
                 <Button
                   onClick={handleSubmit as any}
                   disabled={loading}
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-slate-900> py-3"
+                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3"
                 >
                   {loading ? (
                     <><Loader className="w-4 h-4 mr-2 animate-spin" />Creating Order...</>
@@ -500,7 +500,7 @@ const OrderForm = () => {
         {/* Step 3: Payment */}
         {step === 3 && !submitted && orderId && (
           <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
-            <h2 className="text-2xl font-bold text-slate-900> mb-2">Complete Payment</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">Complete Payment</h2>
 
             {/* Order ID Banner */}
             <div className="bg-orange-100 border border-orange-200 rounded-lg px-5 py-3 mb-6 flex items-center justify-between">
@@ -542,7 +542,7 @@ const OrderForm = () => {
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                   <CreditCard className="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 className="font-bold text-slate-900>">PayPal</h3>
+                <h3 className="font-bold text-white">PayPal</h3>
                 <p className="text-xs text-slate-600 mt-1">Pay online, international cards</p>
               </button>
 
@@ -558,7 +558,7 @@ const OrderForm = () => {
                 <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
                   <Smartphone className="w-5 h-5 text-orange-600" />
                 </div>
-                <h3 className="font-bold text-slate-900>">M-Pesa STK Push</h3>
+                <h3 className="font-bold text-white">M-Pesa STK Push</h3>
                 <p className="text-xs text-slate-600 mt-1">Get a prompt on your phone</p>
               </button>
 
@@ -574,7 +574,7 @@ const OrderForm = () => {
                 <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
                   <span className="text-green-700 font-bold text-sm">M</span>
                 </div>
-                <h3 className="font-bold text-slate-900>">M-Pesa Manual</h3>
+                <h3 className="font-bold text-white">M-Pesa Manual</h3>
                 <p className="text-xs text-slate-600 mt-1">Pay via Paybill & confirm</p>
               </button>
             </div>
@@ -601,7 +601,7 @@ const OrderForm = () => {
                 </p>
                 <Button
                   onClick={handlePaypalPay}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-slate-900> py-3 font-semibold"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 font-semibold"
                 >
                   Continue to PayPal <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
@@ -623,7 +623,7 @@ const OrderForm = () => {
                     <p className="text-xs text-slate-600 mt-3">After paying, click below to track your order.</p>
                     <Button
                       onClick={() => setSubmitted(true)}
-                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-slate-900> px-8"
+                      className="mt-4 bg-orange-500 hover:bg-orange-600 text-white px-8"
                     >
                       I&apos;ve Completed Payment &rarr; Track Order
                     </Button>
@@ -657,7 +657,7 @@ const OrderForm = () => {
                     <Button
                       onClick={handleMpesaSTK}
                       disabled={paymentLoading}
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-slate-900> py-3 font-semibold"
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 font-semibold"
                     >
                       {paymentLoading ? (
                         <><Loader className="w-4 h-4 mr-2 animate-spin" />Sending STK Prompt...</>
@@ -671,7 +671,7 @@ const OrderForm = () => {
                       <div className="grid grid-cols-2 gap-3">
                         <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-3 text-center">
                           <p className="text-xs text-slate-600">Business No.</p>
-                          <p className="font-bold text-slate-900>">714777</p>
+                          <p className="font-bold text-white">714777</p>
                           <Button
                             type="button"
                             variant="outline"
@@ -683,7 +683,7 @@ const OrderForm = () => {
                         </div>
                         <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-3 text-center">
                           <p className="text-xs text-slate-600">Account No.</p>
-                          <p className="font-bold text-slate-900>">440005939461</p>
+                          <p className="font-bold text-white">440005939461</p>
                           <Button
                             type="button"
                             variant="outline"
@@ -727,7 +727,7 @@ const OrderForm = () => {
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Business Number</p>
-                    <p className="text-xl font-bold text-slate-900>">714777</p>
+                    <p className="text-xl font-bold text-white">714777</p>
                     <Button
                       type="button"
                       variant="outline"
@@ -739,7 +739,7 @@ const OrderForm = () => {
                   </div>
                   <div className="bg-white/[0.06] border border-slate-200 rounded-lg p-4 text-center">
                     <p className="text-xs text-slate-600 mb-1">Account Number</p>
-                    <p className="text-xl font-bold text-slate-900>">440005939461</p>
+                    <p className="text-xl font-bold text-white">440005939461</p>
                     <Button
                       type="button"
                       variant="outline"
@@ -766,7 +766,7 @@ const OrderForm = () => {
                 <p className="text-xs text-slate-600 mb-4">Go to M-Pesa &rarr; Lipa na M-Pesa &rarr; Pay Bill &rarr; enter details above</p>
                 <Button
                   onClick={handleManualConfirmWithWhatsapp}
-                  className="w-full bg-green-600 hover:bg-green-700 text-slate-900> py-3 font-semibold"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 font-semibold"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
                   I&apos;ve Sent the Payment → Track My Order
@@ -788,7 +788,7 @@ const OrderForm = () => {
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="text-3xl font-bold text-slate-900> mb-2">Order Submitted!</h2>
+            <h2 className="text-3xl font-bold text-white mb-2">Order Submitted!</h2>
             <p className="text-slate-600 mb-6">Your order has been created successfully.</p>
 
             {/* Order ID */}
@@ -818,7 +818,7 @@ const OrderForm = () => {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href={`/track-order?orderId=${orderId}&token=${encodeURIComponent(trackingToken || '')}`}>
-                <Button className="bg-orange-500 hover:bg-orange-600 text-slate-900> px-8 py-3">
+                <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3">
                   Track Your Order
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>

@@ -48,15 +48,15 @@ export default function TrackOrder() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-900 to-black">
-      <div className="bg-gradient-to-r from-black to-neutral-900 text-white py-12">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
+      <div className="bg-gradient-to-r from-white to-slate-100 text-slate-900 py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-slate-300 hover:text-white mb-6">
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6">
             <ArrowRight className="w-4 h-4 rotate-180" />
             Back Home
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold">Track Your Order via WhatsApp</h1>
-          <p className="text-slate-300 mt-2">Fast support updates from our team with no manual Order ID entry.</p>
+          <p className="text-slate-600 mt-2">Fast support updates from our team with no manual Order ID entry.</p>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ export default function TrackOrder() {
             </Button>
           </a>
 
-          <p className="text-xs text-white/60 mt-4">
+          <p className="text-xs text-slate-500 mt-4">
             Support is available 24/7. You can also share files and payment confirmation in the same chat.
           </p>
         </div>
@@ -84,9 +84,9 @@ export default function TrackOrder() {
           <h3 className="text-xl font-bold text-slate-900 mb-6">How Your Order Progresses</h3>
           <div className="space-y-4">
             {phases.map((phase) => (
-              <div key={phase.title} className="flex items-start gap-4 rounded-lg border border-white/10 bg-white/[0.02] p-4">
-                <div className="w-10 h-10 rounded-lg bg-orange-500/15 border border-orange-400/30 flex items-center justify-center shrink-0">
-                  <phase.icon className="w-5 h-5 text-orange-300" />
+              <div key={phase.title} className="flex items-start gap-4 rounded-lg border border-slate-200 bg-white p-4">
+                <div className="w-10 h-10 rounded-lg bg-orange-100 border border-orange-200 flex items-center justify-center shrink-0">
+                  <phase.icon className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-slate-900">{phase.title}</h4>
@@ -97,12 +97,12 @@ export default function TrackOrder() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-black to-neutral-900 text-white rounded-2xl p-8">
+        <div className="bg-gradient-to-r from-white to-slate-100 text-slate-900 rounded-2xl p-8">
           <div className="flex items-start gap-4">
             <CheckCircle className="w-6 h-6 flex-shrink-0 mt-1" />
             <div>
               <h3 className="text-xl font-bold mb-2">Need Quick Help?</h3>
-              <p className="text-slate-300 mb-4">
+              <p className="text-slate-600 mb-4">
                 Use WhatsApp for order updates, payment confirmation, and file sharing in one place.
               </p>
               <a href={whatsappTrackLink} target="_blank" rel="noopener noreferrer" className="inline-block">

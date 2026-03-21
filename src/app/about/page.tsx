@@ -36,14 +36,14 @@ export default function About() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-neutral-950 via-neutral-900 to-black py-20 md:py-24">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
             <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">About Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
               Empowering Academic Success
             </h1>
-            <p className="mt-5 text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
               We&apos;re dedicated to helping students achieve their academic goals through professional,
               ethical assistance and guidance.
             </p>
@@ -52,14 +52,14 @@ export default function About() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-neutral-950">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                 Our Story
               </h2>
-              <div className="space-y-4 text-white/70">
+              <div className="space-y-4 text-slate-600">
                 <p>
                   Founded by a team of experienced academics and educators, RealAcademiQ was born
                   from the desire to make quality education accessible to all students worldwide.
@@ -98,7 +98,7 @@ export default function About() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-neutral-900 text-white">
+      <section className="py-20 bg-slate-100 text-slate-900">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
@@ -109,7 +109,7 @@ export default function About() {
                 <div className="text-3xl md:text-4xl font-bold text-orange-500 mb-2">
                   {stat.number}
                 </div>
-                <div className="text-slate-300">{stat.label}</div>
+                <div className="text-slate-600">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -117,13 +117,13 @@ export default function About() {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 bg-black/70">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               Our Values
             </h2>
-            <p className="text-lg text-white/70">
+            <p className="text-lg text-slate-600">
               The principles that guide everything we do
             </p>
           </div>
@@ -148,7 +148,7 @@ export default function About() {
       <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-500">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
               Ready to Start Your Academic Journey?
             </h2>
             <p className="text-xl text-orange-50/90 mb-8">

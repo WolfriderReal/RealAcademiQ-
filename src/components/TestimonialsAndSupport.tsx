@@ -77,9 +77,9 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function TestimonialsAndSupport() {
   return (
-    <section className="py-12 bg-neutral-950">
+    <section className="py-12 bg-white">
       <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-white text-center mb-8">Testimonials</h2>
+        <h2 className="text-3xl font-bold text-slate-900 text-center mb-8">Testimonials</h2>
         <div className="space-y-8">
           {testimonials.map((t, idx) => (
             <div key={idx} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-center">
