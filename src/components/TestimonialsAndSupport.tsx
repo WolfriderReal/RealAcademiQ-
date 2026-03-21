@@ -116,6 +116,7 @@ const STORAGE_KEY = 'realacademiq_visitor_reviews';
 const LEGACY_REVIEWS_MIGRATION_KEY = 'realacademiq_reviews_migrated_v1';
 const LEGACY_REPLIES_STORAGE_KEY = 'realacademiq_replies';
 const LEGACY_REPLIES_MIGRATION_KEY = 'realacademiq_replies_migrated_v1';
+const PUBLIC_REPLIES_REFRESH_MS = 3000;
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -280,7 +281,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
       if (!isAdminMode) {
         void fetchReplies();
       }
-    }, 15000);
+    }, PUBLIC_REPLIES_REFRESH_MS);
 
     const onFocus = () => {
       if (!isAdminMode) {
@@ -288,12 +289,28 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
       }
     };
 
+    const onVisibilityChange = () => {
+      if (!isAdminMode && document.visibilityState === 'visible') {
+        void fetchReplies();
+      }
+    };
+
+    const onOnline = () => {
+      if (!isAdminMode) {
+        void fetchReplies();
+      }
+    };
+
     window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    window.addEventListener('online', onOnline);
 
     return () => {
       active = false;
       window.clearInterval(intervalId);
       window.removeEventListener('focus', onFocus);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('online', onOnline);
     };
   }, [isAdminMode]);
 
