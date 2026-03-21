@@ -49,19 +49,20 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className="flex flex-col items-end gap-1">
-            <p className="hidden lg:block text-xs font-bold leading-none tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-lime-300 to-emerald-200 drop-shadow-[0_0_10px_rgba(163,230,53,0.8)] animate-[blink_1s_steps(2,start)_infinite]">
-              Your generosity inspires us every day.
-            </p>
-            <div className="flex items-center gap-3 relative">
-            <button
-              onClick={() => setShowDonationModal(!showDonationModal)}
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200 transition-colors"
-              title="Support us"
-            >
-              <Heart className="w-4 h-4" />
-              Buy Me Coffee
-            </button>
+          <div className="flex items-center gap-3 relative">
+            <div className="hidden sm:flex flex-col items-start">
+              <p className="text-[11px] font-bold leading-none tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-lime-300 to-emerald-200 drop-shadow-[0_0_10px_rgba(163,230,53,0.8)] animate-[blink_1s_steps(2,start)_infinite] mb-1">
+                Your generosity inspires us every day.
+              </p>
+              <button
+                onClick={() => setShowDonationModal(!showDonationModal)}
+                className="inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200 transition-colors"
+                title="Support us"
+              >
+                <Heart className="w-4 h-4" />
+                Buy Me Coffee
+              </button>
+            </div>
 
             {showDonationModal && (
               <div className="absolute top-12 right-0 bg-white border border-slate-200 rounded-lg shadow-2xl p-4 min-w-80 z-50">
@@ -144,7 +145,6 @@ export default function Header() {
                 Submit Order
               </Button>
             </Link>
-            </div>
           </div>
         </div>
       </div>
