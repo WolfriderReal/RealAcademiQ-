@@ -258,26 +258,44 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
   useEffect(() => {
     let active = true;
 
-    fetch('/api/testimonials/replies', { cache: 'no-store' })
-      .then(async (response) => {
+    const fetchReplies = async () => {
+      try {
+        const response = await fetch('/api/testimonials/replies', { cache: 'no-store' });
         if (!response.ok) {
           throw new Error('Failed to fetch replies');
         }
-        return response.json();
-      })
-      .then((data) => {
+
+        const data = await response.json();
         if (!active) return;
         setReplies(Array.isArray(data.replies) ? data.replies : []);
-      })
-      .catch(() => {
+      } catch {
         if (!active) return;
         setReplies([]);
-      });
+      }
+    };
+
+    void fetchReplies();
+
+    const intervalId = window.setInterval(() => {
+      if (!isAdminMode) {
+        void fetchReplies();
+      }
+    }, 15000);
+
+    const onFocus = () => {
+      if (!isAdminMode) {
+        void fetchReplies();
+      }
+    };
+
+    window.addEventListener('focus', onFocus);
 
     return () => {
       active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', onFocus);
     };
-  }, []);
+  }, [isAdminMode]);
 
   useEffect(() => {
     if (!isAdminMode) return;
