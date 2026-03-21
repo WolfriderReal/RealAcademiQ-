@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, MessageSquare, CheckCircle, Clock, CreditCard, FileCheck2, Download } from 'lucide-react'
+import { trackClientEvent } from '@/lib/telemetry'
 
 type PublicAdminReply = {
   id: string
@@ -37,6 +38,10 @@ export default function TrackOrder() {
   const [trackedOrder, setTrackedOrder] = useState<PublicTrackedOrder | null>(null)
   const [loadingOrder, setLoadingOrder] = useState(false)
   const [trackError, setTrackError] = useState('')
+
+  useEffect(() => {
+    void trackClientEvent('track_order_page_viewed')
+  }, [])
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -146,7 +151,15 @@ export default function TrackOrder() {
             Our team will verify and send your current order status.
           </p>
 
-          <a href={whatsappTrackLink} target="_blank" rel="noopener noreferrer" className="block">
+          <a
+            href={whatsappTrackLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+            onClick={() => {
+              void trackClientEvent('track_order_whatsapp_clicked', { orderId })
+            }}
+          >
             <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-3">
               <MessageSquare className="w-4 h-4 mr-2" />
               Track Your Order via WhatsApp
@@ -159,8 +172,8 @@ export default function TrackOrder() {
 
           <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
             <h4 className="text-sm font-semibold text-slate-900 mb-2">Live Order Status</h4>
-            {loadingOrder && <p className="text-sm text-slate-600">Loading order status...</p>}
-            {!loadingOrder && trackError && <p className="text-sm text-red-600">{trackError}</p>}
+            {loadingOrder && <p aria-live="polite" className="text-sm text-slate-600">Loading order status...</p>}
+            {!loadingOrder && trackError && <p role="alert" aria-live="assertive" className="text-sm text-red-600">{trackError}</p>}
             {!loadingOrder && !trackError && trackedOrder && (
               <div className="space-y-1 text-sm text-slate-700">
                 <p><span className="font-semibold text-slate-900">Order:</span> {trackedOrder.id}</p>
@@ -217,7 +230,15 @@ export default function TrackOrder() {
               <p className="text-slate-600 mb-4">
                 Use WhatsApp for order updates, payment confirmation, and file sharing in one place.
               </p>
-              <a href={whatsappTrackLink} target="_blank" rel="noopener noreferrer" className="inline-block">
+              <a
+                href={whatsappTrackLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+                onClick={() => {
+                  void trackClientEvent('track_order_whatsapp_quick_help_clicked', { orderId })
+                }}
+              >
                 <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                   Open WhatsApp Support
                   <ArrowRight className="ml-2 w-4 h-4" />

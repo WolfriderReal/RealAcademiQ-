@@ -1,18 +1,10 @@
 import nodemailer from 'nodemailer'
 import { Resend } from 'resend'
+import { enforceRateLimit, getClientIp } from '@/lib/rateLimit'
+import { getRequestId, logError, logInfo } from '@/lib/observability'
 
 const MAX_REQUESTS_PER_HOUR = 20
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000 // 1 hour
-
-const rateLimitStore = new Map<string, { count: number; firstRequestAt: number }>()
-
-function getClientIp(req: Request) {
-  const forwarded = req.headers.get('x-forwarded-for')
-  if (forwarded) {
-    return forwarded.split(',')[0].trim()
-  }
-  return req.headers.get('x-real-ip') ?? 'unknown'
-}
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -23,24 +15,24 @@ function sanitizeInput(value: string): string {
 }
 
 export async function POST(req: Request) {
+  const requestId = getRequestId(req)
   const ip = getClientIp(req)
-  const now = Date.now()
 
-  const existing = rateLimitStore.get(ip)
-  if (existing) {
-    if (now - existing.firstRequestAt > RATE_LIMIT_WINDOW_MS) {
-      rateLimitStore.set(ip, { count: 1, firstRequestAt: now })
-    } else if (existing.count >= MAX_REQUESTS_PER_HOUR) {
-      return new Response(JSON.stringify({ error: 'Too many requests, please try again later.' }), {
-        status: 429,
-        headers: { 'Content-Type': 'application/json' },
-      })
-    } else {
-      existing.count += 1
-      rateLimitStore.set(ip, existing)
-    }
-  } else {
-    rateLimitStore.set(ip, { count: 1, firstRequestAt: now })
+  const limit = enforceRateLimit({
+    key: `contact:${ip}`,
+    limit: MAX_REQUESTS_PER_HOUR,
+    windowMs: RATE_LIMIT_WINDOW_MS,
+  })
+
+  if (!limit.ok) {
+    return new Response(JSON.stringify({ error: 'Too many requests, please try again later.' }), {
+      status: 429,
+      headers: {
+        'Content-Type': 'application/json',
+        'Retry-After': String(limit.retryAfterSeconds),
+        'X-Request-Id': requestId,
+      },
+    })
   }
 
   let payload: any
@@ -49,7 +41,7 @@ export async function POST(req: Request) {
   } catch (error) {
     return new Response(JSON.stringify({ error: 'Invalid JSON payload.' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 
@@ -61,21 +53,21 @@ export async function POST(req: Request) {
   if (!name || !email || !message) {
     return new Response(JSON.stringify({ error: 'Name, email, and message are required.' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 
   if (!isValidEmail(email)) {
     return new Response(JSON.stringify({ error: 'Invalid email address.' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 
   if (name.length > 100 || subject.length > 150 || message.length > 5000) {
     return new Response(JSON.stringify({ error: 'One or more fields exceed the allowed length.' }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 
@@ -93,7 +85,7 @@ export async function POST(req: Request) {
     )
     return new Response(JSON.stringify({ error: 'Recipient email is not configured.' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 
@@ -121,16 +113,17 @@ export async function POST(req: Request) {
       })
 
       if (!result.error) {
+        logInfo('/api/contact', 'message_forwarded_resend', { requestId, ip })
         return new Response(JSON.stringify({ success: true }), {
           status: 200,
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
         })
       }
 
-      console.error('Resend email send failed:', result.error)
+      logError('/api/contact', 'resend_send_failed', result.error, { requestId, ip })
       // Continue to SMTP fallback below if available.
     } catch (error: any) {
-      console.error('Resend email send threw an error:', error)
+      logError('/api/contact', 'resend_send_threw', error, { requestId, ip })
       // Continue to SMTP fallback below if available.
     }
   }
@@ -141,7 +134,7 @@ export async function POST(req: Request) {
     )
     return new Response(JSON.stringify({ error: 'Email configuration is incomplete.' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 
@@ -165,27 +158,16 @@ export async function POST(req: Request) {
       replyTo: email,
     })
 
+    logInfo('/api/contact', 'message_forwarded_smtp', { requestId, ip })
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   } catch (error: any) {
-    console.error('Contact form email send failed:', error)
-    if (error && error.response) {
-      console.error('SMTP Response:', error.response)
-    }
-    if (error && error.code) {
-      console.error('SMTP Error Code:', error.code)
-    }
-    if (error && error.command) {
-      console.error('SMTP Command:', error.command)
-    }
-    if (error && error.stack) {
-      console.error('SMTP Stack:', error.stack)
-    }
+    logError('/api/contact', 'smtp_send_failed', error, { requestId, ip })
     return new Response(JSON.stringify({ error: 'Failed to send message. Please try again later.' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Request-Id': requestId },
     })
   }
 }

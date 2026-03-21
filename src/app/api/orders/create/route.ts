@@ -1,7 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createOrder } from '@/lib/orderStore'
+import { enforceRateLimit, getClientIp } from '@/lib/rateLimit'
+import { getRequestId, logError, logInfo } from '@/lib/observability'
 
 export async function POST(request: NextRequest) {
+  const requestId = getRequestId(request)
+  const ip = getClientIp(request)
+  const limit = enforceRateLimit({
+    key: `orders:create:${ip}`,
+    limit: 15,
+    windowMs: 60 * 60 * 1000,
+  })
+
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: 'Too many order requests. Please try again later.' },
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(limit.retryAfterSeconds),
+          'X-Request-Id': requestId,
+        },
+      }
+    )
+  }
+
   try {
     const body = await request.json()
     
@@ -24,14 +47,14 @@ export async function POST(request: NextRequest) {
     if (!customerName || !customerEmail || !topic || !deadline) {
       return NextResponse.json(
         { error: 'Missing required fields' },
-        { status: 400 }
+        { status: 400, headers: { 'X-Request-Id': requestId } }
       )
     }
 
     if (!Number.isFinite(numericEstimatedPrice) || numericEstimatedPrice <= 0) {
       return NextResponse.json(
         { error: 'Please provide a valid proposed price.' },
-        { status: 400 }
+        { status: 400, headers: { 'X-Request-Id': requestId } }
       )
     }
 
@@ -48,6 +71,13 @@ export async function POST(request: NextRequest) {
       estimatedPrice: numericEstimatedPrice,
     })
 
+    logInfo('/api/orders/create', 'order_created', {
+      requestId,
+      ip,
+      orderId: order.id,
+      serviceType,
+    })
+
     return NextResponse.json(
       {
         success: true,
@@ -56,13 +86,13 @@ export async function POST(request: NextRequest) {
         orderNumber: order.id,
         trackingToken: order.trackingToken,
       },
-      { status: 201 }
+      { status: 201, headers: { 'X-Request-Id': requestId } }
     )
   } catch (error) {
-    console.error('Order creation error:', error)
+    logError('/api/orders/create', 'order_create_failed', error, { requestId, ip })
     return NextResponse.json(
       { error: 'Failed to create order' },
-      { status: 500 }
+      { status: 500, headers: { 'X-Request-Id': requestId } }
     )
   }
 }

@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server'
+import { isDuplicateEvent } from '@/lib/idempotency'
+import { getRequestId, logError, logInfo } from '@/lib/observability'
 
 type CallbackItem = {
   Name: string
@@ -10,6 +12,7 @@ function findItem(items: CallbackItem[], name: string): CallbackItem | undefined
 }
 
 export async function POST(req: Request) {
+  const requestId = getRequestId(req)
   const callbackUrl = new URL(req.url)
   const invoiceFromQuery = callbackUrl.searchParams.get('invoiceId') ?? ''
 
@@ -17,7 +20,7 @@ export async function POST(req: Request) {
   if (callbackSecret) {
     const incoming = req.headers.get('x-callback-secret')
     if (incoming !== callbackSecret) {
-      return NextResponse.json({ error: 'Unauthorized callback request.' }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized callback request.' }, { status: 401, headers: { 'X-Request-Id': requestId } })
     }
   }
 
@@ -25,12 +28,12 @@ export async function POST(req: Request) {
   try {
     payload = await req.json()
   } catch {
-    return NextResponse.json({ error: 'Invalid callback payload.' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid callback payload.' }, { status: 400, headers: { 'X-Request-Id': requestId } })
   }
 
   const callback = payload?.Body?.stkCallback
   if (!callback) {
-    return NextResponse.json({ error: 'Missing Body.stkCallback in callback payload.' }, { status: 400 })
+    return NextResponse.json({ error: 'Missing Body.stkCallback in callback payload.' }, { status: 400, headers: { 'X-Request-Id': requestId } })
   }
 
   const resultCode = Number(callback.ResultCode)
@@ -44,7 +47,29 @@ export async function POST(req: Request) {
   const phoneNumber = String(findItem(metadataItems, 'PhoneNumber')?.Value ?? '')
   const invoiceId = String(findItem(metadataItems, 'AccountReference')?.Value ?? invoiceFromQuery).trim()
 
+  const dedupeKey = `${checkoutRequestId}:${mpesaReceipt || resultCode}`
+  if (checkoutRequestId && isDuplicateEvent('mpesa_callback', dedupeKey)) {
+    return NextResponse.json(
+      {
+        provider: 'mpesa',
+        acknowledged: true,
+        duplicate: true,
+        checkoutRequestId,
+      },
+      { headers: { 'X-Request-Id': requestId } }
+    )
+  }
+
   const success = resultCode === 0
+
+  logInfo('/api/payments/mpesa/callback', 'callback_received', {
+    requestId,
+    success,
+    resultCode,
+    invoiceId,
+    checkoutRequestId,
+    mpesaReceipt,
+  })
 
   // Persist callback details + receipt idempotency in your database keyed by checkoutRequestId/mpesaReceipt.
   return NextResponse.json({
@@ -60,5 +85,5 @@ export async function POST(req: Request) {
     mpesaReceipt,
     merchantRequestId,
     checkoutRequestId,
-  })
+  }, { headers: { 'X-Request-Id': requestId } })
 }

@@ -18,6 +18,17 @@ function decodeBasicAuth(encoded: string): string {
   }
 }
 
+function secureEquals(left: string, right: string): boolean {
+  if (left.length !== right.length) return false
+
+  let mismatch = 0
+  for (let i = 0; i < left.length; i += 1) {
+    mismatch |= left.charCodeAt(i) ^ right.charCodeAt(i)
+  }
+
+  return mismatch === 0
+}
+
 export function middleware(req: NextRequest) {
   const username = process.env.ADMIN_USERNAME?.trim()
   const password = process.env.ADMIN_PASSWORD?.trim()
@@ -37,7 +48,7 @@ export function middleware(req: NextRequest) {
   const incomingUser = separator >= 0 ? decoded.slice(0, separator).trim() : ''
   const incomingPass = separator >= 0 ? decoded.slice(separator + 1).trim() : ''
 
-  if (incomingUser !== username || incomingPass !== password) {
+  if (!secureEquals(incomingUser, username) || !secureEquals(incomingPass, password)) {
     return unauthorizedResponse()
   }
 

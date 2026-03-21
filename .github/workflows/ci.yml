@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Start app
+        run: |
+          npm run start -- --port 3001 > /tmp/next.log 2>&1 &
+
+      - name: Wait for app readiness
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3001 >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not become ready" >&2
+          cat /tmp/next.log >&2 || true
+          exit 1
+
+      - name: Smoke tests
+        run: BASE_URL=http://127.0.0.1:3001 npm run smoke

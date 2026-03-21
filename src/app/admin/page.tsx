@@ -173,6 +173,7 @@ export default function AdminDashboard() {
                   <h2 className="text-2xl font-bold text-slate-900">{selectedOrder.id}</h2>
                   <button
                     onClick={() => setSelectedOrder(null)}
+                    aria-label="Close order details"
                     className="text-slate-400 hover:text-slate-600 text-2xl"
                   >
                     ×

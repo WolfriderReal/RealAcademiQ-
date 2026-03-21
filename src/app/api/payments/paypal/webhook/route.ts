@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server'
+import { isDuplicateEvent } from '@/lib/idempotency'
+import { getRequestId, logError, logInfo } from '@/lib/observability'
 
 function getPaypalBaseUrl(): string {
   const mode = process.env.PAYPAL_MODE?.toLowerCase() === 'live' ? 'live' : 'sandbox'
@@ -38,9 +40,10 @@ function headerOrEmpty(req: Request, key: string): string {
 }
 
 export async function POST(req: Request) {
+  const requestId = getRequestId(req)
   const webhookId = process.env.PAYPAL_WEBHOOK_ID
   if (!webhookId) {
-    return NextResponse.json({ error: 'PAYPAL_WEBHOOK_ID is not configured.' }, { status: 500 })
+    return NextResponse.json({ error: 'PAYPAL_WEBHOOK_ID is not configured.' }, { status: 500, headers: { 'X-Request-Id': requestId } })
   }
 
   const rawBody = await req.text()
@@ -49,7 +52,7 @@ export async function POST(req: Request) {
   try {
     event = JSON.parse(rawBody)
   } catch {
-    return NextResponse.json({ error: 'Invalid webhook JSON payload.' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid webhook JSON payload.' }, { status: 400, headers: { 'X-Request-Id': requestId } })
   }
 
   const transmissionId = headerOrEmpty(req, 'paypal-transmission-id')
@@ -59,7 +62,7 @@ export async function POST(req: Request) {
   const transmissionSig = headerOrEmpty(req, 'paypal-transmission-sig')
 
   if (!transmissionId || !transmissionTime || !certUrl || !authAlgo || !transmissionSig) {
-    return NextResponse.json({ error: 'Missing PayPal verification headers.' }, { status: 400 })
+    return NextResponse.json({ error: 'Missing PayPal verification headers.' }, { status: 400, headers: { 'X-Request-Id': requestId } })
   }
 
   const accessToken = await getPaypalAccessToken()
@@ -82,16 +85,31 @@ export async function POST(req: Request) {
   })
 
   if (!verifyResponse.ok) {
-    await verifyResponse.text()
+    const body = await verifyResponse.text()
+    logError('/api/payments/paypal/webhook', 'verification_request_failed', body, { requestId })
     return NextResponse.json(
       { error: 'Failed to verify PayPal webhook signature.' },
-      { status: 502 }
+      { status: 502, headers: { 'X-Request-Id': requestId } }
     )
   }
 
   const verifyPayload = await verifyResponse.json()
   if (verifyPayload.verification_status !== 'SUCCESS') {
-    return NextResponse.json({ error: 'Invalid PayPal webhook signature.' }, { status: 401 })
+    return NextResponse.json({ error: 'Invalid PayPal webhook signature.' }, { status: 401, headers: { 'X-Request-Id': requestId } })
+  }
+
+  const eventId = String(event.id ?? '').trim()
+  if (eventId && isDuplicateEvent('paypal_webhook', eventId)) {
+    return NextResponse.json(
+      {
+        provider: 'paypal',
+        verified: true,
+        duplicate: true,
+        eventId,
+        message: 'Duplicate webhook ignored.',
+      },
+      { headers: { 'X-Request-Id': requestId } }
+    )
   }
 
   const eventType = String(event.event_type ?? '')
@@ -102,6 +120,14 @@ export async function POST(req: Request) {
     eventType === 'PAYMENT.CAPTURE.COMPLETED' ||
     eventType === 'CHECKOUT.ORDER.APPROVED' ||
     eventType === 'CHECKOUT.ORDER.COMPLETED'
+
+  logInfo('/api/payments/paypal/webhook', 'event_verified', {
+    requestId,
+    eventId,
+    eventType,
+    invoiceId,
+    isPaidEvent,
+  })
 
   // Persist this state transition in your database keyed by invoiceId.
   return NextResponse.json({
@@ -114,5 +140,5 @@ export async function POST(req: Request) {
     message: isPaidEvent
       ? 'Payment verified. Unlock order for writer execution.'
       : 'Webhook received and verified. No unlock action taken.',
-  })
+  }, { headers: { 'X-Request-Id': requestId } })
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, CheckCircle, AlertCircle, Loader, CreditCard, Smartphone } from 'lucide-react'
+import { trackClientEvent } from '@/lib/telemetry'
 
 const OrderForm = () => {
   const [usdToKes, setUsdToKes] = useState(130)
@@ -46,6 +47,10 @@ const OrderForm = () => {
   const [paypalAmount, setPaypalAmount] = useState('')
   const [mpesaAmount, setMpesaAmount] = useState('')
   const [copiedField, setCopiedField] = useState<string | null>(null)
+
+  useEffect(() => {
+    void trackClientEvent('order_page_viewed')
+  }, [])
 
   const serviceLabels: Record<string, string> = {
     small_assignment: 'Small Assignments',
@@ -101,6 +106,10 @@ const OrderForm = () => {
       setTrackingToken(data.trackingToken ?? null)
       setMpesaPhone(formData.customerPhone)
       setStep(3)
+      void trackClientEvent('order_created', {
+        orderId: data.orderId,
+        serviceType: formData.serviceType,
+      })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
@@ -128,6 +137,10 @@ const OrderForm = () => {
       return: `${window.location.origin}/track-order?orderId=${orderId}&token=${encodeURIComponent(trackingToken || '')}`,
       cancel_return: `${window.location.origin}/order`,
       no_shipping: '1',
+    })
+    void trackClientEvent('paypal_checkout_redirected', {
+      orderId,
+      amount: normalizedAmount,
     })
     window.location.href = `https://www.paypal.com/cgi-bin/webscr?${params.toString()}`
   }
@@ -160,6 +173,10 @@ const OrderForm = () => {
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'STK push failed')
       setStkSent(true)
+      void trackClientEvent('mpesa_stk_prompt_sent', {
+        orderId,
+        amount: normalizedAmount,
+      })
     } catch (err: any) {
       setPaymentError(err.message)
     } finally {
@@ -169,6 +186,7 @@ const OrderForm = () => {
 
   const handleManualConfirm = () => {
     setSubmitted(true)
+    void trackClientEvent('manual_payment_marked_complete', { orderId })
   }
 
   const handleManualConfirmWithWhatsapp = () => {
@@ -185,6 +203,10 @@ const OrderForm = () => {
     )}`
 
     window.open(whatsappPaymentNotifyLink, '_blank', 'noopener,noreferrer')
+    void trackClientEvent('manual_payment_confirmed_via_whatsapp', {
+      orderId,
+      amount: normalizedAmount,
+    })
     handleManualConfirm()
   }
 
@@ -242,7 +264,7 @@ const OrderForm = () => {
 
         {/* Error Alert */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+          <div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
             <span className="text-red-800">{error}</span>
           </div>
@@ -250,7 +272,7 @@ const OrderForm = () => {
 
         {/* Step 1: Order Details */}
         {step === 1 && (
-          <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
+          <form onSubmit={(e) => { e.preventDefault(); setStep(2); void trackClientEvent('order_review_started', { serviceType: formData.serviceType }) }} className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Tell us about your order</h2>
 
             {/* Personal Information */}
@@ -462,7 +484,17 @@ const OrderForm = () => {
 
               {/* Share files/instructions via WhatsApp before payment */}
               <div className="border border-slate-200 rounded-lg p-5 mb-6">
-                <a href={whatsappFilesLink} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={whatsappFilesLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => {
+                    void trackClientEvent('order_requirements_shared_whatsapp_clicked', {
+                      orderId,
+                      serviceType: formData.serviceType,
+                    })
+                  }}
+                >
                   <Button variant="outline" className="w-full border-green-300 text-green-700 hover:bg-green-500/10">
                     Share Supporting Files via WhatsApp
                   </Button>
@@ -531,7 +563,7 @@ const OrderForm = () => {
 
             {/* Payment Error */}
             {paymentError && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+              <div role="alert" aria-live="assertive" className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
                 <span className="text-red-800">{paymentError}</span>
               </div>
@@ -837,7 +869,14 @@ const OrderForm = () => {
                   Return Home
                 </Button>
               </Link>
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  void trackClientEvent('order_whatsapp_support_clicked', { orderId })
+                }}
+              >
                 <Button variant="outline" className="px-8 py-3">
                   WhatsApp Support
                 </Button>
