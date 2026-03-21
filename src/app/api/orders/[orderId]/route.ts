@@ -10,6 +10,7 @@ function toPublicOrderView(order: any) {
     paymentStatus: order.paymentStatus,
     currentPhase: order.currentPhase,
     phases: order.phases,
+    adminReplies: order.adminReplies || [],
     createdAt: order.createdAt,
     updatedAt: order.updatedAt,
   }

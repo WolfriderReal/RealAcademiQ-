@@ -5,15 +5,81 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, MessageSquare, CheckCircle, Clock, CreditCard, FileCheck2, Download } from 'lucide-react'
 
+type PublicAdminReply = {
+  id: string
+  adminName: string
+  message: string
+  createdAt: string
+}
+
+type PublicTrackedOrder = {
+  id: string
+  serviceType: string
+  deadline: string
+  status: string
+  paymentStatus: string
+  currentPhase: number
+  phases: Array<{
+    phase: number
+    name: string
+    completed: boolean
+    completedAt?: string
+    description: string
+  }>
+  adminReplies?: PublicAdminReply[]
+  createdAt: string
+  updatedAt: string
+}
+
 export default function TrackOrder() {
   const [orderId, setOrderId] = useState('-')
   const [token, setToken] = useState('-')
+  const [trackedOrder, setTrackedOrder] = useState<PublicTrackedOrder | null>(null)
+  const [loadingOrder, setLoadingOrder] = useState(false)
+  const [trackError, setTrackError] = useState('')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setOrderId(params.get('orderId')?.trim() || '-')
     setToken(params.get('token')?.trim() || '-')
   }, [])
+
+  useEffect(() => {
+    if (!orderId || orderId === '-' || !token || token === '-') return
+
+    let active = true
+    setLoadingOrder(true)
+    setTrackError('')
+
+    fetch(`/api/orders/${encodeURIComponent(orderId)}?token=${encodeURIComponent(token)}`)
+      .then(async (response) => {
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}))
+          throw new Error(data.error || 'Unable to load order status')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        if (active) {
+          setTrackedOrder(data.order || null)
+        }
+      })
+      .catch((error: Error) => {
+        if (active) {
+          setTrackError(error.message)
+          setTrackedOrder(null)
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setLoadingOrder(false)
+        }
+      })
+
+    return () => {
+      active = false
+    }
+  }, [orderId, token])
 
   const whatsappTrackLink = `https://wa.me/254101582198?text=${encodeURIComponent(
     `Hello RealAcademiQ, I want to track my order.\n\nOrder ID: ${orderId}\nTracking Token: ${token}\n\nPlease share my latest status and next step.`
@@ -78,6 +144,21 @@ export default function TrackOrder() {
           <p className="text-xs text-slate-500 mt-4">
             Support is available 24/7. You can also share files and payment confirmation in the same chat.
           </p>
+
+          <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <h4 className="text-sm font-semibold text-slate-900 mb-2">Live Order Status</h4>
+            {loadingOrder && <p className="text-sm text-slate-600">Loading order status...</p>}
+            {!loadingOrder && trackError && <p className="text-sm text-red-600">{trackError}</p>}
+            {!loadingOrder && !trackError && trackedOrder && (
+              <div className="space-y-1 text-sm text-slate-700">
+                <p><span className="font-semibold text-slate-900">Order:</span> {trackedOrder.id}</p>
+                <p><span className="font-semibold text-slate-900">Service:</span> {trackedOrder.serviceType}</p>
+                <p><span className="font-semibold text-slate-900">Status:</span> {trackedOrder.status.replace(/_/g, ' ')}</p>
+                <p><span className="font-semibold text-slate-900">Payment:</span> {trackedOrder.paymentStatus}</p>
+                <p><span className="font-semibold text-slate-900">Updated:</span> {new Date(trackedOrder.updatedAt).toLocaleString()}</p>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
@@ -96,6 +177,25 @@ export default function TrackOrder() {
             ))}
           </div>
         </div>
+
+        {trackedOrder && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Replies From Admin</h3>
+            {(trackedOrder.adminReplies || []).length === 0 ? (
+              <p className="text-slate-600">No admin replies yet. We will update you shortly.</p>
+            ) : (
+              <div className="space-y-3">
+                {trackedOrder.adminReplies?.map((reply) => (
+                  <div key={reply.id} className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+                    <p className="text-sm font-semibold text-emerald-900">{reply.adminName}</p>
+                    <p className="text-sm text-emerald-800 mt-1">{reply.message}</p>
+                    <p className="text-xs text-emerald-700 mt-2">{new Date(reply.createdAt).toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="bg-gradient-to-r from-white to-slate-100 text-slate-900 rounded-2xl p-8">
           <div className="flex items-start gap-4">

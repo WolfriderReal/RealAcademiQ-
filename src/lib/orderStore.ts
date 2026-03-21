@@ -11,6 +11,13 @@ type OrderPhase = {
   description: string
 }
 
+export type AdminReply = {
+  id: string
+  adminName: string
+  message: string
+  createdAt: string
+}
+
 export type StoredOrder = {
   id: string
   trackingToken: string
@@ -33,6 +40,7 @@ export type StoredOrder = {
   createdAt: string
   updatedAt: string
   notes?: string
+  adminReplies?: AdminReply[]
   downloadLink?: string
   previewLink?: string
 }
@@ -148,4 +156,36 @@ export async function getOrderById(orderId: string): Promise<StoredOrder | null>
     console.error('Error fetching order:', error)
     return null
   }
+}
+
+export async function appendAdminReply(input: {
+  orderId: string
+  adminName: string
+  message: string
+}): Promise<StoredOrder | null> {
+  const order = await getOrderById(input.orderId)
+  if (!order) return null
+
+  const now = new Date().toISOString()
+  const nextReply: AdminReply = {
+    id: `reply-${Date.now()}`,
+    adminName: input.adminName,
+    message: input.message,
+    createdAt: now,
+  }
+
+  const updatedOrder: StoredOrder = {
+    ...order,
+    adminReplies: [...(order.adminReplies || []), nextReply],
+    updatedAt: now,
+  }
+
+  try {
+    await adminDb.collection('orders').doc(input.orderId).set(updatedOrder, { merge: true })
+  } catch (error) {
+    console.error('Firebase update failed, writing reply to in-memory fallback store:', error)
+    fallbackOrders.set(input.orderId, updatedOrder)
+  }
+
+  return updatedOrder
 }

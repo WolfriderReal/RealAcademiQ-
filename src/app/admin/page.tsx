@@ -8,6 +8,9 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<StoredOrder[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedOrder, setSelectedOrder] = useState<StoredOrder | null>(null)
+  const [replyAdminName, setReplyAdminName] = useState('RealAcademiQ Admin')
+  const [replyMessage, setReplyMessage] = useState('')
+  const [isReplySaving, setIsReplySaving] = useState(false)
 
   useEffect(() => {
     fetchOrders()
@@ -40,6 +43,38 @@ export default function AdminDashboard() {
     partial: 'bg-yellow-100 text-yellow-800',
     completed: 'bg-green-100 text-green-800',
     failed: 'bg-red-200 text-red-900',
+  }
+
+  async function submitAdminReply() {
+    if (!selectedOrder) return
+
+    const message = replyMessage.trim()
+    const adminName = replyAdminName.trim()
+    if (!adminName || !message) return
+
+    setIsReplySaving(true)
+    try {
+      const response = await fetch(`/api/admin/orders/${encodeURIComponent(selectedOrder.id)}/reply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminName, message }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save reply')
+      }
+
+      const data = await response.json()
+      const updated = data.order as StoredOrder
+
+      setSelectedOrder(updated)
+      setOrders((prev) => prev.map((order) => (order.id === updated.id ? updated : order)))
+      setReplyMessage('')
+    } catch (error) {
+      console.error('Error saving admin reply:', error)
+    } finally {
+      setIsReplySaving(false)
+    }
   }
 
   return (
@@ -210,6 +245,49 @@ export default function AdminDashboard() {
                     <p className="mt-1 text-slate-600">{selectedOrder.notes}</p>
                   </div>
                 )}
+
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Admin Replies</label>
+                  <div className="space-y-2">
+                    {(selectedOrder.adminReplies || []).length === 0 ? (
+                      <p className="text-sm text-slate-500">No replies yet.</p>
+                    ) : (
+                      selectedOrder.adminReplies?.map((reply) => (
+                        <div key={reply.id} className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+                          <p className="text-sm font-semibold text-emerald-900">{reply.adminName}</p>
+                          <p className="text-sm text-emerald-800 mt-1">{reply.message}</p>
+                          <p className="text-xs text-emerald-700 mt-2">{new Date(reply.createdAt).toLocaleString()}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-slate-200 p-4">
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Reply to Customer Request</label>
+                  <input
+                    value={replyAdminName}
+                    onChange={(e) => setReplyAdminName(e.target.value)}
+                    placeholder="Admin name"
+                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm mb-2"
+                  />
+                  <textarea
+                    value={replyMessage}
+                    onChange={(e) => setReplyMessage(e.target.value)}
+                    placeholder="Write your reply to the customer's order request"
+                    rows={3}
+                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+                  />
+                  <div className="mt-3 flex justify-end">
+                    <button
+                      onClick={submitAdminReply}
+                      disabled={isReplySaving || !replyAdminName.trim() || !replyMessage.trim()}
+                      className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
+                    >
+                      {isReplySaving ? 'Sending...' : 'Send Reply'}
+                    </button>
+                  </div>
+                </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Progress</label>
