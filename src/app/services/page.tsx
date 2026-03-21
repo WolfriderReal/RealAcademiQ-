@@ -93,23 +93,23 @@ export default function Services() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="bg-white/[0.04] border border-white/10 p-8 rounded-xl hover:border-orange-400/40 transition-colors"
+                className="bg-white border border-slate-200 p-8 rounded-xl hover:border-orange-300 transition-colors shadow-lg shadow-black/10"
               >
-                <div className="w-16 h-16 bg-orange-500/15 border border-orange-400/30 rounded-xl flex items-center justify-center mb-6">
-                  <service.icon className="w-8 h-8 text-orange-300" />
+                <div className="w-16 h-16 bg-orange-100 border border-orange-200 rounded-xl flex items-center justify-center mb-6">
+                  <service.icon className="w-8 h-8 text-orange-600" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
-                <p className="text-white/70 mb-6">{service.description}</p>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">{service.title}</h3>
+                <p className="text-slate-600 mb-6">{service.description}</p>
                 <div className="space-y-2 mb-6">
                   {service.features.map((feature, j) => (
                     <div key={j} className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span className="text-sm text-white/75">{feature}</span>
+                      <span className="text-sm text-slate-700">{feature}</span>
                     </div>
                   ))}
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-orange-400 font-semibold">{service.price}</span>
+                  <span className="text-orange-600 font-semibold">{service.price}</span>
                   <Link href="/order">
                     <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                       Order Now <ArrowRight className="ml-2 w-4 h-4" />

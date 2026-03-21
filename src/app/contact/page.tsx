@@ -73,26 +73,26 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
             {/* Contact Info */}
             <div className="lg:col-span-2">
-              <h3 className="text-xl font-semibold text-white mb-8">Contact Information</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-8">Contact Information</h3>
               <div className="space-y-6">
                 {contactInfo.map((item) => (
                   <div
                     key={item.title}
                     className="flex items-start gap-4"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-orange-500/15 border border-orange-400/30 flex items-center justify-center shrink-0">
-                      <item.icon className="w-5 h-5 text-orange-300" />
+                    <div className="w-12 h-12 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center shrink-0">
+                      <item.icon className="w-5 h-5 text-orange-600" />
                     </div>
                     <div>
-                      <div className="font-semibold text-white text-sm">{item.title}</div>
+                      <div className="font-semibold text-slate-900 text-sm">{item.title}</div>
                       {item.href ? (
-                        <a href={item.href} className="text-white/75 text-sm mt-0.5 hover:text-orange-300 transition-colors">
+                        <a href={item.href} className="text-slate-600 text-sm mt-0.5 hover:text-orange-600 transition-colors">
                           {item.detail}
                         </a>
                       ) : (
-                        <div className="text-white/75 text-sm mt-0.5">{item.detail}</div>
+                        <div className="text-slate-600 text-sm mt-0.5">{item.detail}</div>
                       )}
-                      <div className="text-xs text-white/50 mt-1">{item.sub}</div>
+                      <div className="text-xs text-slate-400 mt-1">{item.sub}</div>
                     </div>
                   </div>
                 ))}

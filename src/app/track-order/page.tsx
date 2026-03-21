@@ -61,9 +61,9 @@ export default function TrackOrder() {
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-12 space-y-8">
-        <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
-          <h2 className="text-2xl font-bold text-white mb-3">Track Your Order via WhatsApp</h2>
-          <p className="text-white/70 mb-6">
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
+          <h2 className="text-2xl font-bold text-slate-900 mb-3">Track Your Order via WhatsApp</h2>
+          <p className="text-slate-600 mb-6">
             Click the button below and share your name, assignment topic, payment screenshot, or any order details.
             Our team will verify and send your current order status.
           </p>
@@ -80,8 +80,8 @@ export default function TrackOrder() {
           </p>
         </div>
 
-        <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
-          <h3 className="text-xl font-bold text-white mb-6">How Your Order Progresses</h3>
+        <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
+          <h3 className="text-xl font-bold text-slate-900 mb-6">How Your Order Progresses</h3>
           <div className="space-y-4">
             {phases.map((phase) => (
               <div key={phase.title} className="flex items-start gap-4 rounded-lg border border-white/10 bg-white/[0.02] p-4">
@@ -89,8 +89,8 @@ export default function TrackOrder() {
                   <phase.icon className="w-5 h-5 text-orange-300" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white">{phase.title}</h4>
-                  <p className="text-sm text-white/70">{phase.description}</p>
+                  <h4 className="font-semibold text-slate-900">{phase.title}</h4>
+                  <p className="text-sm text-slate-600">{phase.description}</p>
                 </div>
               </div>
             ))}

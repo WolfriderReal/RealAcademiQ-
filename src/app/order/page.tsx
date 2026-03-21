@@ -203,12 +203,12 @@ const OrderForm = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-black to-neutral-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-6">
+          <Link href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-white mb-6">
             <ArrowRight className="w-4 h-4 rotate-180" />
             Back Home
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold">Submit Your Order</h1>
-          <p className="text-white/70 mt-2">Fast-track your academic success with our professional assistance</p>
+          <p className="text-slate-600 mt-2">Fast-track your academic success with our professional assistance</p>
         </div>
       </div>
 
@@ -233,7 +233,7 @@ const OrderForm = () => {
               </div>
             ))}
           </div>
-          <div className="flex justify-between text-sm text-white/70">
+          <div className="flex justify-between text-sm text-slate-600">
             <span>Order Details</span>
             <span>Review & Confirm</span>
             <span>Payment</span>
@@ -250,7 +250,7 @@ const OrderForm = () => {
 
         {/* Step 1: Order Details */}
         {step === 1 && (
-          <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
+          <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
             <h2 className="text-2xl font-bold text-white mb-6">Tell us about your order</h2>
 
             {/* Personal Information */}
@@ -258,26 +258,26 @@ const OrderForm = () => {
               <h3 className="text-lg font-semibold text-white mb-4">Your Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-white/75 mb-2">Full Name *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
                   <input
                     type="text"
                     name="customerName"
                     value={formData.customerName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="John Doe"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/75 mb-2">Email Address *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
                   <input
                     type="email"
                     name="customerEmail"
                     value={formData.customerEmail}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -291,7 +291,7 @@ const OrderForm = () => {
                 name="serviceType"
                 value={formData.serviceType}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
               >
                 <option value="small_assignment">Small Assignments</option>
                 <option value="diploma_project">Diploma Projects</option>
@@ -312,46 +312,46 @@ const OrderForm = () => {
               <h3 className="text-lg font-semibold text-white mb-4">Order Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                 <div>
-                  <label className="block text-sm font-medium text-white/75 mb-2">Topic *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Topic *</label>
                   <input
                     type="text"
                     name="topic"
                     value={formData.topic}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="Enter your topic"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/75 mb-2">Deadline *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Deadline *</label>
                   <input
                     type="date"
                     name="deadline"
                     value={formData.deadline}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/75 mb-2">Pages/Length</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Pages/Length</label>
                   <input
                     type="number"
                     name="pageCount"
                     value={formData.pageCount}
                     onChange={handleInputChange}
                     min="1"
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/75 mb-2">Format Style</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Format Style</label>
                   <select
                     name="formatStyle"
                     value={formData.formatStyle}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                   >
                     <option>APA</option>
                     <option>MLA</option>
@@ -360,7 +360,7 @@ const OrderForm = () => {
                   </select>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-white/75 mb-2">Your Proposed Price (USD - International) *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Your Proposed Price (USD - International) *</label>
                   <input
                     type="number"
                     name="estimatedPrice"
@@ -369,7 +369,7 @@ const OrderForm = () => {
                     required
                     min="1"
                     step="0.01"
-                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                    className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition"
                     placeholder="Enter your proposed budget"
                   />
                   <p className="text-xs text-white/60 mt-1">
@@ -382,14 +382,14 @@ const OrderForm = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-white/75 mb-2">Detailed Description *</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Detailed Description *</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition resize-none"
+                  className="w-full px-4 py-3 border border-white/20 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none transition resize-none"
                   placeholder="Provide detailed instructions about your order..."
                 />
               </div>
@@ -411,28 +411,28 @@ const OrderForm = () => {
         {step === 2 && (
           <div className="space-y-6">
             {/* Order Summary */}
-            <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
+            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
               <h2 className="text-2xl font-bold text-white mb-6">Review Your Order</h2>
 
               <div className="space-y-4 mb-6 pb-6 border-b border-white/10">
                 <div className="flex justify-between">
-                  <span className="text-white/75">Service Type:</span>
+                  <span className="text-slate-700">Service Type:</span>
                   <span className="font-semibold text-white">{serviceLabels[formData.serviceType] ?? formData.serviceType}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/75">Topic:</span>
+                  <span className="text-slate-700">Topic:</span>
                   <span className="font-semibold text-white">{formData.topic}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/75">Pages/Length:</span>
+                  <span className="text-slate-700">Pages/Length:</span>
                   <span className="font-semibold text-white">{formData.pageCount}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/75">Deadline:</span>
+                  <span className="text-slate-700">Deadline:</span>
                   <span className="font-semibold text-white">{new Date(formData.deadline).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/75">Format:</span>
+                  <span className="text-slate-700">Format:</span>
                   <span className="font-semibold text-white">{formData.formatStyle}</span>
                 </div>
               </div>
@@ -440,11 +440,11 @@ const OrderForm = () => {
               {/* Pricing Breakdown */}
               <div className="bg-white/[0.03] rounded-lg p-5 mb-6">
                 <div className="flex justify-between mb-3">
-                  <span className="text-white/75">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
+                  <span className="text-slate-700">Your Proposed Price (to be confirmed after sharing requirements via WhatsApp):</span>
                   <span className="text-white">{formatDualAmount(formData.estimatedPrice)}</span>
                 </div>
                 <div className="flex justify-between mb-3 pb-3 border-b border-white/10">
-                  <span className="text-white/75">Final Price Confirmation:</span>
+                  <span className="text-slate-700">Final Price Confirmation:</span>
                   <span className="text-white">Pending Team Review (To be confirmed on WhatsApp)</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold">
@@ -454,7 +454,7 @@ const OrderForm = () => {
               </div>
 
               {/* Info Box */}
-              <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-4 mb-6">
+              <div className="bg-blue-100 border border-blue-200 rounded-lg p-4 mb-6">
                 <p className="text-sm text-blue-900">
                   📝 Final pricing is confirmed after you share requirements via WhatsApp and our team reviews them.
                 </p>
@@ -499,22 +499,22 @@ const OrderForm = () => {
 
         {/* Step 3: Payment */}
         {step === 3 && !submitted && orderId && (
-          <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30">
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30">
             <h2 className="text-2xl font-bold text-white mb-2">Complete Payment</h2>
 
             {/* Order ID Banner */}
-            <div className="bg-orange-500/10 border border-orange-400/30 rounded-lg px-5 py-3 mb-6 flex items-center justify-between">
-              <span className="text-sm text-white/75">Your Order ID:</span>
-              <span className="font-mono font-bold text-orange-300 text-lg">{orderId}</span>
+            <div className="bg-orange-100 border border-orange-200 rounded-lg px-5 py-3 mb-6 flex items-center justify-between">
+              <span className="text-sm text-slate-700">Your Order ID:</span>
+              <span className="font-mono font-bold text-orange-600 text-lg">{orderId}</span>
             </div>
 
             {/* Amount */}
             <div className="bg-gradient-to-r from-orange-500/10 to-orange-400/10 rounded-lg p-5 mb-8 border border-orange-400/30">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-sm text-white/75 mb-1">Amount Due</p>
+                  <p className="text-sm text-slate-700 mb-1">Amount Due</p>
                   <p className="text-3xl font-bold text-orange-400">${formData.estimatedPrice.toFixed(2)} USD</p>
-                  <p className="text-sm font-semibold text-white/75 mt-1">KES {toKes(formData.estimatedPrice).toLocaleString()} (Local equivalent)</p>
+                  <p className="text-sm font-semibold text-slate-700 mt-1">KES {toKes(formData.estimatedPrice).toLocaleString()} (Local equivalent)</p>
                 </div>
                 <p className="text-xs text-white/60">Final price confirmed on WhatsApp after team review</p>
               </div>
@@ -535,7 +535,7 @@ const OrderForm = () => {
                 onClick={() => { setSelectedPayment('paypal'); setPaymentError(null); setStkSent(false) }}
                 className={`text-left border-2 rounded-xl p-5 transition ${
                   selectedPayment === 'paypal'
-                    ? 'border-blue-400 bg-blue-500/10'
+                    ? 'border-blue-300 bg-blue-100'
                     : 'border-white/10 hover:border-blue-300'
                 }`}
               >
@@ -551,7 +551,7 @@ const OrderForm = () => {
                 onClick={() => { setSelectedPayment('mpesa'); setPaymentError(null); setStkSent(false) }}
                 className={`text-left border-2 rounded-xl p-5 transition ${
                   selectedPayment === 'mpesa'
-                    ? 'border-orange-400 bg-orange-500/10'
+                    ? 'border-orange-300 bg-orange-100'
                     : 'border-white/10 hover:border-orange-300'
                 }`}
               >
@@ -567,7 +567,7 @@ const OrderForm = () => {
                 onClick={() => { setSelectedPayment('manual'); setPaymentError(null); setStkSent(false) }}
                 className={`text-left border-2 rounded-xl p-5 transition ${
                   selectedPayment === 'manual'
-                    ? 'border-green-400 bg-green-500/10'
+                    ? 'border-green-300 bg-green-100'
                     : 'border-white/10 hover:border-green-300'
                 }`}
               >
@@ -594,7 +594,7 @@ const OrderForm = () => {
                   value={paypalAmount}
                   onChange={(e) => setPaypalAmount(e.target.value)}
                   placeholder={formData.estimatedPrice.toFixed(2)}
-                  className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-4 bg-white/[0.04] text-white"
+                  className="w-full px-4 py-3 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-300 outline-none mb-4 bg-white text-slate-900"
                 />
                 <p className="text-xs text-blue-800 mb-4">
                   Equivalent local amount: KES {toKes(Number(paypalAmount || formData.estimatedPrice)).toLocaleString()} (Approx)
@@ -616,7 +616,7 @@ const OrderForm = () => {
                   <div className="text-center py-4">
                     <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
                     <p className="font-bold text-green-800 text-lg">STK Prompt Sent!</p>
-                    <p className="text-sm text-white/75 mt-1">
+                    <p className="text-sm text-slate-700 mt-1">
                       Check your phone <strong>{mpesaPhone}</strong> for the M-Pesa payment prompt.
                       Enter your M-Pesa PIN to complete payment. (Don&apos;t close this page)
                     </p>
@@ -633,7 +633,7 @@ const OrderForm = () => {
                     <p className="text-sm text-orange-800 mb-4">
                       A payment prompt will be sent to your Safaricom number. Enter your PIN when prompted.
                     </p>
-                    <label className="block text-sm font-medium text-white/75 mb-2">Final Amount (KES - Local)</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount (KES - Local)</label>
                     <input
                       type="number"
                       min="1"
@@ -641,18 +641,18 @@ const OrderForm = () => {
                       value={mpesaAmount}
                       onChange={(e) => setMpesaAmount(e.target.value)}
                       placeholder={String(toKes(formData.estimatedPrice))}
-                      className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none mb-4 bg-white/[0.04] text-white"
+                      className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none mb-4 bg-white text-slate-900"
                     />
                     <p className="text-xs text-orange-800 mb-3">
                       Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                     </p>
-                    <label className="block text-sm font-medium text-white/75 mb-2">M-Pesa Phone Number</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
                     <input
                       type="tel"
                       value={mpesaPhone}
                       onChange={(e) => setMpesaPhone(e.target.value)}
                       placeholder="07XXXXXXXX or 2547XXXXXXXX"
-                      className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none mb-4 bg-white/[0.04] text-white"
+                      className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-300 outline-none mb-4 bg-white text-slate-900"
                     />
                     <Button
                       onClick={handleMpesaSTK}
@@ -711,7 +711,7 @@ const OrderForm = () => {
             {selectedPayment === 'manual' && (
               <div className="border border-green-400/30 rounded-xl p-6 mb-6 bg-green-500/10">
                 <h3 className="font-bold text-green-900 mb-4">Pay via M-Pesa Paybill</h3>
-                <label className="block text-sm font-medium text-white/75 mb-2">Final Amount (KES - Local)</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Final Amount (KES - Local)</label>
                 <input
                   type="number"
                   min="1"
@@ -719,14 +719,14 @@ const OrderForm = () => {
                   value={mpesaAmount}
                   onChange={(e) => setMpesaAmount(e.target.value)}
                   placeholder={String(toKes(formData.estimatedPrice))}
-                  className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none mb-4 bg-white/[0.04] text-white"
+                  className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-300 outline-none mb-4 bg-white text-slate-900"
                 />
                 <p className="text-xs text-green-900 mb-4">
                   Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
-                    <p className="text-xs text-white/70 mb-1">Business Number</p>
+                    <p className="text-xs text-slate-600 mb-1">Business Number</p>
                     <p className="text-xl font-bold text-white">714777</p>
                     <Button
                       type="button"
@@ -738,7 +738,7 @@ const OrderForm = () => {
                     </Button>
                   </div>
                   <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
-                    <p className="text-xs text-white/70 mb-1">Account Number</p>
+                    <p className="text-xs text-slate-600 mb-1">Account Number</p>
                     <p className="text-xl font-bold text-white">440005939461</p>
                     <Button
                       type="button"
@@ -750,8 +750,8 @@ const OrderForm = () => {
                     </Button>
                   </div>
                   <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
-                    <p className="text-xs text-white/70 mb-1">Amount</p>
-                    <p className="text-xl font-bold text-orange-300">
+                    <p className="text-xs text-slate-600 mb-1">Amount</p>
+                    <p className="text-xl font-bold text-orange-600">
                       KES {Math.round(Number(mpesaAmount || toKes(formData.estimatedPrice))).toLocaleString()}
                     </p>
                     <p className="text-xs text-white/60 mt-1">
@@ -759,11 +759,11 @@ const OrderForm = () => {
                     </p>
                   </div>
                   <div className="bg-white/[0.06] border border-white/10 rounded-lg p-4 text-center">
-                    <p className="text-xs text-white/70 mb-1">Your Order ID</p>
-                    <p className="text-sm font-bold text-orange-300 font-mono">{orderId}</p>
+                    <p className="text-xs text-slate-600 mb-1">Your Order ID</p>
+                    <p className="text-sm font-bold text-orange-600 font-mono">{orderId}</p>
                   </div>
                 </div>
-                <p className="text-xs text-white/70 mb-4">Go to M-Pesa &rarr; Lipa na M-Pesa &rarr; Pay Bill &rarr; enter details above</p>
+                <p className="text-xs text-slate-600 mb-4">Go to M-Pesa &rarr; Lipa na M-Pesa &rarr; Pay Bill &rarr; enter details above</p>
                 <Button
                   onClick={handleManualConfirmWithWhatsapp}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-3 font-semibold"
@@ -774,7 +774,7 @@ const OrderForm = () => {
               </div>
             )}
 
-            <div className="mt-4 p-4 bg-green-500/10 border border-green-400/30 rounded-lg">
+            <div className="mt-4 p-4 bg-green-100 border border-green-200 rounded-lg">
               <p className="text-sm text-green-900">
                 🔒 <strong>Safe & Secure:</strong> Your information is encrypted and secure.
               </p>
@@ -784,24 +784,24 @@ const OrderForm = () => {
 
         {/* Order Confirmation (after manual/STK confirm) */}
         {submitted && orderId && (
-          <div className="bg-white/[0.04] rounded-2xl border border-white/10 p-8 shadow-2xl shadow-black/30 text-center">
+          <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-2xl shadow-black/30 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h2 className="text-3xl font-bold text-white mb-2">Order Submitted!</h2>
-            <p className="text-white/70 mb-6">Your order has been created successfully.</p>
+            <p className="text-slate-600 mb-6">Your order has been created successfully.</p>
 
             {/* Order ID */}
             <div className="bg-white/[0.03] rounded-lg p-6 mb-6">
-              <p className="text-sm text-white/75 mb-2">Your Order ID</p>
+              <p className="text-sm text-slate-700 mb-2">Your Order ID</p>
               <p className="text-2xl font-bold text-orange-400 font-mono">{orderId}</p>
               {trackingToken && (
                 <>
-                  <p className="text-sm text-white/75 mt-3 mb-1">Tracking Token</p>
+                  <p className="text-sm text-slate-700 mt-3 mb-1">Tracking Token</p>
                   <p className="text-sm font-semibold text-white font-mono break-all">{trackingToken}</p>
                 </>
               )}
-              <p className="text-xs text-white/70 mt-2">Save this ID to track your order</p>
+              <p className="text-xs text-slate-600 mt-2">Save this ID to track your order</p>
             </div>
 
             {/* Next Steps */}

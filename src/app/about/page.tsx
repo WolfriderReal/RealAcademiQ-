@@ -75,8 +75,8 @@ export default function About() {
                 </p>
               </div>
             </div>
-            <div className="bg-white/[0.04] border border-white/10 p-8 rounded-xl">
-              <h3 className="text-2xl font-semibold text-white mb-6">Why Students Choose Us</h3>
+            <div className="bg-white border border-slate-200 p-8 rounded-xl shadow-lg shadow-black/10">
+              <h3 className="text-2xl font-semibold text-slate-900 mb-6">Why Students Choose Us</h3>
               <div className="space-y-4">
                 {[
                   'Expert writers with advanced degrees',
@@ -87,8 +87,8 @@ export default function About() {
                   'Confidential and secure service'
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                    <span className="text-white/75">{item}</span>
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <span className="text-slate-700">{item}</span>
                   </div>
                 ))}
               </div>
@@ -106,7 +106,7 @@ export default function About() {
                 key={stat.label}
                 className="text-center"
               >
-                <div className="text-3xl md:text-4xl font-bold text-orange-400 mb-2">
+                <div className="text-3xl md:text-4xl font-bold text-orange-500 mb-2">
                   {stat.number}
                 </div>
                 <div className="text-slate-300">{stat.label}</div>
@@ -133,11 +133,11 @@ export default function About() {
                 key={value.title}
                 className="text-center"
               >
-                <div className="w-16 h-16 bg-orange-500/15 border border-orange-400/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <value.icon className="w-8 h-8 text-orange-300" />
+                <div className="w-16 h-16 bg-orange-100 border border-orange-200 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <value.icon className="w-8 h-8 text-orange-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-3">{value.title}</h3>
-                <p className="text-white/70">{value.description}</p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">{value.title}</h3>
+                <p className="text-slate-600">{value.description}</p>
               </div>
             ))}
           </div>

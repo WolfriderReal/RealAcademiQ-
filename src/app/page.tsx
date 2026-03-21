@@ -98,13 +98,13 @@ export default function Home() {
             {services.map((service, i) => (
               <div
                 key={service.title}
-                className="bg-white/[0.04] border border-white/10 p-6 rounded-xl hover:border-orange-400/40 transition-colors"
+                className="bg-white border border-slate-200 p-6 rounded-xl hover:border-orange-300 transition-colors shadow-lg shadow-black/10"
               >
-                <div className="w-12 h-12 bg-orange-500/15 rounded-lg flex items-center justify-center mb-4 border border-orange-400/30">
-                  <service.icon className="w-6 h-6 text-orange-300" />
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4 border border-orange-200">
+                  <service.icon className="w-6 h-6 text-orange-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
-                <p className="text-white/70">{service.desc}</p>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">{service.title}</h3>
+                <p className="text-slate-600">{service.desc}</p>
               </div>
             ))}
           </div>
@@ -138,9 +138,9 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="bg-white/[0.04] border border-white/10 p-8 rounded-xl shadow-2xl shadow-black/30">
-              <h3 className="text-2xl font-semibold text-white mb-4">Ready to Get Started?</h3>
-              <p className="text-white/70 mb-6">
+            <div className="bg-white border border-slate-200 p-8 rounded-xl shadow-2xl shadow-black/20">
+              <h3 className="text-2xl font-semibold text-slate-900 mb-4">Ready to Get Started?</h3>
+              <p className="text-slate-600 mb-6">
                 Submit your order now and let our experts help you succeed. Or track your existing project progress.
               </p>
               <div className="space-y-3">
