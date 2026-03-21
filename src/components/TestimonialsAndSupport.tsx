@@ -85,6 +85,33 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+function StarPicker({ rating, onChange }: { rating: number; onChange: (value: number) => void }) {
+  return (
+    <div className="flex items-center gap-1" role="radiogroup" aria-label="Select rating">
+      {[1, 2, 3, 4, 5].map((value) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => onChange(value)}
+          className="p-0.5"
+          role="radio"
+          aria-checked={rating === value}
+          aria-label={`${value} star${value > 1 ? 's' : ''}`}
+        >
+          <svg
+            className={`w-6 h-6 ${value <= rating ? 'text-orange-500' : 'text-slate-300'}`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.38-2.454a1 1 0 00-1.175 0l-3.38 2.454c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+          </svg>
+        </button>
+      ))}
+      <span className="ml-2 text-sm text-slate-600">{rating}/5</span>
+    </div>
+  );
+}
+
 export default function TestimonialsAndSupport() {
   const [visitorReviews, setVisitorReviews] = useState<Review[]>([]);
   const [name, setName] = useState('');
@@ -158,19 +185,8 @@ export default function TestimonialsAndSupport() {
               />
             </div>
             <div>
-              <label htmlFor="review-rating" className="block text-sm font-medium text-slate-700 mb-2">Rating</label>
-              <select
-                id="review-rating"
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                <option value={5}>5 - Excellent</option>
-                <option value={4}>4 - Very Good</option>
-                <option value={3}>3 - Good</option>
-                <option value={2}>2 - Fair</option>
-                <option value={1}>1 - Poor</option>
-              </select>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Rating</label>
+              <StarPicker rating={rating} onChange={setRating} />
             </div>
           </div>
           <div className="mb-4">

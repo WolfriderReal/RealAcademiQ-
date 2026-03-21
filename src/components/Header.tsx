@@ -70,6 +70,7 @@ export default function Header() {
                     <X className="w-4 h-4" />
                   </button>
                 </div>
+                <p className="text-sm text-slate-600 mb-3">Your generosity inspires us every day. Buy Me Coffee.</p>
                 <div className="space-y-3">
                   <a
                     href="https://www.paypal.com/donate/?business=kstrategic_inc@outlook.com&currency_code=USD"
