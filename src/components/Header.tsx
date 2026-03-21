@@ -56,7 +56,7 @@ export default function Header() {
               </p>
               <button
                 onClick={() => setShowDonationModal(!showDonationModal)}
-                className="inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200 transition-colors animate-[blink_1s_steps(2,start)_infinite]"
                 title="Support us"
               >
                 <Heart className="w-4 h-4" />

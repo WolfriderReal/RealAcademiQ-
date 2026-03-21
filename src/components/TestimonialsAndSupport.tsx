@@ -6,6 +6,15 @@ type Review = {
   name: string;
   rating: number;
   feedback: string;
+  id?: string;
+};
+
+type Reply = {
+  id: string;
+  reviewId: string;
+  adminName: string;
+  replyText: string;
+  timestamp: number;
 };
 
 const defaultTestimonials: Review[] = [
@@ -114,10 +123,16 @@ function StarPicker({ rating, onChange }: { rating: number; onChange: (value: nu
 
 export default function TestimonialsAndSupport() {
   const [visitorReviews, setVisitorReviews] = useState<Review[]>([]);
+  const [replies, setReplies] = useState<Reply[]>([]);
   const [name, setName] = useState('');
   const [rating, setRating] = useState(5);
   const [feedback, setFeedback] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [replyingToIdx, setReplyingToIdx] = useState<number | null>(null);
+  const [adminReplyText, setAdminReplyText] = useState('');
+  const [adminName, setAdminName] = useState('');
+
+  const REPLIES_STORAGE_KEY = 'realacademiq_replies';
 
   useEffect(() => {
     try {
@@ -127,16 +142,30 @@ export default function TestimonialsAndSupport() {
       if (Array.isArray(parsed)) {
         const cleaned = parsed
           .filter((item) => item && typeof item.name === 'string' && typeof item.feedback === 'string')
-          .map((item) => ({
+          .map((item, idx) => ({
             name: item.name.trim().slice(0, 60),
             rating: Math.min(5, Math.max(1, Number(item.rating) || 5)),
             feedback: item.feedback.trim().slice(0, 600),
+            id: `review-${idx}`,
           }))
           .filter((item) => item.name && item.feedback);
         setVisitorReviews(cleaned);
       }
     } catch {
       // Ignore malformed local storage data.
+    }
+
+    // Load replies
+    try {
+      const repliesRaw = window.localStorage.getItem(REPLIES_STORAGE_KEY);
+      if (repliesRaw) {
+        const repliesParsed = JSON.parse(repliesRaw);
+        if (Array.isArray(repliesParsed)) {
+          setReplies(repliesParsed);
+        }
+      }
+    } catch {
+      // Ignore malformed replies data
     }
   }, []);
 
@@ -156,13 +185,61 @@ export default function TestimonialsAndSupport() {
       return;
     }
 
-    const next = [{ name: safeName, rating: safeRating, feedback: safeFeedback }, ...visitorReviews].slice(0, 30);
+    const next = [{ name: safeName, rating: safeRating, feedback: safeFeedback, id: `review-${Date.now()}` }, ...visitorReviews].slice(0, 30);
     setVisitorReviews(next);
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     setName('');
     setRating(5);
     setFeedback('');
     setSubmitMessage('Thank you. Your review has been added.');
+  };
+
+  const handleReply = async (reviewerName: string, reviewIdx: number) => {
+    const safeReplyText = adminReplyText.trim().slice(0, 600);
+    const safeAdminName = adminName.trim().slice(0, 60);
+
+    if (!safeReplyText || !safeAdminName) {
+      alert('Please enter your name and reply.');
+      return;
+    }
+
+    const newReply: Reply = {
+      id: `reply-${Date.now()}`,
+      reviewId: `review-${reviewIdx}`,
+      adminName: safeAdminName,
+      replyText: safeReplyText,
+      timestamp: Date.now(),
+    };
+
+    const updatedReplies = [newReply, ...replies];
+    setReplies(updatedReplies);
+    window.localStorage.setItem(REPLIES_STORAGE_KEY, JSON.stringify(updatedReplies));
+
+    // Send WhatsApp notifications
+    try {
+      await fetch('/api/notifications/whatsapp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reviewerName,
+          adminName: safeAdminName,
+          replyText: safeReplyText,
+          notifyAdmin: true,
+          notifyClient: true,
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to send WhatsApp notification:', error);
+    }
+
+    setAdminReplyText('');
+    setAdminName('');
+    setReplyingToIdx(null);
+    alert('Reply posted and notifications sent on WhatsApp!');
+  };
+
+  const getRepliesForReview = (reviewIdx: number) => {
+    return replies.filter((r) => r.reviewId === `review-${reviewIdx}`);
   };
 
   return (
@@ -209,15 +286,77 @@ export default function TestimonialsAndSupport() {
           </div>
         </form>
         <div className="space-y-8">
-          {allTestimonials.map((t, idx) => (
-            <div key={`${t.name}-${idx}`} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-left">
-              <p className="font-semibold text-slate-900">{t.name}</p>
-              <div className="mt-2">
-                <StarRating rating={t.rating} />
+          {allTestimonials.map((t, idx) => {
+            const reviewReplies = getRepliesForReview(idx);
+            return (
+              <div key={`${t.name}-${idx}`} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-left">
+                <p className="font-semibold text-slate-900">{t.name}</p>
+                <div className="mt-2">
+                  <StarRating rating={t.rating} />
+                </div>
+                <p className="mt-4 text-lg italic text-slate-700">&quot;{t.feedback}&quot;</p>
+
+                {/* Display replies */}
+                {reviewReplies.length > 0 && (
+                  <div className="mt-4 space-y-3 border-t border-slate-200 pt-4">
+                    {reviewReplies.map((reply) => (
+                      <div key={reply.id} className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                        <p className="text-sm font-semibold text-emerald-900">{reply.adminName} (RealAcademiQ)</p>
+                        <p className="text-sm text-emerald-700 mt-2">&quot;{reply.replyText}&quot;</p>
+                        <p className="text-xs text-emerald-600 mt-2">
+                          {new Date(reply.timestamp).toLocaleDateString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Reply form */}
+                {replyingToIdx === idx ? (
+                  <div className="mt-4 border-t border-slate-200 pt-4">
+                    <h4 className="text-sm font-semibold text-slate-900 mb-3">Admin Reply</h4>
+                    <input
+                      type="text"
+                      value={adminName}
+                      onChange={(e) => setAdminName(e.target.value)}
+                      maxLength={60}
+                      placeholder="Your name (admin)"
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                    <textarea
+                      value={adminReplyText}
+                      onChange={(e) => setAdminReplyText(e.target.value)}
+                      maxLength={600}
+                      rows={3}
+                      placeholder="Your reply..."
+                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 mb-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleReply(t.name, idx)}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2 transition-colors text-sm"
+                      >
+                        Post Reply & Notify
+                      </button>
+                      <button
+                        onClick={() => setReplyingToIdx(null)}
+                        className="bg-slate-300 hover:bg-slate-400 text-slate-900 font-medium rounded-lg px-4 py-2 transition-colors text-sm"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setReplyingToIdx(idx)}
+                    className="mt-4 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
+                  >
+                    Reply (Admin)
+                  </button>
+                )}
               </div>
-              <p className="mt-4 text-lg italic text-slate-700">&quot;{t.feedback}&quot;</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
