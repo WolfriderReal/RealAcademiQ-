@@ -8,6 +8,7 @@ type Review = {
   rating: number;
   feedback: string;
   id?: string;
+  createdAt?: string;
 };
 
 type Reply = {
@@ -81,6 +82,7 @@ const defaultTestimonials: Review[] = [
 ];
 
 const STORAGE_KEY = 'realacademiq_visitor_reviews';
+const LEGACY_REVIEWS_MIGRATION_KEY = 'realacademiq_reviews_migrated_v1';
 const LEGACY_REPLIES_STORAGE_KEY = 'realacademiq_replies';
 const LEGACY_REPLIES_MIGRATION_KEY = 'realacademiq_replies_migrated_v1';
 
@@ -142,25 +144,84 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
   const isAdminMode = mode === 'admin';
 
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        const cleaned = parsed
-          .filter((item) => item && typeof item.name === 'string' && typeof item.feedback === 'string')
-          .map((item, idx) => ({
-            name: item.name.trim().slice(0, 60),
-            rating: Math.min(5, Math.max(1, Number(item.rating) || 5)),
-            feedback: item.feedback.trim().slice(0, 600),
-            id: `review-${idx}`,
-          }))
-          .filter((item) => item.name && item.feedback);
-        setVisitorReviews(cleaned);
+    let active = true;
+
+    fetch('/api/testimonials', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch testimonials');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!active) return;
+        setVisitorReviews(Array.isArray(data.reviews) ? data.reviews : []);
+      })
+      .catch(() => {
+        if (!active) return;
+        setVisitorReviews([]);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const alreadyMigrated = window.localStorage.getItem(LEGACY_REVIEWS_MIGRATION_KEY);
+    if (alreadyMigrated === 'true') return;
+
+    const migrateLegacyReviews = async () => {
+      try {
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          window.localStorage.setItem(LEGACY_REVIEWS_MIGRATION_KEY, 'true');
+          return;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          window.localStorage.setItem(LEGACY_REVIEWS_MIGRATION_KEY, 'true');
+          return;
+        }
+
+        for (const item of parsed) {
+          const name = String(item?.name || '').trim().slice(0, 60);
+          const feedback = String(item?.feedback || '').trim().slice(0, 600);
+          const rating = Math.min(5, Math.max(1, Number(item?.rating) || 5));
+          const id = item?.id ? String(item.id).trim().slice(0, 120) : undefined;
+
+          if (!name || !feedback) {
+            continue;
+          }
+
+          await fetch('/api/testimonials', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id,
+              name,
+              feedback,
+              rating,
+              createdAt: item?.createdAt ? String(item.createdAt).trim().slice(0, 60) : undefined,
+            }),
+          });
+        }
+
+        window.localStorage.setItem(LEGACY_REVIEWS_MIGRATION_KEY, 'true');
+
+        const response = await fetch('/api/testimonials', { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (Array.isArray(data.reviews)) {
+          setVisitorReviews(data.reviews);
+        }
+      } catch {
+        // Keep public page usable even if migration payload is malformed.
       }
-    } catch {
-      // Ignore malformed local storage data.
-    }
+    };
+
+    void migrateLegacyReviews();
   }, []);
 
   useEffect(() => {
@@ -264,7 +325,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
     [visitorReviews]
   );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const safeName = name.trim().slice(0, 60);
     const safeFeedback = feedback.trim().slice(0, 600);
@@ -275,13 +336,31 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
       return;
     }
 
-    const next = [{ name: safeName, rating: safeRating, feedback: safeFeedback, id: `review-${Date.now()}` }, ...visitorReviews].slice(0, 30);
-    setVisitorReviews(next);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    setName('');
-    setRating(5);
-    setFeedback('');
-    setSubmitMessage('Thank you. Your review has been added.');
+    try {
+      const response = await fetch('/api/testimonials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: `review-${Date.now()}`,
+          name: safeName,
+          rating: safeRating,
+          feedback: safeFeedback,
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data?.review) {
+        throw new Error(data.error || 'Failed to submit review.');
+      }
+
+      setVisitorReviews((current) => [data.review, ...current].slice(0, 30));
+      setName('');
+      setRating(5);
+      setFeedback('');
+      setSubmitMessage('Thank you. Your review has been added.');
+    } catch (error) {
+      setSubmitMessage(error instanceof Error ? error.message : 'Failed to submit review.');
+    }
   };
 
   const handleReply = async (reviewerName: string, reviewId: string) => {
