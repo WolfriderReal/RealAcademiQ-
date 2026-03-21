@@ -33,12 +33,12 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/track-order">
-                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-emerald-300/40 text-emerald-200 hover:bg-emerald-500/10">
+                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg rounded-xl shadow-[0_0_30px_rgba(249,115,22,0.35)]">
                   Track Order
                 </Button>
               </Link>
               <Link href="/services">
-                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-emerald-300/40 text-emerald-200 hover:bg-emerald-500/10">
+                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg rounded-xl shadow-[0_0_30px_rgba(249,115,22,0.35)]">
                   View Services
                 </Button>
               </Link>
