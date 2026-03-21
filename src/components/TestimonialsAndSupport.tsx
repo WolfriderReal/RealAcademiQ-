@@ -81,6 +81,37 @@ const defaultTestimonials: Review[] = [
   }
 ];
 
+const defaultReplies: Reply[] = [
+  {
+    id: 'default-reply-0',
+    reviewId: 'default-0',
+    adminName: 'RealAcademiQ Admin',
+    replyText: 'Thank you, Jane. We are glad the support helped you meet your academic goals.',
+    createdAt: '2026-03-01T09:00:00.000Z',
+  },
+  {
+    id: 'default-reply-1',
+    reviewId: 'default-2',
+    adminName: 'RealAcademiQ Admin',
+    replyText: 'We appreciate your feedback, Amina. It was a pleasure supporting your work from start to finish.',
+    createdAt: '2026-03-02T10:30:00.000Z',
+  },
+  {
+    id: 'default-reply-2',
+    reviewId: 'default-5',
+    adminName: 'RealAcademiQ Admin',
+    replyText: 'Thank you, Priya. Timely delivery and clear communication remain a core part of our process.',
+    createdAt: '2026-03-03T14:15:00.000Z',
+  },
+  {
+    id: 'default-reply-3',
+    reviewId: 'default-10',
+    adminName: 'RealAcademiQ Admin',
+    replyText: 'Asante sana, Grace. Tunafurahi kuona huduma zetu zinawasaidia wanafunzi kwa matokeo bora.',
+    createdAt: '2026-03-04T08:45:00.000Z',
+  },
+];
+
 const STORAGE_KEY = 'realacademiq_visitor_reviews';
 const LEGACY_REVIEWS_MIGRATION_KEY = 'realacademiq_reviews_migrated_v1';
 const LEGACY_REPLIES_STORAGE_KEY = 'realacademiq_replies';
@@ -325,6 +356,20 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
     [visitorReviews]
   );
 
+  const allReplies = useMemo(() => {
+    const replyMap = new Map<string, Reply>()
+
+    for (const reply of defaultReplies) {
+      replyMap.set(reply.id, reply)
+    }
+
+    for (const reply of replies) {
+      replyMap.set(reply.id, reply)
+    }
+
+    return Array.from(replyMap.values())
+  }, [replies]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const safeName = name.trim().slice(0, 60);
@@ -418,7 +463,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
   };
 
   const getRepliesForReview = (reviewId: string, legacyReviewId: string) => {
-    return replies.filter((r) => r.reviewId === reviewId || r.reviewId === legacyReviewId);
+    return allReplies.filter((r) => r.reviewId === reviewId || r.reviewId === legacyReviewId);
   };
 
   return (
