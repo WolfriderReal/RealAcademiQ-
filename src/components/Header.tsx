@@ -49,7 +49,11 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-3 relative">
+          <div className="flex flex-col items-end gap-1">
+            <p className="hidden lg:block text-[11px] leading-none text-emerald-200/90">
+              Your generosity inspires us every day.
+            </p>
+            <div className="flex items-center gap-3 relative">
             <button
               onClick={() => setShowDonationModal(!showDonationModal)}
               className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200 transition-colors"
@@ -141,6 +145,7 @@ export default function Header() {
                 Submit Order
               </Button>
             </Link>
+            </div>
           </div>
         </div>
       </div>
