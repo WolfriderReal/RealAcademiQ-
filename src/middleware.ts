@@ -12,15 +12,15 @@ function unauthorizedResponse(): NextResponse {
 
 function decodeBasicAuth(encoded: string): string {
   try {
-    return atob(encoded)
+    return Buffer.from(encoded, 'base64').toString('utf8')
   } catch {
     return ''
   }
 }
 
 export function middleware(req: NextRequest) {
-  const username = process.env.ADMIN_USERNAME
-  const password = process.env.ADMIN_PASSWORD
+  const username = process.env.ADMIN_USERNAME?.trim()
+  const password = process.env.ADMIN_PASSWORD?.trim()
 
   // Keep admin surfaces closed if credentials are not configured.
   if (!username || !password) {
@@ -34,8 +34,8 @@ export function middleware(req: NextRequest) {
 
   const decoded = decodeBasicAuth(authHeader.slice(6))
   const separator = decoded.indexOf(':')
-  const incomingUser = separator >= 0 ? decoded.slice(0, separator) : ''
-  const incomingPass = separator >= 0 ? decoded.slice(separator + 1) : ''
+  const incomingUser = separator >= 0 ? decoded.slice(0, separator).trim() : ''
+  const incomingPass = separator >= 0 ? decoded.slice(separator + 1).trim() : ''
 
   if (incomingUser !== username || incomingPass !== password) {
     return unauthorizedResponse()
