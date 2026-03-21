@@ -48,36 +48,48 @@ export default function TrackOrder() {
     if (!orderId || orderId === '-' || !token || token === '-') return
 
     let active = true
-    setLoadingOrder(true)
-    setTrackError('')
+    const fetchOrderStatus = async (showLoading: boolean) => {
+      if (showLoading && active) {
+        setLoadingOrder(true)
+      }
 
-    fetch(`/api/orders/${encodeURIComponent(orderId)}?token=${encodeURIComponent(token)}`)
-      .then(async (response) => {
+      try {
+        const response = await fetch(
+          `/api/orders/${encodeURIComponent(orderId)}?token=${encodeURIComponent(token)}`,
+          {
+            cache: 'no-store',
+          }
+        )
+
         if (!response.ok) {
           const data = await response.json().catch(() => ({}))
           throw new Error(data.error || 'Unable to load order status')
         }
-        return response.json()
-      })
-      .then((data) => {
-        if (active) {
-          setTrackedOrder(data.order || null)
-        }
-      })
-      .catch((error: Error) => {
-        if (active) {
-          setTrackError(error.message)
-          setTrackedOrder(null)
-        }
-      })
-      .finally(() => {
-        if (active) {
+
+        const data = await response.json()
+        if (!active) return
+        setTrackedOrder(data.order || null)
+        setTrackError('')
+      } catch (error) {
+        if (!active) return
+        setTrackError(error instanceof Error ? error.message : 'Unable to load order status')
+        setTrackedOrder(null)
+      } finally {
+        if (showLoading && active) {
           setLoadingOrder(false)
         }
-      })
+      }
+    }
+
+    void fetchOrderStatus(true)
+
+    const intervalId = window.setInterval(() => {
+      void fetchOrderStatus(false)
+    }, 15000)
 
     return () => {
       active = false
+      window.clearInterval(intervalId)
     }
   }, [orderId, token])
 

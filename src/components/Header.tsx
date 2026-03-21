@@ -51,7 +51,7 @@ export default function Header() {
 
           <div className="flex items-center gap-3 relative">
             <div className="hidden sm:flex flex-col items-start">
-              <p className="text-[11px] font-bold leading-none tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-lime-300 to-emerald-200 drop-shadow-[0_0_10px_rgba(163,230,53,0.8)] animate-[blink_1s_steps(2,start)_infinite] mb-1">
+              <p className="text-[11px] font-bold leading-none tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-lime-300 to-emerald-200 drop-shadow-[0_0_10px_rgba(163,230,53,0.8)] mb-1">
                 Your generosity inspires us every day.
               </p>
               <button

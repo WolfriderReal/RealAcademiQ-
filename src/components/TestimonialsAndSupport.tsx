@@ -15,7 +15,7 @@ type Reply = {
   reviewId: string;
   adminName: string;
   replyText: string;
-  timestamp: number;
+  createdAt: string;
 };
 
 type TestimonialsAndSupportProps = {
@@ -133,11 +133,10 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
   const [rating, setRating] = useState(5);
   const [feedback, setFeedback] = useState('');
   const [submitMessage, setSubmitMessage] = useState('');
-  const [replyingToIdx, setReplyingToIdx] = useState<number | null>(null);
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
   const [adminReplyText, setAdminReplyText] = useState('');
   const [adminName, setAdminName] = useState('');
 
-  const REPLIES_STORAGE_KEY = 'realacademiq_replies';
   const isAdminMode = mode === 'admin';
 
   useEffect(() => {
@@ -160,23 +159,43 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
     } catch {
       // Ignore malformed local storage data.
     }
+  }, []);
 
-    // Load replies
-    try {
-      const repliesRaw = window.localStorage.getItem(REPLIES_STORAGE_KEY);
-      if (repliesRaw) {
-        const repliesParsed = JSON.parse(repliesRaw);
-        if (Array.isArray(repliesParsed)) {
-          setReplies(repliesParsed);
+  useEffect(() => {
+    let active = true;
+
+    fetch('/api/testimonials/replies', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch replies');
         }
-      }
-    } catch {
-      // Ignore malformed replies data
-    }
+        return response.json();
+      })
+      .then((data) => {
+        if (!active) return;
+        setReplies(Array.isArray(data.replies) ? data.replies : []);
+      })
+      .catch(() => {
+        if (!active) return;
+        setReplies([]);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const allTestimonials = useMemo(
-    () => [...visitorReviews, ...defaultTestimonials],
+    () => [
+      ...visitorReviews.map((review, idx) => ({
+        ...review,
+        id: review.id || `visitor-${idx}`,
+      })),
+      ...defaultTestimonials.map((review, idx) => ({
+        ...review,
+        id: `default-${idx}`,
+      })),
+    ],
     [visitorReviews]
   );
 
@@ -200,7 +219,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
     setSubmitMessage('Thank you. Your review has been added.');
   };
 
-  const handleReply = async (reviewerName: string, reviewIdx: number) => {
+  const handleReply = async (reviewerName: string, reviewId: string) => {
     const safeReplyText = adminReplyText.trim().slice(0, 600);
     const safeAdminName = adminName.trim().slice(0, 60);
 
@@ -209,17 +228,27 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
       return;
     }
 
-    const newReply: Reply = {
-      id: `reply-${Date.now()}`,
-      reviewId: `review-${reviewIdx}`,
-      adminName: safeAdminName,
-      replyText: safeReplyText,
-      timestamp: Date.now(),
-    };
+    try {
+      const saveResponse = await fetch('/api/admin/testimonials/replies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reviewId,
+          adminName: safeAdminName,
+          replyText: safeReplyText,
+        }),
+      });
 
-    const updatedReplies = [newReply, ...replies];
-    setReplies(updatedReplies);
-    window.localStorage.setItem(REPLIES_STORAGE_KEY, JSON.stringify(updatedReplies));
+      const saveData = await saveResponse.json().catch(() => ({}));
+      if (!saveResponse.ok || !saveData?.reply) {
+        throw new Error(saveData.error || 'Failed to save admin reply.');
+      }
+
+      setReplies((current) => [saveData.reply, ...current]);
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Failed to save admin reply.');
+      return;
+    }
 
     // Send WhatsApp notifications
     try {
@@ -240,12 +269,12 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
 
     setAdminReplyText('');
     setAdminName('');
-    setReplyingToIdx(null);
+    setReplyingToId(null);
     alert('Reply posted and notifications sent on WhatsApp!');
   };
 
-  const getRepliesForReview = (reviewIdx: number) => {
-    return replies.filter((r) => r.reviewId === `review-${reviewIdx}`);
+  const getRepliesForReview = (reviewId: string) => {
+    return replies.filter((r) => r.reviewId === reviewId);
   };
 
   return (
@@ -269,16 +298,14 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
             >
               Customer Testimonials Link
             </Link>
-            <Link
-              href="/admin/testimonials"
-              className={`rounded-full px-4 py-2 font-medium transition-colors ${
-                isAdminMode
-                  ? 'bg-slate-900 text-white hover:bg-slate-800'
-                  : 'border border-slate-300 text-slate-700 hover:bg-slate-100'
-              }`}
-            >
-              Admin Reply Link
-            </Link>
+            {isAdminMode && (
+              <Link
+                href="/admin/testimonials"
+                className="rounded-full px-4 py-2 font-medium transition-colors bg-slate-900 text-white hover:bg-slate-800"
+              >
+                Admin Reply Link
+              </Link>
+            )}
           </div>
         </div>
 
@@ -324,10 +351,11 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
           </form>
         )}
         <div className="space-y-8">
-          {allTestimonials.map((t, idx) => {
-            const reviewReplies = getRepliesForReview(idx);
+          {allTestimonials.map((t) => {
+            const reviewId = t.id || '';
+            const reviewReplies = getRepliesForReview(reviewId);
             return (
-              <div key={`${t.name}-${idx}`} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-left">
+              <div key={reviewId || t.name} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-left">
                 <p className="font-semibold text-slate-900">{t.name}</p>
                 <div className="mt-2">
                   <StarRating rating={t.rating} />
@@ -342,7 +370,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
                         <p className="text-sm font-semibold text-emerald-900">{reply.adminName} (RealAcademiQ)</p>
                         <p className="text-sm text-emerald-700 mt-2">&quot;{reply.replyText}&quot;</p>
                         <p className="text-xs text-emerald-600 mt-2">
-                          {new Date(reply.timestamp).toLocaleDateString()}
+                          {new Date(reply.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     ))}
@@ -350,7 +378,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
                 )}
 
                 {/* Reply form */}
-                {isAdminMode && replyingToIdx === idx ? (
+                {isAdminMode && replyingToId === reviewId ? (
                   <div className="mt-4 border-t border-slate-200 pt-4">
                     <h4 className="text-sm font-semibold text-slate-900 mb-3">Admin Reply</h4>
                     <input
@@ -371,13 +399,13 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
                     />
                     <div className="flex gap-2">
                       <button
-                        onClick={() => handleReply(t.name, idx)}
+                        onClick={() => handleReply(t.name, reviewId)}
                         className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2 transition-colors text-sm"
                       >
                         Post Reply & Notify
                       </button>
                       <button
-                        onClick={() => setReplyingToIdx(null)}
+                        onClick={() => setReplyingToId(null)}
                         className="bg-slate-300 hover:bg-slate-400 text-slate-900 font-medium rounded-lg px-4 py-2 transition-colors text-sm"
                       >
                         Cancel
@@ -386,7 +414,7 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
                   </div>
                 ) : isAdminMode ? (
                   <button
-                    onClick={() => setReplyingToIdx(idx)}
+                    onClick={() => setReplyingToId(reviewId)}
                     className="mt-4 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors"
                   >
                     Reply (Admin)
