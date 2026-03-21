@@ -1,6 +1,14 @@
-import React from 'react';
+"use client";
 
-const testimonials = [
+import React, { useEffect, useMemo, useState } from 'react';
+
+type Review = {
+  name: string;
+  rating: number;
+  feedback: string;
+};
+
+const defaultTestimonials: Review[] = [
   {
     name: 'Jane M',
     rating: 5,
@@ -58,6 +66,8 @@ const testimonials = [
   }
 ];
 
+const STORAGE_KEY = 'realacademiq_visitor_reviews';
+
 function StarRating({ rating }: { rating: number }) {
   return (
     <span className="flex text-orange-500">
@@ -76,16 +86,120 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function TestimonialsAndSupport() {
+  const [visitorReviews, setVisitorReviews] = useState<Review[]>([]);
+  const [name, setName] = useState('');
+  const [rating, setRating] = useState(5);
+  const [feedback, setFeedback] = useState('');
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        const cleaned = parsed
+          .filter((item) => item && typeof item.name === 'string' && typeof item.feedback === 'string')
+          .map((item) => ({
+            name: item.name.trim().slice(0, 60),
+            rating: Math.min(5, Math.max(1, Number(item.rating) || 5)),
+            feedback: item.feedback.trim().slice(0, 600),
+          }))
+          .filter((item) => item.name && item.feedback);
+        setVisitorReviews(cleaned);
+      }
+    } catch {
+      // Ignore malformed local storage data.
+    }
+  }, []);
+
+  const allTestimonials = useMemo(
+    () => [...visitorReviews, ...defaultTestimonials],
+    [visitorReviews]
+  );
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const safeName = name.trim().slice(0, 60);
+    const safeFeedback = feedback.trim().slice(0, 600);
+    const safeRating = Math.min(5, Math.max(1, Number(rating) || 5));
+
+    if (!safeName || !safeFeedback) {
+      setSubmitMessage('Please add your name and review.');
+      return;
+    }
+
+    const next = [{ name: safeName, rating: safeRating, feedback: safeFeedback }, ...visitorReviews].slice(0, 30);
+    setVisitorReviews(next);
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    setName('');
+    setRating(5);
+    setFeedback('');
+    setSubmitMessage('Thank you. Your review has been added.');
+  };
+
   return (
     <section className="py-12 bg-white">
       <div className="max-w-3xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-slate-900 text-center mb-8">Testimonials</h2>
+        <form onSubmit={handleSubmit} className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4 text-left">Leave a Review</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label htmlFor="review-name" className="block text-sm font-medium text-slate-700 mb-2">Name</label>
+              <input
+                id="review-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                maxLength={60}
+                placeholder="Your name"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="review-rating" className="block text-sm font-medium text-slate-700 mb-2">Rating</label>
+              <select
+                id="review-rating"
+                value={rating}
+                onChange={(e) => setRating(Number(e.target.value))}
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              >
+                <option value={5}>5 - Excellent</option>
+                <option value={4}>4 - Very Good</option>
+                <option value={3}>3 - Good</option>
+                <option value={2}>2 - Fair</option>
+                <option value={1}>1 - Poor</option>
+              </select>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="review-feedback" className="block text-sm font-medium text-slate-700 mb-2">Review</label>
+            <textarea
+              id="review-feedback"
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              maxLength={600}
+              rows={4}
+              placeholder="Share your experience"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg px-4 py-2 transition-colors">
+              Post Review
+            </button>
+            {submitMessage && <p className="text-sm text-slate-600">{submitMessage}</p>}
+          </div>
+        </form>
         <div className="space-y-8">
-          {testimonials.map((t, idx) => (
-            <div key={idx} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-center">
-              <StarRating rating={t.rating} />
+          {allTestimonials.map((t, idx) => (
+            <div key={`${t.name}-${idx}`} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-left">
+              <p className="font-semibold text-slate-900">{t.name}</p>
+              <div className="mt-2">
+                <StarRating rating={t.rating} />
+              </div>
               <p className="mt-4 text-lg italic text-slate-700">&quot;{t.feedback}&quot;</p>
-              <p className="mt-2 font-semibold text-slate-900">- {t.name}</p>
             </div>
           ))}
         </div>
