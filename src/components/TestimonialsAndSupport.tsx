@@ -60,11 +60,11 @@ const testimonials = [
 
 function StarRating({ rating }: { rating: number }) {
   return (
-    <span className="flex text-yellow-400">
+    <span className="flex text-orange-400">
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}
-          className={`w-5 h-5 ${i < rating ? '' : 'text-gray-300'}`}
+          className={`w-5 h-5 ${i < rating ? '' : 'text-white/20'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -77,15 +77,15 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function TestimonialsAndSupport() {
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-12 bg-neutral-950">
       <div className="max-w-3xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Testimonials</h2>
+        <h2 className="text-3xl font-bold text-white text-center mb-8">Testimonials</h2>
         <div className="space-y-8">
           {testimonials.map((t, idx) => (
-            <div key={idx} className="bg-white p-6 rounded shadow text-center">
+            <div key={idx} className="bg-white/[0.04] border border-white/10 p-6 rounded-xl shadow-xl shadow-black/20 text-center">
               <StarRating rating={t.rating} />
-              <p className="mt-4 text-lg italic">&quot;{t.feedback}&quot;</p>
-              <p className="mt-2 font-semibold">- {t.name}</p>
+              <p className="mt-4 text-lg italic text-white/80">&quot;{t.feedback}&quot;</p>
+              <p className="mt-2 font-semibold text-white">- {t.name}</p>
             </div>
           ))}
         </div>

@@ -6,6 +6,8 @@ import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const siteUrl = 'https://real-academi-q.vercel.app'
+
 export const metadata: Metadata = {
   title: {
     default: 'RealAcademiQ - Academic Excellence Assistance',
@@ -21,14 +23,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://realacademiq.com'), // Replace with your actual domain when deployed
+  metadataBase: new URL(siteUrl),
   alternates: {
-    canonical: '/',
+    canonical: siteUrl,
   },
   openGraph: {
     title: 'RealAcademiQ - Academic Excellence Assistance',
     description: 'Professional assistance with assignments, thesis, projects, and proposals. Get expert help from qualified academics.',
-    url: '/',
+    url: siteUrl,
     siteName: 'RealAcademiQ',
     images: [
       {
@@ -65,6 +67,12 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
+  verification: {
+    google: 'SNulKA4FkVJvxVDFIWS02TT37AmAuzyW7E-CiVzcwWI',
+  },
+  other: {
+    'google-site-verification': 'SNulKA4FkVJvxVDFIWS02TT37AmAuzyW7E-CiVzcwWI',
+  },
 }
 
 export default function RootLayout({

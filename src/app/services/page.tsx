@@ -22,7 +22,7 @@ const services = [
     title: 'PhD Dissertation',
     description: 'Advanced dissertation support for doctoral-level research projects and publication-grade work.',
     features: ['Literature synthesis', 'Methodology design', 'Data interpretation', 'Publication-level editing'],
-    price: 'USD $1,000 - $10,000 | Ksh 100,000 - 350,000'
+    price: 'USD $500 - $1,500 | Ksh 50,000 - 150,000'
   },
   {
     icon: Star,
@@ -36,14 +36,14 @@ const services = [
     title: 'Diploma Projects',
     description: 'Structured project support for diploma-level practical and report-based assessments.',
     features: ['Topic scoping', 'Project write-up', 'Implementation guidance', 'Presentation readiness'],
-    price: 'USD $150 - $600 | Ksh 20,000 - 80,000'
+    price: 'USD $150 - $400 | Ksh 15,000 - 40,000'
   },
   {
     icon: Users,
     title: 'Undergraduate Projects',
     description: 'Comprehensive undergraduate project support from proposal to final documentation.',
     features: ['Proposal + methodology', 'Build/analysis support', 'Testing and revision', 'Final documentation'],
-    price: 'USD $250 - $1,200 | Ksh 30,000 - 150,000'
+    price: 'USD $150 - $500 | Ksh 15,000 - 50,000'
   },
   {
     icon: BarChart3,
@@ -61,51 +61,12 @@ const services = [
   }
 ]
 
-const costingBreakdowns = [
-  {
-    title: 'Small Assignments & Projects',
-    points: [
-      'Small assignments: USD $15 - $80 per task (Ksh 2,000 - 10,000).',
-      'Diploma projects: USD $150 - $600 (Ksh 20,000 - 80,000).',
-      'Undergraduate projects: USD $250 - $1,200 (Ksh 30,000 - 150,000).',
-      'Final quote depends on topic depth, deadline, and required revisions.',
-    ],
-  },
-  {
-    title: 'Hourly Rates',
-    points: [
-      'International experienced writers: USD $40 - $90 per hour.',
-      'Global academic ranges: USD $25 - $50 per hour.',
-      'Kenya market average: KES 400 - 2,250 per hour.',
-      'Kenya specialist tutors/consultants: KES 1,000 - 10,000 per hour.',
-    ],
-  },
-  {
-    title: 'Project Flat Fees (Proposals)',
-    points: [
-      'Simple community grants: USD $700 - $1,000.',
-      'Complex/private foundation proposals: USD $2,000 - $4,000.',
-      'Federal/government RFPs: USD $3,500 - $10,000+.',
-      'Prospect research (funder list): around USD $750.',
-      'High-ticket consulting proposals: USD $2,000 - $5,000.',
-    ],
-  },
-  {
-    title: 'Academic Stage Benchmarks',
-    points: [
-      'Concept note: Masters ~USD $100 (KES 10,000), PhD ~USD $150 (KES 15,000).',
-      'Full proposal (Chapters 1-3): Masters ~USD $500 (KES 50,000), PhD ~USD $700 (KES 70,000).',
-      'Full thesis/dissertation baseline: USD $700 - $1,000+.',
-      'Editing-only benchmark for 80,000 words starts around USD $1,680 (2-week turnaround).',
-    ],
-  },
-]
 
 export default function Services() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-white to-amber-50/30 py-20 md:py-24">
+      <section className="bg-gradient-to-br from-slate-50 via-white to-amber-50/30 pt-20 md:pt-24 pb-8">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
             <p className="text-amber-600 font-semibold text-sm tracking-wide uppercase mb-3">Our Services</p>
@@ -113,15 +74,21 @@ export default function Services() {
               Academic Excellence Services
             </h1>
             <p className="mt-5 text-lg text-slate-500 max-w-2xl mx-auto">
-              Professional support with transparent pricing in USD (International) and Ksh (Local Payments).
+              Professional support with transparent pricing for International and Ksh Local Payments.
             </p>
           </div>
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 bg-white">
+      <section className="pt-8 pb-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-8 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <p className="text-sm md:text-base text-emerald-800 font-medium">
+              All our works are checked for plagiarism and AI to ensure compliance with your needs.
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.map((service) => (
               <div
@@ -153,28 +120,7 @@ export default function Services() {
             ))}
           </div>
 
-          <div className="mt-12 bg-amber-50 border border-amber-200 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-slate-900 mb-2">Costing Breakdown</h3>
-            <p className="text-sm text-slate-700">
-              These are market-based benchmark ranges. Final quotes are confirmed on WhatsApp after reviewing scope, deadline, and complexity.
-            </p>
-          </div>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-            {costingBreakdowns.map((item) => (
-              <div key={item.title} className="bg-white border border-slate-200 rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-slate-900 mb-4">{item.title}</h4>
-                <ul className="space-y-2 text-slate-700">
-                  {item.points.map((point) => (
-                    <li key={point} className="flex gap-2">
-                      <span className="text-amber-600 mt-[2px]">•</span>
-                      <span className="text-sm">{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

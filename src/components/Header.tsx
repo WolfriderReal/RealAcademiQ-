@@ -22,28 +22,28 @@ export default function Header() {
   }
 
   return (
-    <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 z-50">
+    <header className="fixed top-0 w-full bg-black/65 backdrop-blur-md border-b border-white/10 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.45)]">
                 <GraduationCap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-slate-900">RealAcademiQ</span>
+              <span className="text-xl font-bold text-white">RealAcademiQ</span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              <Link href="/" className="text-sm font-medium transition-colors text-white/70 hover:text-white">
                 Home
               </Link>
-              <Link href="/services" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              <Link href="/services" className="text-sm font-medium transition-colors text-white/70 hover:text-white">
                 Services
               </Link>
-              <Link href="/about" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              <Link href="/about" className="text-sm font-medium transition-colors text-white/70 hover:text-white">
                 About
               </Link>
-              <Link href="/contact" className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900">
+              <Link href="/contact" className="text-sm font-medium transition-colors text-white/70 hover:text-white">
                 Contact
               </Link>
             </nav>
@@ -52,7 +52,7 @@ export default function Header() {
           <div className="flex items-center gap-3 relative">
             <button
               onClick={() => setShowDonationModal(!showDonationModal)}
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-yellow-700 hover:text-yellow-800 transition-colors"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-orange-300 hover:text-orange-200 transition-colors"
               title="Support us"
             >
               <Heart className="w-4 h-4" />
@@ -60,12 +60,12 @@ export default function Header() {
             </button>
 
             {showDonationModal && (
-              <div className="absolute top-12 right-0 bg-white border border-slate-200 rounded-lg shadow-lg p-4 min-w-80 z-50">
+              <div className="absolute top-12 right-0 bg-neutral-950 border border-white/10 rounded-lg shadow-2xl p-4 min-w-80 z-50">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-semibold text-slate-900">Support RealAcademiQ</h3>
+                  <h3 className="font-semibold text-white">Support RealAcademiQ</h3>
                   <button
                     onClick={() => setShowDonationModal(false)}
-                    className="text-slate-400 hover:text-slate-600"
+                    className="text-white/50 hover:text-white/80"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -127,16 +127,16 @@ export default function Header() {
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-green-700 hover:text-green-800"
+              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-green-300 hover:text-green-200"
             >
               <MessageCircle className="w-4 h-4" />
               WhatsApp
             </a>
-            <Link href="/track-order" className="hidden sm:inline text-sm font-medium transition-colors text-amber-600 hover:text-amber-700">
+            <Link href="/track-order" className="hidden sm:inline text-sm font-medium transition-colors text-orange-300 hover:text-orange-200">
               Track Order
             </Link>
             <Link href="/order">
-              <Button className="bg-amber-600 hover:bg-amber-700 text-white">
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                 Submit Order
               </Button>
             </Link>

@@ -1,12 +1,21 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowRight, CheckCircle, AlertCircle, Loader, CreditCard, Smartphone } from 'lucide-react'
 
 const OrderForm = () => {
-  const USD_TO_KES = 130
+  const [usdToKes, setUsdToKes] = useState(130)
+
+  useEffect(() => {
+    fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.usd?.kes) setUsdToKes(Math.round(data.usd.kes))
+      })
+      .catch(() => {/* use fallback rate */})
+  }, [])
 
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
@@ -49,7 +58,7 @@ const OrderForm = () => {
     editing_proofreading: 'Editing & Proofreading',
   }
 
-  const toKes = (usd: number) => Math.round(usd * USD_TO_KES)
+  const toKes = (usd: number) => Math.round(usd * usdToKes)
   const formatDualAmount = (usd: number) => `$${usd.toFixed(2)} / KES ${toKes(usd).toLocaleString()}`
 
   const customerName = formData.customerName?.trim() || '-'
@@ -169,7 +178,7 @@ const OrderForm = () => {
       return
     }
 
-    const approxUsd = normalizedAmount / USD_TO_KES
+    const approxUsd = normalizedAmount / usdToKes
 
     const whatsappPaymentNotifyLink = `https://wa.me/254101582198?text=${encodeURIComponent(
       `Hello RealAcademiQ, I have sent payment and need confirmation.\n\nName: ${customerName}\nEmail: ${customerEmail}\nOrder ID: ${orderId || '-'}\nTracking Token: ${trackingToken || '-'}\nAmount: KES ${Math.round(normalizedAmount).toLocaleString()} (Approx USD ${approxUsd.toFixed(2)})\nMethod: M-Pesa Paybill\n\nPlease confirm so I can continue tracking my order.`
@@ -635,7 +644,7 @@ const OrderForm = () => {
                       className="w-full px-4 py-3 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none mb-4 bg-white"
                     />
                     <p className="text-xs text-orange-800 mb-3">
-                      Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / USD_TO_KES).toFixed(2)}
+                      Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                     </p>
                     <label className="block text-sm font-medium text-slate-700 mb-2">M-Pesa Phone Number</label>
                     <input
@@ -713,7 +722,7 @@ const OrderForm = () => {
                   className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none mb-4 bg-white"
                 />
                 <p className="text-xs text-green-900 mb-4">
-                  Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / USD_TO_KES).toFixed(2)}
+                  Approx international amount: USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-white rounded-lg p-4 text-center">
@@ -746,7 +755,7 @@ const OrderForm = () => {
                       KES {Math.round(Number(mpesaAmount || toKes(formData.estimatedPrice))).toLocaleString()}
                     </p>
                     <p className="text-xs text-slate-500 mt-1">
-                      ~ USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / USD_TO_KES).toFixed(2)}
+                      ~ USD {(Number(mpesaAmount || toKes(formData.estimatedPrice)) / usdToKes).toFixed(2)}
                     </p>
                   </div>
                   <div className="bg-white rounded-lg p-4 text-center">

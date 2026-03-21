@@ -24,6 +24,17 @@ const nextConfig = {
       },
     ]
   },
+  // Redirect www → apex once realacademiq.com DNS is active
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.realacademiq.com' }],
+        destination: 'https://realacademiq.com/:path*',
+        permanent: true,
+      },
+    ]
+  },
   experimental: {
   },
 }
