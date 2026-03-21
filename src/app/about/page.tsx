@@ -36,14 +36,14 @@ export default function About() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 py-20 md:py-24">
+      <section className="bg-gradient-to-br from-slate-950 via-emerald-950/70 to-black py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">About Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            <p className="text-emerald-300 font-semibold text-sm tracking-wide uppercase mb-3">About Us</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
               Empowering Academic Success
             </h1>
-            <p className="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-slate-200 max-w-2xl mx-auto">
               We&apos;re dedicated to helping students achieve their academic goals through professional,
               ethical assistance and guidance.
             </p>

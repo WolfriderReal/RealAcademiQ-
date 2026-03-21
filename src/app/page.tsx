@@ -15,14 +15,14 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 py-20 md:py-32">
+      <section className="bg-gradient-to-br from-slate-950 via-emerald-950/70 to-black py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <h1 className="text-5xl md:text-7xl font-bold text-slate-900 tracking-tight mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-6">
               Achieve Academic
-              <span className="text-orange-500"> Excellence</span>
+              <span className="text-emerald-300"> Excellence</span>
             </h1>
-            <p className="text-xl text-slate-700 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-slate-200 max-w-3xl mx-auto mb-8">
               Professional assistance with assignments, thesis, projects, and proposals.
               Get expert help from qualified academics and elevate your academic performance.
             </p>
@@ -33,12 +33,12 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/track-order">
-                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-slate-300 text-slate-900 hover:bg-slate-100">
+                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-emerald-300/40 text-emerald-200 hover:bg-emerald-500/10">
                   Track Order
                 </Button>
               </Link>
               <Link href="/services">
-                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-slate-300 text-slate-900 hover:bg-slate-100">
+                <Button size="lg" variant="outline" className="px-8 py-4 text-lg rounded-xl border-emerald-300/40 text-emerald-200 hover:bg-emerald-500/10">
                   View Services
                 </Button>
               </Link>

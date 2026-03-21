@@ -201,14 +201,14 @@ const OrderForm = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 text-slate-900 py-12">
+      <div className="bg-gradient-to-r from-slate-950 via-emerald-950/70 to-black border-b border-emerald-900/40 text-white py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-slate-600 hover:text-orange-600 mb-6">
+          <Link href="/" className="inline-flex items-center gap-2 text-emerald-200 hover:text-emerald-100 mb-6">
             <ArrowRight className="w-4 h-4 rotate-180" />
             Back Home
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold">Submit Your Order</h1>
-          <p className="text-slate-600 mt-2">Fast-track your academic success with our professional assistance</p>
+          <p className="text-slate-200 mt-2">Fast-track your academic success with our professional assistance</p>
         </div>
       </div>
 

@@ -54,14 +54,14 @@ export default function Contact() {
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 py-20 md:py-24">
+      <section className="bg-gradient-to-br from-slate-950 via-emerald-950/70 to-black py-20 md:py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">Contact Us</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            <p className="text-emerald-300 font-semibold text-sm tracking-wide uppercase mb-3">Contact Us</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
               Get in Touch
             </h1>
-            <p className="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-slate-200 max-w-2xl mx-auto">
               Have questions? We&apos;d love to hear from you. Send us a message and we&apos;ll get back to you promptly.
             </p>
           </div>

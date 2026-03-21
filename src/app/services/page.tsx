@@ -66,14 +66,14 @@ export default function Services() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-50 via-white to-slate-100 pt-20 md:pt-24 pb-8">
+      <section className="bg-gradient-to-br from-slate-950 via-emerald-950/70 to-black pt-20 md:pt-24 pb-8">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div>
-            <p className="text-orange-400 font-semibold text-sm tracking-wide uppercase mb-3">Our Services</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
+            <p className="text-emerald-300 font-semibold text-sm tracking-wide uppercase mb-3">Our Services</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
               Academic Excellence Services
             </h1>
-            <p className="mt-5 text-lg text-slate-600 max-w-2xl mx-auto">
+            <p className="mt-5 text-lg text-slate-200 max-w-2xl mx-auto">
               Professional support with transparent pricing for International and Ksh Local Payments.
             </p>
           </div>
