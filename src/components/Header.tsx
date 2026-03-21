@@ -65,7 +65,6 @@ export default function Header() {
 
             {showDonationModal && (
               <div className="absolute top-12 right-0 bg-white border border-slate-200 rounded-lg shadow-2xl p-4 min-w-80 z-50">
-                <p className="text-sm text-slate-600 mb-3">Your generosity inspires us every day.</p>
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-semibold text-slate-900">Support RealAcademiQ</h3>
                   <button
