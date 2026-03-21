@@ -8,6 +8,8 @@ export async function POST(request: NextRequest) {
     const reviewId = String(body.reviewId || '').trim().slice(0, 120)
     const adminName = String(body.adminName || '').trim().slice(0, 80)
     const replyText = String(body.replyText || '').trim().slice(0, 1200)
+    const id = body.id ? String(body.id).trim().slice(0, 120) : undefined
+    const createdAt = body.createdAt ? String(body.createdAt).trim().slice(0, 60) : undefined
 
     if (!reviewId || !adminName || !replyText) {
       return NextResponse.json(
@@ -20,6 +22,8 @@ export async function POST(request: NextRequest) {
       reviewId,
       adminName,
       replyText,
+      id,
+      createdAt,
     })
 
     return NextResponse.json(

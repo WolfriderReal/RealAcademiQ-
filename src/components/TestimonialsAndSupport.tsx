@@ -81,6 +81,8 @@ const defaultTestimonials: Review[] = [
 ];
 
 const STORAGE_KEY = 'realacademiq_visitor_reviews';
+const LEGACY_REPLIES_STORAGE_KEY = 'realacademiq_replies';
+const LEGACY_REPLIES_MIGRATION_KEY = 'realacademiq_replies_migrated_v1';
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -185,6 +187,69 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
     };
   }, []);
 
+  useEffect(() => {
+    if (!isAdminMode) return;
+
+    const alreadyMigrated = window.localStorage.getItem(LEGACY_REPLIES_MIGRATION_KEY);
+    if (alreadyMigrated === 'true') return;
+
+    const migrateLegacyReplies = async () => {
+      try {
+        const raw = window.localStorage.getItem(LEGACY_REPLIES_STORAGE_KEY);
+        if (!raw) {
+          window.localStorage.setItem(LEGACY_REPLIES_MIGRATION_KEY, 'true');
+          return;
+        }
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) {
+          window.localStorage.setItem(LEGACY_REPLIES_MIGRATION_KEY, 'true');
+          return;
+        }
+
+        for (const item of parsed) {
+          const reviewId = String(item?.reviewId || '').trim().slice(0, 120);
+          const adminName = String(item?.adminName || '').trim().slice(0, 80);
+          const replyText = String(item?.replyText || '').trim().slice(0, 1200);
+
+          if (!reviewId || !adminName || !replyText) {
+            continue;
+          }
+
+          await fetch('/api/admin/testimonials/replies', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              reviewId,
+              adminName,
+              replyText,
+              id: item?.id ? String(item.id).trim().slice(0, 120) : undefined,
+              createdAt:
+                typeof item?.timestamp === 'number'
+                  ? new Date(item.timestamp).toISOString()
+                  : item?.createdAt
+                    ? String(item.createdAt).trim().slice(0, 60)
+                    : undefined,
+            }),
+          });
+        }
+
+        window.localStorage.setItem(LEGACY_REPLIES_MIGRATION_KEY, 'true');
+
+        const response = await fetch('/api/testimonials/replies', { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (Array.isArray(data.replies)) {
+          setReplies(data.replies);
+        }
+      } catch {
+        // Keep admin page usable even if migration payload is malformed.
+      }
+    };
+
+    void migrateLegacyReplies();
+  }, [isAdminMode]);
+
   const allTestimonials = useMemo(
     () => [
       ...visitorReviews.map((review, idx) => ({
@@ -273,8 +338,8 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
     alert('Reply posted and notifications sent on WhatsApp!');
   };
 
-  const getRepliesForReview = (reviewId: string) => {
-    return replies.filter((r) => r.reviewId === reviewId);
+  const getRepliesForReview = (reviewId: string, legacyReviewId: string) => {
+    return replies.filter((r) => r.reviewId === reviewId || r.reviewId === legacyReviewId);
   };
 
   return (
@@ -351,9 +416,10 @@ export default function TestimonialsAndSupport({ mode = 'public' }: Testimonials
           </form>
         )}
         <div className="space-y-8">
-          {allTestimonials.map((t) => {
+          {allTestimonials.map((t, idx) => {
             const reviewId = t.id || '';
-            const reviewReplies = getRepliesForReview(reviewId);
+            const legacyReviewId = `review-${idx}`;
+            const reviewReplies = getRepliesForReview(reviewId, legacyReviewId);
             return (
               <div key={reviewId || t.name} className="bg-white border border-slate-200 p-6 rounded-xl shadow-xl shadow-black/20 text-left">
                 <p className="font-semibold text-slate-900">{t.name}</p>

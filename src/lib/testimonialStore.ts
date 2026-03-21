@@ -30,22 +30,35 @@ export async function createTestimonialReply(input: {
   reviewId: string
   adminName: string
   replyText: string
+  id?: string
+  createdAt?: string
 }): Promise<TestimonialReply> {
   const now = new Date().toISOString()
-  const id = `reply-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
+  const createdAt = input.createdAt || now
+  const id = input.id || `reply-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
 
   const nextReply: TestimonialReply = {
     id,
     reviewId: input.reviewId,
     adminName: input.adminName,
     replyText: input.replyText,
-    createdAt: now,
+    createdAt,
   }
 
   try {
-    await adminDb.collection('testimonialReplies').doc(id).set(nextReply)
+    const docRef = adminDb.collection('testimonialReplies').doc(id)
+    const existingDoc = await docRef.get()
+    if (existingDoc.exists) {
+      return existingDoc.data() as TestimonialReply
+    }
+
+    await docRef.set(nextReply)
   } catch (error) {
     console.error('Failed to write testimonial reply to Firebase, using in-memory fallback:', error)
+    const fallbackExisting = fallbackReplies.get(id)
+    if (fallbackExisting) {
+      return fallbackExisting
+    }
     fallbackReplies.set(id, nextReply)
   }
 
