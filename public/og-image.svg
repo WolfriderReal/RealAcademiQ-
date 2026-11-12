@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="RealAcademiQ social image">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="965" cy="150" r="180" fill="#34d399" opacity="0.12"/>
+  <rect x="110" y="130" width="360" height="360" rx="64" fill="#0f172a" opacity="0.72"/>
+  <text x="110" y="270" fill="#a7f3d0" font-size="58" font-family="Arial, Helvetica, sans-serif" font-weight="700" letter-spacing="3">REAL</text>
+  <text x="110" y="340" fill="#ecfeff" font-size="90" font-family="Arial, Helvetica, sans-serif" font-weight="700">AcademiQ</text>
+  <text x="110" y="420" fill="#cbd5e1" font-size="30" font-family="Arial, Helvetica, sans-serif">Academic support • research guidance • editing</text>
+  <rect x="680" y="190" width="370" height="190" rx="28" fill="#ffffff" opacity="0.08"/>
+  <text x="720" y="260" fill="#f8fafc" font-size="32" font-family="Arial, Helvetica, sans-serif">From</text>
+  <text x="720" y="315" fill="#a7f3d0" font-size="52" font-family="Arial, Helvetica, sans-serif" font-weight="700">coursework</text>
+  <text x="720" y="370" fill="#a7f3d0" font-size="52" font-family="Arial, Helvetica, sans-serif" font-weight="700">to final draft</text>
+</svg>

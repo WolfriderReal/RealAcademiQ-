@@ -6,15 +6,15 @@ import Header from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const siteUrl = 'https://real-academi-q.vercel.app'
+const siteUrl = 'https://realacademiq.com'
 
 export const metadata: Metadata = {
   title: {
-    default: 'RealAcademiQ - Academic Excellence Assistance',
-    template: '%s | RealAcademiQ'
+    default: 'RealAcademiQ - Academic Support, Editing & Research Guidance',
+    template: '%s | RealAcademiQ',
   },
-  description: 'Professional assistance with assignments, thesis, projects, and proposals. Get expert help from qualified academics.',
-  keywords: ['academic assistance', 'assignments', 'thesis', 'projects', 'proposals', 'academic writing', 'student help'],
+  description: 'Get expert academic support, research guidance, editing, proofreading, and writing coaching with RealAcademiQ.',
+  keywords: ['academic support', 'research guidance', 'editing', 'proofreading', 'writing coaching', 'thesis help'],
   authors: [{ name: 'RealAcademiQ' }],
   creator: 'RealAcademiQ',
   publisher: 'RealAcademiQ',
@@ -28,16 +28,16 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   openGraph: {
-    title: 'RealAcademiQ - Academic Excellence Assistance',
-    description: 'Professional assistance with assignments, thesis, projects, and proposals. Get expert help from qualified academics.',
+    title: 'RealAcademiQ - Academic Support, Editing & Research Guidance',
+    description: 'Get expert academic support, research guidance, editing, proofreading, and writing coaching with RealAcademiQ.',
     url: siteUrl,
     siteName: 'RealAcademiQ',
     images: [
       {
-        url: '/og-image.jpg', // You'll need to add this image
+        url: '/og-image.svg',
         width: 1200,
         height: 630,
-        alt: 'RealAcademiQ - Academic Excellence Assistance',
+        alt: 'RealAcademiQ - Academic Support',
       },
     ],
     locale: 'en_US',
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RealAcademiQ - Academic Excellence Assistance',
-    description: 'Professional assistance with assignments, thesis, projects, and proposals.',
-    images: ['/og-image.jpg'],
+    title: 'RealAcademiQ - Academic Support, Editing & Research Guidance',
+    description: 'Get expert academic support, research guidance, editing, proofreading, and writing coaching with RealAcademiQ.',
+    images: ['/og-image.svg'],
     creator: '@RealAcademiQ',
   },
   robots: {
@@ -62,17 +62,11 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
   },
   manifest: '/manifest.json',
-  verification: {
-    google: 'SNulKA4FkVJvxVDFIWS02TT37AmAuzyW7E-CiVzcwWI',
-  },
-  other: {
-    'google-site-verification': 'SNulKA4FkVJvxVDFIWS02TT37AmAuzyW7E-CiVzcwWI',
-  },
 }
 
 export default function RootLayout({

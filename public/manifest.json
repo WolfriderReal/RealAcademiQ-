@@ -1,7 +1,7 @@
 {
   "name": "RealAcademiQ - Academic Excellence Assistance",
   "short_name": "RealAcademiQ",
-  "description": "Professional assistance with assignments, thesis, projects, and proposals",
+  "description": "Professional academic support, tutoring, editing, proofreading, and research guidance.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -10,5 +10,13 @@
   "scope": "/",
   "lang": "en",
   "dir": "ltr",
-  "categories": ["education", "productivity"]
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
