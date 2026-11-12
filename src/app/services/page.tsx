@@ -75,7 +75,7 @@ export default function Services() {
         <div className="mx-auto max-w-7xl px-6 text-center">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-emerald-300">Our Services</p>
           <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Academic Support Services</h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-200">Student-focused guidance, feedback, and editing with clear Kenyan shilling pricing.</p>
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-200">Student-focused guidance, feedback, and editing.</p>
           <p className="mx-auto mt-3 max-w-3xl text-sm text-slate-300">Prices are indicative. We will confirm the exact scope, deliverables, deadline, and final price in writing before you decide whether to proceed.</p>
         </div>
       </section>
