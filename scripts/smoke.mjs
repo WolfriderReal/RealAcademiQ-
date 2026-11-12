@@ -13,10 +13,10 @@ async function checkPage(path, expectedText) {
 }
 
 async function main() {
-  await checkPage('/', 'Submit Your Order')
-  await checkPage('/order', 'Submit Your Order')
+  await checkPage('/', 'Get Started Today')
+  await checkPage('/order', 'Request Academic Support')
   await checkPage('/track-order', 'Track Your Order via WhatsApp')
-  await checkPage('/services', 'Our Services')
+  await checkPage('/services', 'Academic Support Services')
   console.log('Smoke tests passed')
 }
 
