@@ -1,0 +1,21 @@
+import type { Metadata } from 'next'
+import Link from 'next/link'
+
+export const metadata: Metadata = { title: 'Privacy Policy' }
+
+export default function PrivacyPage() {
+  return (
+    <article className="mx-auto max-w-4xl px-6 py-14 text-slate-700">
+      <p className="text-sm font-semibold uppercase tracking-wide text-emerald-700">Privacy · Effective 12 November 2026</p>
+      <h1 className="mt-3 text-4xl font-bold text-slate-950">Privacy policy</h1>
+      <p className="mt-5 text-lg">This notice describes the information RealAcademiQ's website requests and the ways it is used. Please avoid sending sensitive personal information or documents that are not needed for your request.</p>
+
+      <section className="mt-10 space-y-4"><h2 className="text-2xl font-semibold text-slate-900">Information you provide</h2><p>When you request a service, the site asks for your name, email address, phone number, service type, topic, description, deadline, approximate length, citation style, and proposed budget. Order records also include an order identifier, quote and payment status, and related progress information. Contact-form messages include the name, email, subject, and message you submit.</p><p>If you choose to contact us or share files through WhatsApp, the information and files you send are also handled by WhatsApp under its own terms and privacy practices.</p></section>
+      <section className="mt-8 space-y-4"><h2 className="text-2xl font-semibold text-slate-900">Technical and usage information</h2><p>The site sends limited event information such as page paths and order events to its server for operational diagnostics and service improvement. Server security and application logs may include an IP address, request details, and event metadata. The order form also requests M-Pesa payments through Safaricom; payment details are processed by the payment provider. The site does not ask you to enter payment-card numbers.</p></section>
+      <section className="mt-8 space-y-4"><h2 className="text-2xl font-semibold text-slate-900">How information is used and shared</h2><p>Information is used to review and manage requests, communicate with you, confirm payments, provide order tracking and support, protect the service from misuse, and meet legal obligations. It is shared only as needed with service providers that support the site and these functions, which may include its hosting provider, Firebase for order records, email delivery providers for contact messages, and Safaricom for M-Pesa transactions. Each provider handles information under its own terms and privacy practices.</p><p>We do not sell your personal information. We do not promise absolute security; access should be limited to people and providers who need information to operate the service.</p></section>
+      <section className="mt-8 space-y-4"><h2 className="text-2xl font-semibold text-slate-900">Retention and your requests</h2><p>Order and support information may be kept as needed to manage your request, resolve disputes, maintain business records, and meet legal obligations. Actual retention periods depend on operational and legal requirements. To ask about or request access, correction, or deletion of your information, contact us through the <Link className="text-emerald-800 underline" href="/contact">Contact page</Link> and include enough detail for us to locate your request. We will review requests subject to applicable law and any records we are required to keep.</p></section>
+      <section className="mt-8 space-y-4"><h2 className="text-2xl font-semibold text-slate-900">Updates and contact</h2><p>We may update this notice when our practices change and will post the current version here with its effective date. For privacy questions, use our <Link className="text-emerald-800 underline" href="/contact">Contact page</Link>.</p></section>
+      <p className="mt-10 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm">This notice is based on the website's currently visible features and known integrations. The business should verify hosting, provider configuration, access practices, and retention periods and review this notice for applicable privacy laws before relying on it.</p>
+    </article>
+  )
+}

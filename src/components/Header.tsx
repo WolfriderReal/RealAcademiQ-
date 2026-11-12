@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { GraduationCap, MessageCircle } from 'lucide-react'
@@ -11,7 +9,7 @@ export default function Header() {
     <header className="fixed top-0 w-full bg-slate-950/95 backdrop-blur-md border-b border-emerald-800/40 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-12">
+          <div className="flex items-center gap-8 md:gap-12">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center shadow-[0_0_22px_rgba(16,185,129,0.5)]">
                 <GraduationCap className="w-5 h-5 text-white" />
@@ -20,39 +18,19 @@ export default function Header() {
             </Link>
 
             <nav className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">
-                Home
-              </Link>
-              <Link href="/services" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">
-                Services
-              </Link>
-              <Link href="/about" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">
-                About
-              </Link>
-              <Link href="/contact" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">
-                Contact
-              </Link>
+              <Link href="/" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">Home</Link>
+              <Link href="/services" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">Pricing</Link>
+              <Link href="/about" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">About</Link>
+              <Link href="/contact" className="text-sm font-medium transition-colors text-slate-300 hover:text-emerald-300">Contact</Link>
             </nav>
           </div>
 
           <div className="flex items-center gap-3">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200"
-            >
-              <MessageCircle className="w-4 h-4" />
-              WhatsApp
+            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-emerald-300 hover:text-emerald-200">
+              <MessageCircle className="w-4 h-4" />WhatsApp
             </a>
-            <Link href="/track-order" className="hidden sm:inline text-sm font-medium transition-colors text-emerald-300 hover:text-emerald-200">
-              Track Order
-            </Link>
-            <Link href="/order">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                Submit Order
-              </Button>
-            </Link>
+            <Link href="/track-order" className="hidden sm:inline text-sm font-medium transition-colors text-emerald-300 hover:text-emerald-200">Track Order</Link>
+            <Link href="/order"><Button className="bg-emerald-600 hover:bg-emerald-700 text-white">Submit Order</Button></Link>
           </div>
         </div>
       </div>
