@@ -6,7 +6,7 @@ export type OrderStatus =
   | 'work_in_progress'
   | 'completed_ready_to_download'
 
-export type PaymentMethod = 'paypal' | 'mpesa_stk' | 'mpesa_paybill'
+export type PaymentMethod = 'mpesa_stk' | 'mpesa_paybill'
 
 export type PaymentStatus = 'pending' | 'partial' | 'completed' | 'failed'
 
@@ -27,45 +27,33 @@ export interface PaymentRecord {
 }
 
 export interface Order {
-  id: string // Unique order ID (e.g., ORD-20250317-XXX)
+  id: string
   customerId: string
   customerEmail: string
   customerPhone: string
   customerName: string
-  
-  // Order Details
   serviceType: 'assignment' | 'thesis' | 'project' | 'proposal'
   topic: string
   description: string
   pageCount: number
   deadline: Date
   formatStyle: string
-  
-  // Required Files
   documents: OrderDocument[]
-  
-  // Pricing
   estimatedPrice: number
   currency: string
   discountCode?: string
   discountAmount?: number
   finalPrice: number
-  
-  // Payment Tracking
   payments: PaymentRecord[]
   totalPaid: number
   paymentStatus: PaymentStatus
-  
-  // Order Status
   status: OrderStatus
   createdAt: Date
   updatedAt: Date
   completionNotes?: string
-  
-  // Delivery
   completedFiles?: OrderDocument[]
   downloadLink?: string
-  accessKey?: string // For unlock/download control
+  accessKey?: string
 }
 
 export interface OrderResponse {
