@@ -22,7 +22,7 @@ const services = [
     title: 'PhD Dissertation',
     description: 'Advanced dissertation support for doctoral-level research projects and publication-grade work.',
     features: ['Literature synthesis', 'Methodology design', 'Data interpretation', 'Publication-level editing'],
-    price: 'USD $500 - $1,500 | Ksh 50,000 - 150,000'
+    price: 'Ksh 40,000 - 80,000 depending on complexity'
   },
   {
     icon: Star,
@@ -76,14 +76,14 @@ export default function Services() {
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-emerald-300">Our Services</p>
           <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Academic Support Services</h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-200">Student-focused guidance, feedback, and editing with clear Kenyan shilling pricing.</p>
-          <p className="mx-auto mt-3 max-w-3xl text-sm text-slate-300">Prices are indicative. We will confirm the exact scope, deliverables, deadline, and final price in writing before you decide or pay.</p>
+          <p className="mx-auto mt-3 max-w-3xl text-sm text-slate-300">Prices are indicative. We will confirm the exact scope, deliverables, deadline, and final price in writing before you decide whether to proceed.</p>
         </div>
       </section>
 
       <section className="bg-white pb-20 pt-8">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-8 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4">
-            <p className="text-sm font-medium text-emerald-800 md:text-base">Our academic support is intended to help you learn and improve your own work. You are responsible for following your institution&apos;s academic-integrity rules.</p>
+            <p className="text-sm font-medium text-emerald-800 md:text-base">Our academic support is intended to help you learn and improve your own work. You are responsible for following your institution's academic integrity policies. We provide guidance, feedback, and editing—not work to submit as your own.</p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {services.map((service) => (
