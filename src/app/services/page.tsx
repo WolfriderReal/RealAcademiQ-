@@ -5,66 +5,66 @@ import { CheckCircle, Award, Users, Star, ArrowRight, FileText, BarChart3, BookO
 const services = [
   {
     icon: BookOpen,
-    title: 'Tutoring, Feedback & Editing Support',
-    description: 'One-to-one academic guidance, feedback on your own work, and editing support. Priced per session or clearly defined task.',
-    features: ['Short tutoring sessions', 'Feedback on your own drafts', 'Proofreading and formatting help', 'Scope agreed before work begins'],
-    price: 'KES 500–2,500 per session or defined task',
+    title: 'Small Assignments',
+    description: 'Fast support for short assignments, essays, quizzes, and weekly coursework tasks.',
+    features: ['Short-turnaround handling', 'Clear instructions follow-up', 'Plagiarism-safe drafting', 'Formatting + references'],
+    price: 'Ksh 2,000 - 10,000'
   },
   {
     icon: Award,
-    title: "Master's Thesis Guidance",
-    description: 'Research guidance and feedback on thesis milestones. Final scope and price depend on the agreed support required.',
-    features: ['Research framework guidance', 'Chapter feedback', 'Academic formatting guidance', 'Milestone-based support'],
-    price: 'KES 25,000–40,000',
+    title: "Master's Thesis",
+    description: 'Full thesis support from proposal alignment to final defense-ready manuscript.',
+    features: ['Research framework', 'Chapter development', 'Academic formatting', 'Supervisor-ready delivery'],
+    price: 'Ksh 25,000 - 40,000'
   },
   {
     icon: FileText,
     title: 'PhD Dissertation',
     description: 'Advanced dissertation support for doctoral-level research projects and publication-grade work.',
     features: ['Literature synthesis', 'Methodology design', 'Data interpretation', 'Publication-level editing'],
-    price: 'USD $500 - $1,500 | Ksh 50,000 - 150,000',
+    price: 'USD $500 - $1,500 | Ksh 50,000 - 150,000'
   },
   {
     icon: Star,
-    title: 'Proposal / Concept Note Guidance',
-    description: 'Guidance and feedback on proposal or concept-note milestones. Final scope is agreed before work begins.',
-    features: ['Problem framing feedback', 'Methodology and budget guidance', 'Timeline and outputs feedback', 'Milestone-based support'],
-    price: 'KES 2,500–10,000 per milestone',
+    title: 'Proposal / Concept Note',
+    description: 'Professional proposals for grants, research programs, and academic concept notes.',
+    features: ['Problem framing', 'Methodology and budget', 'Timeline and outputs', 'Donor-aligned structure'],
+    price: 'Ksh 2,500 - 10,000 per milestone'
   },
   {
     icon: FolderKanban,
-    title: 'Diploma Project Guidance',
-    description: 'Structured guidance and feedback for diploma-level project milestones.',
-    features: ['Topic-scoping guidance', 'Feedback on your project work', 'Implementation guidance', 'Presentation preparation'],
-    price: 'KES 15,000',
+    title: 'Diploma Projects',
+    description: 'Structured project support for diploma-level practical and report-based assessments.',
+    features: ['Topic scoping', 'Project write-up', 'Implementation guidance', 'Presentation readiness'],
+    price: 'Ksh 15,000'
   },
   {
     icon: Users,
-    title: 'Undergraduate Project Guidance',
-    description: 'Guidance and feedback across undergraduate project milestones, with scope agreed before work begins.',
-    features: ['Proposal and methodology guidance', 'Build or analysis support', 'Testing and revision guidance', 'Documentation feedback'],
-    price: 'KES 20,000–30,000',
+    title: 'Undergraduate Projects',
+    description: 'Comprehensive undergraduate project support from proposal to final documentation.',
+    features: ['Proposal + methodology', 'Build/analysis support', 'Testing and revision', 'Final documentation'],
+    price: 'Ksh 20,000 - 30,000'
   },
   {
     icon: BarChart3,
     title: 'Basic Data-Analysis Guidance',
     description: 'Introductory support with data preparation, basic analysis, and understanding outputs.',
     features: ['Basic data-cleaning guidance', 'Descriptive analysis support', 'Output interpretation', 'Results explanation'],
-    price: 'KES 2,000–8,000',
+    price: 'Ksh 2,000 - 8,000'
   },
   {
     icon: BarChart3,
     title: 'More Involved Data-Analysis Guidance',
     description: 'Support for more involved quantitative or qualitative analysis. Complex work is quoted after reviewing the requirements.',
     features: ['Method selection guidance', 'Analysis workflow support', 'Output interpretation', 'Results reporting guidance'],
-    price: 'KES 8,000–20,000; complex work quoted after review',
+    price: 'Ksh 8,000 - 20,000; complex work quoted after review'
   },
   {
     icon: Star,
     title: 'Proofreading',
     description: 'Proofreading for grammar, clarity, and consistency. Price depends on document condition and turnaround time.',
     features: ['Grammar and spelling checks', 'Clarity and flow suggestions', 'Citation-format consistency checks', 'Scope and turnaround agreed first'],
-    price: 'About KES 1,500–4,500 per 3,000 words',
+    price: 'About Ksh 1,500 - 4,500 per 3,000 words'
   },
 ]
 
@@ -83,7 +83,7 @@ export default function Services() {
       <section className="bg-white pb-20 pt-8">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-8 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4">
-            <p className="text-sm font-medium text-emerald-800 md:text-base">Our academic support is intended to help you learn and improve your own work. You are responsible for following your institution's academic-integrity rules.</p>
+            <p className="text-sm font-medium text-emerald-800 md:text-base">Our academic support is intended to help you learn and improve your own work. You are responsible for following your institution&apos;s academic-integrity rules.</p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {services.map((service) => (
