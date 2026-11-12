@@ -83,7 +83,7 @@ export default function Services() {
       <section className="bg-white pb-20 pt-8">
         <div className="mx-auto max-w-7xl px-6">
           <div className="mb-8 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4">
-            <p className="text-sm font-medium text-emerald-800 md:text-base">Our academic support is intended to help you learn and improve your own work. You are responsible for following your institution's academic integrity policies. We provide guidance, feedback, and editing—not work to submit as your own.</p>
+            <p className="text-sm font-medium text-emerald-800 md:text-base">Our academic support is intended to help you learn and improve your own work. You are responsible for following your institution&apos;s academic integrity policies. We provide guidance, feedback, and editing—not work to submit as your own.</p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {services.map((service) => (
