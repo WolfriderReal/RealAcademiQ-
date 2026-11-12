@@ -8,63 +8,63 @@ const services = [
     title: 'Small Assignments',
     description: 'Fast support for short assignments, essays, quizzes, and weekly coursework tasks.',
     features: ['Short-turnaround handling', 'Clear instructions follow-up', 'Plagiarism-safe drafting', 'Formatting + references'],
-    price: 'Ksh 2,000 - 10,000'
+    price: 'Ksh 2,500 - 8,000'
   },
   {
     icon: Award,
     title: "Master's Thesis",
     description: 'Full thesis support from proposal alignment to final defense-ready manuscript.',
     features: ['Research framework', 'Chapter development', 'Academic formatting', 'Supervisor-ready delivery'],
-    price: 'Ksh 25,000 - 40,000'
+    price: 'Ksh 30,000 - 55,000'
   },
   {
     icon: FileText,
     title: 'PhD Dissertation',
     description: 'Advanced dissertation support for doctoral-level research projects and publication-grade work.',
     features: ['Literature synthesis', 'Methodology design', 'Data interpretation', 'Publication-level editing'],
-    price: 'Ksh 40,000 - 80,000 depending on complexity'
+    price: 'Ksh 45,000 - 90,000 depending on scope'
   },
   {
     icon: Star,
     title: 'Proposal / Concept Note',
     description: 'Professional proposals for grants, research programs, and academic concept notes.',
     features: ['Problem framing', 'Methodology and budget', 'Timeline and outputs', 'Donor-aligned structure'],
-    price: 'Ksh 2,500 - 10,000 per milestone'
+    price: 'Ksh 3,000 - 12,000 per milestone'
   },
   {
     icon: FolderKanban,
     title: 'Diploma Projects',
     description: 'Structured project support for diploma-level practical and report-based assessments.',
     features: ['Topic scoping', 'Project write-up', 'Implementation guidance', 'Presentation readiness'],
-    price: 'Ksh 15,000'
+    price: 'Ksh 18,000 - 28,000'
   },
   {
     icon: Users,
     title: 'Undergraduate Projects',
     description: 'Comprehensive undergraduate project support from proposal to final documentation.',
     features: ['Proposal + methodology', 'Build/analysis support', 'Testing and revision', 'Final documentation'],
-    price: 'Ksh 20,000 - 30,000'
+    price: 'Ksh 20,000 - 35,000'
   },
   {
     icon: BarChart3,
     title: 'Basic Data-Analysis Guidance',
     description: 'Introductory support with data preparation, basic analysis, and understanding outputs.',
     features: ['Basic data-cleaning guidance', 'Descriptive analysis support', 'Output interpretation', 'Results explanation'],
-    price: 'Ksh 2,000 - 8,000'
+    price: 'Ksh 4,000 - 10,000'
   },
   {
     icon: BarChart3,
     title: 'More Involved Data-Analysis Guidance',
-    description: 'Support for more involved quantitative or qualitative analysis. Complex work is quoted after reviewing the requirements.',
+    description: 'Support for more involved quantitative or qualitative analysis. Additional work beyond the agreed scope is quoted before starting.',
     features: ['Method selection guidance', 'Analysis workflow support', 'Output interpretation', 'Results reporting guidance'],
-    price: 'Ksh 8,000 - 20,000; complex work quoted after review'
+    price: 'Ksh 10,000 - 25,000'
   },
   {
     icon: Star,
     title: 'Proofreading',
     description: 'Proofreading for grammar, clarity, and consistency. Price depends on document condition and turnaround time.',
     features: ['Grammar and spelling checks', 'Clarity and flow suggestions', 'Citation-format consistency checks', 'Scope and turnaround agreed first'],
-    price: 'About Ksh 1,500 - 4,500 per 3,000 words'
+    price: 'Ksh 1,800 - 5,000 per 3,000 words'
   },
 ]
 
@@ -76,7 +76,7 @@ export default function Services() {
           <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-emerald-300">Our Services</p>
           <h1 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Academic Support Services</h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-200">Student-focused guidance, feedback, and editing.</p>
-          <p className="mx-auto mt-3 max-w-3xl text-sm text-slate-300">Prices are indicative. We will confirm the exact scope, deliverables, deadline, and final price in writing before you decide whether to proceed.</p>
+          <p className="mx-auto mt-3 max-w-3xl text-sm text-slate-300">Prices are indicative and tailored to scope, turnaround, and complexity. For research-heavy or multi-chapter work, we provide a written quote with a clear total cap before starting.</p>
         </div>
       </section>
 
